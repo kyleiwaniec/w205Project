@@ -1,7 +1,7 @@
 #github commands#
 
 ```
-git clone https://github.com/kyleiwaniec/w205Project.git
+git clone git@github.com:kyleiwaniec/w205Project.git
 cd w205Project
 ```
 
