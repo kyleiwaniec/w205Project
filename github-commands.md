@@ -53,7 +53,7 @@ see what changes have been made inside files
 
 more TK.
 
-###Awseome bit of bash I stole somewhere, can't remember where. This bit of awesomeness puts the name of the branch in front of my prompt, in a different color, if I am in a git repo. You can add it to your ~/.bash_profile if you are working on a mac. Not sure where you would put this on a PC:###
+#####Awseome bit of bash I stole somewhere, can't remember where. This bit of awesomeness puts the name of the branch in front of my prompt, in a different color, if I am in a git repo. You can add it to your ~/.bash_profile if you are working on a mac. Not sure where you would put this on a PC:#####
 
 ```
 function parse_git_branch {
@@ -63,7 +63,7 @@ PS1="\[\e[32m\]\$(parse_git_branch)\[\e[34m\]\h:\W \$ \[\e[m\]"
 export PS1
 ```
 
-###I like this one too. LEt's you view all the branches by date created###
+#####I like this one too. Lets you view all the branches by date created#####
 
 ```
 function branchesByDate {
