@@ -53,7 +53,9 @@ see what changes have been made inside files
 
 more TK.
 
-#####Awseome bit of bash I stole somewhere, can't remember where. This bit of awesomeness puts the name of the branch in front of my prompt, in a different color, if I am in a git repo. You can add it to your ~/.bash_profile if you are working on a mac. Not sure where you would put this on a PC:#####
+#####Awseome bit of bash I stole somewhere, can't remember where. This bit of awesomeness puts the name of the branch in front of my prompt, in a different color, if I am in a git repo. You can add it to your ~/.bash_profile if you are working on a mac. Not sure where you would put this on a PC. So my command promtp looks like this:#####
+
+> (dev) localhost:w205Project $
 
 ```
 function parse_git_branch {
@@ -75,4 +77,4 @@ function branchesByDate {
 'Cause the man knows what he's talkin' 'bout:
 [http://scottchacon.com/2011/08/31/github-flow.html](http://scottchacon.com/2011/08/31/github-flow.html).
 
-
+:stuck_out_tongue_winking_eye:
