@@ -1,3 +1,8 @@
+#Keys to the Kingdom#
+
+First, make yourself some keys, and add them to the repo:   
+[https://help.github.com/articles/generating-ssh-keys/](https://help.github.com/articles/generating-ssh-keys/)
+
 #github commands#
 
 ```
