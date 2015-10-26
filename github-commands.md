@@ -58,7 +58,7 @@ see what changes have been made inside files
 
 more TK.
 
-#####Awseome bit of bash I stole somewhere, can't remember where. This bit of awesomeness puts the name of the branch in front of my prompt, in a different color, if I am in a git repo. You can add it to your ~/.bash_profile if you are working on a mac. Not sure where you would put this on a PC. So my command promtp looks like this:#####
+#####Awseome bit of bash I stole somewhere, can't remember where. This bit of awesomeness puts the name of the branch in front of my prompt, in a different color, if I am in a git repo. You can add it to your ~/.bash_profile if you are working on a mac. So my command promtp looks like this:#####
 
 > (dev) localhost:w205Project $
 
@@ -69,8 +69,34 @@ function parse_git_branch {
 PS1="\[\e[32m\]\$(parse_git_branch)\[\e[34m\]\h:\W \$ \[\e[m\]"
 export PS1
 ```
+##### If you are working on a PC, your ~/ is probably C:/Users/Owner. It is recommended that you use git bash on windows. If you have not installed it, do so first [get git-bash here]. Git bash will then open in your home folder for windows.
 
-#####I like this one too. Lets you view all the branches by date created#####
+[get git-bash here]: https://git-scm.com/download/win
+
+```
+Owner@SVAA MINGW64 ~
+$ pwd
+/c/Users/Owner
+```
+
+##### Create .bash_profile file and add the fucntions above. Go back to git-bash and do the following:
+
+```
+Owner@SVAA MINGW64 ~
+$ vi .bash_profile
+```
+
+##### Once you copy-paste the functions (use Shift-Insert to paste) close the vi editor by typing *<ESC>wq*
+##### Now, open another git-bash terminal and confirm that your changes have taken effect:  
+    
+```
+(sharmila_dev) SVAA:w205Project $ branchesByDate
+2015-10-10 21:28:37 -0400 2 weeks ago   master
+2015-10-25 20:38:11 -0400 28 minutes ago        dev
+2015-10-25 20:38:11 -0400 28 minutes ago        sharmila_dev
+```
+    
+#####I like this one too. Lets you view all the branches by date created
 
 ```
 function branchesByDate {
