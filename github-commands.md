@@ -69,7 +69,17 @@ function parse_git_branch {
 PS1="\[\e[32m\]\$(parse_git_branch)\[\e[34m\]\h:\W \$ \[\e[m\]"
 export PS1
 ```
-##### If you are working on a PC, your ~/ is probably C:/Users/Owner. It is recommended that you use git bash on windows. If you have not installed it, do so first [get git-bash here]. Git bash will then open in your home folder for windows.
+    
+#####I like this one too. Lets you view all the branches by date created
+
+```
+function branchesByDate {
+  for k in `git branch|sed s/^..//`;do echo -e `git log -1 --pretty=format:"%Cgreen%ci %Cgreen%cr%Creset" "$k"`\\t"$k";done|sort
+}
+
+```
+
+##### If you are working on a PC, your ~/ is probably C:/Users/Owner. It is recommended that you use git bash on windows. If you have not installed it, [get git-bash here]. Git bash will then open in your home folder for windows.
 
 [get git-bash here]: https://git-scm.com/download/win
 
@@ -94,14 +104,6 @@ $ vi .bash_profile
 2015-10-10 21:28:37 -0400 2 weeks ago   master
 2015-10-25 20:38:11 -0400 28 minutes ago        dev
 2015-10-25 20:38:11 -0400 28 minutes ago        sharmila_dev
-```
-    
-#####I like this one too. Lets you view all the branches by date created
-
-```
-function branchesByDate {
-  for k in `git branch|sed s/^..//`;do echo -e `git log -1 --pretty=format:"%Cgreen%ci %Cgreen%cr%Creset" "$k"`\\t"$k";done|sort
-}
 ```
 
 ###Process###
