@@ -14,5 +14,5 @@ For now this outputs one record to the console as a sanity check
 
 ####Next TODO:      
 
-[ ] run scraper on all links to determine "spam links", and store in S3 for use by plugin  
-[ ] parse (potentially using ML) to determine "spam user", and store in S3 for use by plugin  
+- [ ] run scraper on all links to determine "spam links", and store in S3 for use by plugin  
+- [ ] parse (potentially using ML) to determine "spam user", and store in S3 for use by plugin  
