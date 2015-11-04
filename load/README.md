@@ -12,7 +12,7 @@ hive –f load.sql
 
 For now this outputs one record to the console as a sanity check
 
-Next TODO:     
-1. send results to parse for bad links  
-2. run scraper on all links in found tweets to determine "spam links", and store in S3 for use by plugin  
-3. parse with ML to determine "spam user", and store in S3 for use by plugin  
+####Next TODO:####     
+
+*1. run scraper on all links to determine "spam links", and store in S3 for use by plugin  
+*2. parse (potentially using ML) to determine "spam user", and store in S3 for use by plugin  
