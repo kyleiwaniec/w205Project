@@ -13,15 +13,20 @@ Flume's sink is where the events go to rest. Various types of sinks are supporte
 
 ### Setup Flume for Twitter Data Ingestion
 ---
-##### 0. Prerequisites
-Ability to launch an Amazon EC2 instance using the w205 AMI or a similar one. After starting-up, and the EBS store is mounted(/data), please start hadoop as well. Since we are going to use HDFS as the sink, this part needs to be up and running. You can try this AMI I created to see if flume is already installed and ready to go: UCB_W205_Hadoop_Python27_Flume.
+##### Prerequisites
+Ability to launch an Amazon EC2 instance using the w205 AMI or a similar one. After starting-up, and the EBS store is mounted(/data), please start hadoop as well. Since we are going to use HDFS as the sink, this part needs to be up and running. You can try this AMI I created to see if flume is already installed and ready to go: ucbw205_complete_plus_postgres_py2.7
 
 ##### 1. Install Flume
-For ubuntu and similar systems use:
+
+If you are using the above AMI, run:
+`. install-flume.sh`
+
+Otherwise, for ubuntu and similar systems use:
 >  sudo apt-get install flume-ng 
 
 For red-hat compatible systems use:
 > sudo yum install flume-ng 
+
 
 If you are using the AMI for w205, flume will be installed here:
 > /usr/lib/flume-ng 
@@ -30,40 +35,13 @@ You can verify the installation by using the following commands:
 ```
 ls -l /usr/lib/flume-ng/conf
 which flume-ng
-```
-##### 2. Configure Flume
-Pull the latest changes from the repository. You must see a directory flume under w205Project. 
 
-First, copy the start-up script to /data/flume.
 ```
-cd /data
-mkdir flume
-cp <GIT-PROJ-HOME>/flume/scripts/start-flume.sh /data/flume
-```
-Next, copy the configuration files to /data/flume/conf
-```
-cd /data/flume
-mkdir conf
-cp <GIT-PROJ-HOME>/flume/scripts/flume.conf /data/flume/conf
-cp <GIT-PROJ-HOME>/flume/scripts/flume-env.sh /data/flume/conf
-```
+##### 2. Add Twitter keys
+Open `/data/w205Project/flume/conf/flume.conf` and add your twitter credentials, starting around line 54.
 
-The flume.conf file configured the source, channel and sink for flume.
-The flume-env.sh defines the FLUME_CLASSPATH. This is where flume will look to get the custom source code implementation for reading twitter streams. This is what the classpath configuration looks like:
-```
-export FLUME_CLASSPATH="/data/w205Project/flume/twitter4j-stream-2.2.6.jar:/data/w205Project/flume/flume-sources-1.0-SNAPSHOT.jar"
-```
-The jar (java archive files) compress the Java code that implements the Flume Twitter Source. As long as it is in Flume's classpath, the necessary classes will be available during execution.
-
-However, there was a conflict in the twitter4j jar files that had to be resolved:
-```
-cd /usr/lib/flume-ng/lib
- mv twitter4j-core-3.0.3.jar twitter4j-core-3.0.3.jar.bak
- mv twitter4j-stream-3.0.3.jar twitter4j-stream-3.0.3.jar.bak
-```
-
-##### Setup HDFS Directories
-Since flume will be using HDFS as the sink, the HDFS directory structure is first defined. However, this step may be optional.
+##### 3. Setup HDFS Directories
+Since flume will be using HDFS as the sink, the HDFS directory structure is first defined. If you used the install script, this step is already done, and you can proceed to start flume
 ```
 sudo -u hdfs hdfs dfs -mkdir /user/flume
 sudo -u hdfs hdfs dfs -mkdir /user/flume/tweets/
@@ -72,7 +50,7 @@ sudo -u hdfs hdfs dfs -mkdir /user/flume/tweets/
 ##### Start Flume Twitter Data Ingestion
 Start flume as "hdfs" so that the user will have write permissions on the file system:
 ```
-sudo -u hdfs bash /data/flume/start-flume.sh
+sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
 ```
 In order to test whether the twitter streaming through flume is working, you can peer into the hdfs directories.
 ```
