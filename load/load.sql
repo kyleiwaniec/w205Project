@@ -1,5 +1,5 @@
 -- add the JSON SERDE -- 
-ADD JAR /data/w205Project/spark/hive-serdes-1.0-SNAPSHOT.jar;
+ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;
 
 -- drop and create an external table partitioned by the date YYYY/MM/DD
 -- we will collect data once a day
