@@ -37,10 +37,10 @@ ls -l /usr/lib/flume-ng/conf
 which flume-ng
 
 ```
+##### 2. Add Twitter keys
+Open `/data/w205Project/flume/conf/flume.conf` and add your twitter credentials, starting around line 54.
 
-Open `/data/w205Project/flume/conf/flume.conf` and add your twitter credentials
-
-##### 2. Setup HDFS Directories
+##### 3. Setup HDFS Directories
 Since flume will be using HDFS as the sink, the HDFS directory structure is first defined. If you used the install script, this step is already done, and you can proceed to start flume
 ```
 sudo -u hdfs hdfs dfs -mkdir /user/flume
