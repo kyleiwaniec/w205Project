@@ -12,7 +12,7 @@ hive –f load.sql
 
 For now this outputs one record to the console as a sanity check
 
-####Next TODO:####     
+####Next TODO:      
 
-*1. run scraper on all links to determine "spam links", and store in S3 for use by plugin  
-*2. parse (potentially using ML) to determine "spam user", and store in S3 for use by plugin  
+[ ] run scraper on all links to determine "spam links", and store in S3 for use by plugin  
+[ ] parse (potentially using ML) to determine "spam user", and store in S3 for use by plugin  
