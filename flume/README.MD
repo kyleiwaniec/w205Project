@@ -31,38 +31,7 @@ You can verify the installation by using the following commands:
 ls -l /usr/lib/flume-ng/conf
 which flume-ng
 ```
-##### 2. Configure Flume
-Pull the latest changes from the repository. You must see a directory flume under w205Project. 
-
-First, copy the start-up script to /data/flume.
-```
-cd /data
-mkdir flume
-cp <GIT-PROJ-HOME>/flume/scripts/start-flume.sh /data/flume
-```
-Next, copy the configuration files to /data/flume/conf
-```
-cd /data/flume
-mkdir conf
-cp <GIT-PROJ-HOME>/flume/scripts/flume.conf /data/flume/conf
-cp <GIT-PROJ-HOME>/flume/scripts/flume-env.sh /data/flume/conf
-```
-
-The flume.conf file configured the source, channel and sink for flume.
-The flume-env.sh defines the FLUME_CLASSPATH. This is where flume will look to get the custom source code implementation for reading twitter streams. This is what the classpath configuration looks like:
-```
-export FLUME_CLASSPATH="/data/w205Project/flume/twitter4j-stream-2.2.6.jar:/data/w205Project/flume/flume-sources-1.0-SNAPSHOT.jar"
-```
-The jar (java archive files) compress the Java code that implements the Flume Twitter Source. As long as it is in Flume's classpath, the necessary classes will be available during execution.
-
-However, there was a conflict in the twitter4j jar files that had to be resolved:
-```
-cd /usr/lib/flume-ng/lib
- mv twitter4j-core-3.0.3.jar twitter4j-core-3.0.3.jar.bak
- mv twitter4j-stream-3.0.3.jar twitter4j-stream-3.0.3.jar.bak
-```
-
-##### Setup HDFS Directories
+##### 2. Setup HDFS Directories
 Since flume will be using HDFS as the sink, the HDFS directory structure is first defined. However, this step may be optional.
 ```
 sudo -u hdfs hdfs dfs -mkdir /user/flume
