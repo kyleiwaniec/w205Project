@@ -14,14 +14,19 @@ Flume's sink is where the events go to rest. Various types of sinks are supporte
 ### Setup Flume for Twitter Data Ingestion
 ---
 ##### 0. Prerequisites
-Ability to launch an Amazon EC2 instance using the w205 AMI or a similar one. After starting-up, and the EBS store is mounted(/data), please start hadoop as well. Since we are going to use HDFS as the sink, this part needs to be up and running. You can try this AMI I created to see if flume is already installed and ready to go: UCB_W205_Hadoop_Python27_Flume.
+Ability to launch an Amazon EC2 instance using the w205 AMI or a similar one. After starting-up, and the EBS store is mounted(/data), please start hadoop as well. Since we are going to use HDFS as the sink, this part needs to be up and running. You can try this AMI I created to see if flume is already installed and ready to go: ucbw205_complete_plus_postgres_py2.7
 
 ##### 1. Install Flume
-For ubuntu and similar systems use:
+
+If you are using the above AMI, run:
+`. install-flume.sh`
+
+Otherwise, for ubuntu and similar systems use:
 >  sudo apt-get install flume-ng 
 
 For red-hat compatible systems use:
 > sudo yum install flume-ng 
+
 
 If you are using the AMI for w205, flume will be installed here:
 > /usr/lib/flume-ng 
@@ -32,7 +37,7 @@ ls -l /usr/lib/flume-ng/conf
 which flume-ng
 ```
 ##### 2. Setup HDFS Directories
-Since flume will be using HDFS as the sink, the HDFS directory structure is first defined. However, this step may be optional.
+Since flume will be using HDFS as the sink, the HDFS directory structure is first defined. If you used the install script, this step is already done, and you can proceed to start flume
 ```
 sudo -u hdfs hdfs dfs -mkdir /user/flume
 sudo -u hdfs hdfs dfs -mkdir /user/flume/tweets/
@@ -41,7 +46,7 @@ sudo -u hdfs hdfs dfs -mkdir /user/flume/tweets/
 ##### Start Flume Twitter Data Ingestion
 Start flume as "hdfs" so that the user will have write permissions on the file system:
 ```
-sudo -u hdfs bash /data/flume/start-flume.sh
+sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
 ```
 In order to test whether the twitter streaming through flume is working, you can peer into the hdfs directories.
 ```
