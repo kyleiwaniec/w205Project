@@ -13,7 +13,7 @@ Flume's sink is where the events go to rest. Various types of sinks are supporte
 
 ### Setup Flume for Twitter Data Ingestion
 ---
-##### 0. Prerequisites
+##### Prerequisites
 Ability to launch an Amazon EC2 instance using the w205 AMI or a similar one. After starting-up, and the EBS store is mounted(/data), please start hadoop as well. Since we are going to use HDFS as the sink, this part needs to be up and running. You can try this AMI I created to see if flume is already installed and ready to go: ucbw205_complete_plus_postgres_py2.7
 
 ##### 1. Install Flume
@@ -35,7 +35,11 @@ You can verify the installation by using the following commands:
 ```
 ls -l /usr/lib/flume-ng/conf
 which flume-ng
+
 ```
+
+Open `/data/w205Project/flume/conf/flume.conf` and add your twitter credentials
+
 ##### 2. Setup HDFS Directories
 Since flume will be using HDFS as the sink, the HDFS directory structure is first defined. If you used the install script, this step is already done, and you can proceed to start flume
 ```
