@@ -1,2 +1,0 @@
-ADD JAR "hive-serdes-1.0-SNAPSHOT.jar";
-ALTER TABLE tweets ADD IF NOT EXISTS PARTITION (datehour = ${DATEHOUR}) LOCATION '${WFINPUT}';
