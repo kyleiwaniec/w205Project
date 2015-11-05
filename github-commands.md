@@ -60,16 +60,17 @@ more TK.
 
 #####Awseome bit of bash I stole somewhere, can't remember where. This bit of awesomeness puts the name of the branch in front of my prompt, in a different color, if I am in a git repo. You can add it to your ~/.bash_profile if you are working on a mac. So my command promtp looks like this:#####
 
-> (dev) localhost:w205Project $
+> (dev) kyle@localhost:w205Project $
 
 ```
 function parse_git_branch {
     git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
-PS1="\[\e[32m\]\$(parse_git_branch)\[\e[34m\]\h:\W \$ \[\e[m\]"
+PS1="\[\e[32m\]\$(parse_git_branch)\[\e[m\]\u@\h:\W \$ \[\e[m\]"
 export PS1
+
 ```
-    
+
 #####I like this one too. Lets you view all the branches by date created
 
 ```
@@ -98,7 +99,7 @@ $ vi .bash_profile
 
 ##### Once you copy-paste the functions (use Shift-Insert to paste) close the vi editor by typing *<ESC>wq*
 ##### Now, open another git-bash terminal and confirm that your changes have taken effect:  
-    
+
 ```
 (sharmila_dev) SVAA:w205Project $ branchesByDate
 2015-10-10 21:28:37 -0400 2 weeks ago   master
