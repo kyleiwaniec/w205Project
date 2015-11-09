@@ -1,3 +1,3 @@
-#! bin/bash/python
+#!/usr/bin/python
 
 print  'Yo bro! Was uuuuuuup!'
