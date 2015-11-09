@@ -22,7 +22,8 @@ make && make altinstall
 ```
 
 
-###These steps were taken to activate the 2.7 environment, and not break shit like yum
+###These steps were taken to activate the 2.7 environment, and not break shit like yum   
+(Don't do what they did in the Lab video. That is super bad, and it only worked 'cause he didn't need to do anything beyond the simple exercise. They should not be illustrating such bad practices to us. Makes me furious!)
 ```
 wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
 python2.7 ez_setup.py
