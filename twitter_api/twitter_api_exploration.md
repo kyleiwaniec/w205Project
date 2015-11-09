@@ -13,45 +13,14 @@ Note that since Nov 3, 2015, Twitter is using LIKE instead of FAVOURITE in some 
 |id|Int64|The tweet's unique ID|"id": 10765432100123456789|Not Recommended|
 |id_str|String|The tweet's unique ID as String|"id_str": "10765432100123456789"|__The Recommended Approach__|
 
-__Do we need to store this__
-1) Yes. This is an unique identifier associated with each data point.
-2) The main objects all have id and id_str.
+This is an unique identifier associated with each data point. The main objects all have id and id_str.
 
 ### The Main Objects
 
-1) Users
-2) Tweets
-3) Entities & Entities in Objects
-4) Places
-
-### Object - Users
-
-* Anyone or anything that can tweet, follow and be followed; can be mentioned, looked-up and have a home timeline
-* New fields could be added and/or ordering changed
-* Whether a field is part of the data depends on the context
-* Null = Empty = Missing field for practical purposes (also called Perspecivals)
-
-__List of Fields to Retain__
-
-|Data|Data Type|Description|Example|Notes|Reason|
-|----|---------|-----------|------|-----------|-----|
-|created_at|String|UTC datetime of User Account Creationg|"created_at": "Mon Nov 29 21:18:15 +0000 2010"|NA|Time Stamp always good to for querying, as well as a factor of credibility|
-|description|String|User's description of their account|"description":"The Real Twitter API."|NA|Keywords may indicate spam|
-|favourites_count|Int|# of tweets favorited by this account in all time|"favourites_count": 13|Note the British spelling|Factor of credibility|
-|followers_count|Int|The number of followers the acct currently has|"followers_count": 21|Can temporarily be 0|Factor of Credibility|
-|friends_count|Int|The number of users this acct is currently following|"followers_count": 21|Can temporarily be 0|Factor of Credibility|
-|listed_count|Int|The number of public lists this user is a member of|"listed_count":1234|Factor of Credibility|
-|name|String|Name chosen by the user to associate with the acct||Size subject to change (typically upto 20 chars|Maybe useful in keyword match for spam classification|
-|screen_name|String|User name alias||Typically 15 chars, could change; id_str is recommended|Screen Name + Name could be used for spam classification|
-|statuses_count|Int|The number of tweets (incl retweets) issued by the user|"statuses_count": 42|NA|Factor for classification|
-|url|String|URL associated with the profile of the user|"url":"http://www.spam.com"|Nullable, may not even be there|Scrap this URL and use keywords for classification|
-|verified|Boolean|Verified brand or key individual or company or group|"verified":false|Not available to public|Factor of Credibility - could be used to immediately classify as non-spam ([What is a verified account?])|
-|withheld_in_countries|String|Country codes where acct is withheld|"withheld_in_countries": "GR, HK, MY"|May not be present; data type is Array of Strings in Tweets Object - is it an array here too?|Factor of classification - but consider the country's record as well|
-|withheld_scope|String|Is the user or the tweet being withheld|"withheld_scope": "user"|May not be present|If the User is withheld, pay attention|
-|status|Tweets|user’s most recent tweet or retweet.||See section Object - Tweets|Useful features listed in later section.|
-|entities|Entities|Entities which have been parsed out of the url or description fields defined by the user.||See section Object - Entities|Useful features listed in later section.|
-
-[What is a verified account?]: https://support.twitter.com/articles/119135
+1) Users   
+2) Tweets   
+3) Entities & Entities in Objects   
+4) Places   
 
 ### Object - Tweets
 
@@ -66,24 +35,13 @@ __List of Fields to Retain__
 
 [Embedded objects like tweets can be stale and inaccurate]: https://dev.twitter.com/faq#41
 
-__List of Fields to Retain__
+### Object - Users
 
-|Data|Data Type|Description|Example|Notes|Reason|
-|----|---------|-----------|------|-----------|------|
-|created_at|String|UTC time when the tweet was created|"created_at":"Wed Aug 27 13:08:45 +0000 2008"|NA|Query window as well as Factor of Credibility|
-|favorite_count|Int|How many twitter users liked this tweet|"favorite_count":1138|Nullable; approximate value|Factor of Credibility/Classfication|
-|possibly_sensitive|Boolean|URL contained in the tweet may be sensitive|"possibly_sensitive":true|Null if there is no link in the tweet|NOT SURE IF USEFUL|
-|scopes|Object|Key-Value pairs - who should the tweet be delivered to|"scopes":{"followers":false}|Used only by __PROMOTED__ tweets|Could we differentiate betn the good and bad in "promoted"?|
-|retweet_count|Int|Number of times this tweet has been retweeted|"retweet_count":1585|NA|Factor of Credibility/Classification|
-|retweeted_status|Tweet|The presence of this attribute indicates that the content is a retweet|<Tweet Object>|When many different users are retweeting a tweet with some content and/or URL, it becomes more credible|
-|text|String|Actual content of the tweet|"text":"Tweet Button, Follow Button, and Web Intents javascript now support SSL http:\/\/t.co\/9fbA0oYy ^TS"|[Valid Chars]|Get kewords for classification from here|
-|withheld_in_countries|Array of String|Country codes where acct is withheld; XX-> Withheld in all countries; XY->Withheld due to DMCA|"withheld_in_countries": "GR, HK, MY"|May not be present|Factor of classification - but consider the country's record as well|
-|withheld_scope|String|Is the user or the tweet being withheld|"withheld_scope": "user"|May not be present|If the User is withheld, pay attention|
-|user|User|The user who posted this tweet.||See section Object - Users|Useful features listed in later section.|
-|entities|Entities|Entities which have been parsed out of the url or description fields defined by the user.||See section Object - Entities|Useful features listed in later section.|
-
-[Valid Chars]: https://github.com/twitter/twitter-text/blob/master/rb/lib/twitter-text/regex.rb
-
+* Anyone or anything that can tweet, follow and be followed; can be mentioned, looked-up and have a home timeline
+* New fields could be added and/or ordering changed
+* Whether a field is part of the data depends on the context
+* Null = Empty = Missing field for practical purposes (also called Perspecivals)
+ 
 ### Object - Entities
 
 * Entitities are tightly coupled to other Twitter Objects.
@@ -154,20 +112,6 @@ __Tweet Entities__
 * The purpose of the symbols entity is unclear - will ignore for now.
 * The urls entity seems to be of most importance to this project.
 
-__List of Fields to Retain__
-
-|Data|Data Type|Description|Example|Notes|Reason|
-|----|---------|-----------|------|-----------|------|
-|hashtags|Array of Object|Hashtags that have been parsed out of tweet content|"hashtags":[{"indices":[32,36],"text":"lol"}]|NA|Number of hashtags per tweet was considered a top 10 indicator of spam ([Paper])|
-|media|Array of Object|Media elements uploaded with the tweet|<Example is too big>|NA|Possible that it plays a similar role to hashtags|
-|urls|Array of Object|Contains URLs from the tweet content or user profile url or description|<Example provided above in User Entities Section>|Nullable, may not be present|URLs in tweet content as well user profile is valuable for classification|
-
-[Paper]: http://www.decom.ufop.br/fabricio/download/ceas10.pdf
-
-__Notes for Transformation:__
-* Store the count of hashtags as well as the hashtag texts concatenated by ","
-* Store the count of media URLs. Discard the URLs to photos and videos. Too many of these objects could indicate spam though.
-
 ### Object - Places
 
 * For this project, Places can be ignored.
@@ -175,6 +119,67 @@ __Notes for Transformation:__
 * Places are named locations with geo coordinates
 * This is nested within the Tweets Object
 * List of fields: attributes (hash of key-value pairs of arbitrary strings with some conventions like street_address, locality, region, postal_code etc), bounding_box (coordinates of the box that encloses the region), country, country_code, full_name (name of the place - human readable), place_type (eg: city), url (URL representing this location, provides additional meta data).
+
+### Twitter StreamAPI Object-Schema Diagram   
+Zero or more --> Null, Empty or Not Present (Perspectival).   
+* A Tweet has one user (of type User).
+* A Tweet has (one each of) entities and extended_entities (of type Entities).
+* A Tweet has zero or more retweeted_status(of type Tweet).
+* An Entity has one or more Array of Objects.
+* The entitites object has one of each: media[], hashtags[], user_mentions[], symbols[] and urls[].
+* The extended_entities has one of media[].
+
+__Tweet - List of Fields to Retain__
+
+|Data|Data Type|Description|Access Path|
+|----|---------|-----------|-----------|
+|created_at|String|UTC time when the tweet was created|created_at|
+|favorite_count|Int|How many twitter users liked this tweet|favorite_count|
+|scopes|Object|Key-Value pairs - who should the tweet be delivered to (Promoted content)|scopes.followers|
+|retweet_count|Int|Number of times this tweet has been retweeted|retweet_count|
+|retweeted_status|Tweet|The presence of this attribute indicates that the content is a retweet|<Tweet Object>|
+|text|String|Actual content of the tweet|text|
+|withheld_in_countries|Array of String|Country codes where acct is withheld; XX-> Withheld in all countries; XY->Withheld due to DMCA|withheld_in_countries|
+|withheld_scope|String|Is the user or the tweet being withheld|withheld_scope|
+|user|User|The user who posted this tweet.||See section Object - Users|Useful features listed in later section.|
+|entities|Entities|Entities which have been parsed out of the url or description fields defined by the user.||See section Object - Entities|Useful features listed in later section.|
+
+[Valid Chars]: https://github.com/twitter/twitter-text/blob/master/rb/lib/twitter-text/regex.rb
+
+__User - List of Fields to Retain__
+
+|Data|Data Type|Description|Access Path|
+|----|---------|-----------|-----------|
+|created_at|String|UTC datetime of User Account Creation|user.created_at|
+|description|String|User's description of their account|user.description|
+|favourites_count|Int|# of tweets favorited by this account in all time|user.favourites_count|
+|followers_count|Int|The number of followers the acct currently has|user.followers_count|
+|friends_count|Int|The number of users this acct is currently following|user.friends_count|
+|listed_count|Int|The number of public lists this user is a member of|user.listed_count|
+|name|String|Name chosen by the user to associate with the acct|user.name|
+|statuses_count|Int|The number of tweets (incl retweets) issued by the user|user.statuses_count|
+|url|String|URL associated with the profile of the user|user.url|
+|verified|Boolean|Verified brand or key individual or company or group ([What is a verified account?])|user.verified|
+|withheld_in_countries|String|Country codes where acct is withheld|user.withheld_in_countries|
+|withheld_scope|String|Is the user or the tweet being withheld|user.withheld_scope|
+
+[What is a verified account?]: https://support.twitter.com/articles/119135
+
+__Entities - List of Fields to Retain__
+
+|Data|Data Type|Description|Access Path|Reason|
+|----|---------|-----------|------|-----------|------|
+|hashtags|Array of Object|Hashtags that have been parsed out of tweet content|entities.media[i]|Number of hashtags per tweet is an indicator of spam [[1]]|
+|user_mentions|Array of Object|User mentions that have been parsed out of tweet content|entities.user_mentions[i]|Number of user mentions per tweet is an indicator of spam ([[2]])|
+|urls|Array of Object|Contains URLs from the tweet content or user profile url or description|entities.urls[i]|URLs in tweet content as well user profile is valuable for classification|
+
+[1]: http://www.decom.ufop.br/fabricio/download/ceas10.pdf
+[2]: http://download.springer.com/static/pdf/677/chp%253A10.1007%252F978-3-642-13739-6_25.pdf?originUrl=http%3A%2F%2Flink.springer.com%2Fchapter%2F10.1007%2F978-3-642-13739-6_25&token2=exp=1447051146~acl=%2Fstatic%2Fpdf%2F677%2Fchp%25253A10.1007%25252F978-3-642-13739-6_25.pdf%3ForiginUrl%3Dhttp%253A%252F%252Flink.springer.com%252Fchapter%252F10.1007%252F978-3-642-13739-6_25*~hmac=16519c3db14cc4a6722de4ba09fd330e51f0395d832504cbed7ac6d16c4587dc
+
+__Notes for Transformation:__
+* Counts are more appropriate in some cases. For example, the number of hastags and the number of user_mentions are more useful in spam classification than the actual texts associatedw with the entities.
+* Ints, Booleans usually do not call for transformations.
+* Strings may involve some transformations. For example, the description of the user profile may throw some light on whether the user account is spam or not. For that reason, one may have to parse the description string to extract keywords.
 
 ### Twitter API Response Error Codes
 
@@ -184,5 +189,4 @@ Example of an error message:
 For more info: [Twitter API Response Error Codes]
 
 [Twitter API Response Error Codes]: https://dev.twitter.com/overview/api/response-codes
-
 
