@@ -1,8 +1,13 @@
 ## Twitter API - A Quick Look
 
-The information below is a based on analysis of twitter's documentation:
+The information below is a based on analysis of twitter's documentation:   
 1) [Twitter API Overview]
 [Twitter API Overview]: https://dev.twitter.com/overview/api
+
+Here is a visual representation of the tweet object (credit: Raffi Kirkorian):
+[Tweet - Road Map]
+
+[Tweet - Road Map]: https://github.com/kyleiwaniec/w205Project/blob/sharmila_dev/twitter_api/map-of-a-tweet-copy.pdf
 
 Note that since Nov 3, 2015, Twitter is using LIKE instead of FAVOURITE in some documentation.
 
