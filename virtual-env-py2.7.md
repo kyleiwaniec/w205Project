@@ -1,24 +1,29 @@
 
-# Python 2.7.6 (this was already done):
+##The new AMI is here:   
+https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Images:visibility=public-images;search=w205Project_V1.0;sort=imageLocation   
+It has Flume, and Scrapy installed.
+
+## Python 2.7.6 (this was already done):
+```
 wget http://python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz
 tar xf Python-2.7.6.tar.xz
 cd Python-2.7.6
 ./configure --prefix=/usr/local --enable-unicode=ucs4 --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib"
 make && make altinstall
- 
-# Python 3.3.5:
+```
+
+#### Python 3.3.5 (for future reference):
+```
 wget http://python.org/ftp/python/3.3.5/Python-3.3.5.tar.xz
 tar xf Python-3.3.5.tar.xz
 cd Python-3.3.5
 ./configure --prefix=/usr/local --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib"
 make && make altinstall
+```
 
 
-
-
-
-These steps were taken to activate the 2.7 environment, and not break shit like yum
-
+###These steps were taken to activate the 2.7 environment, and not break shit like yum
+```
 wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
 python2.7 ez_setup.py
 easy_install-2.7 pip
@@ -30,9 +35,13 @@ sudo yum install libxml2 libxml2-dev libxslt-devel python-dev python-setuptools
 sudo yum groupinstall "Development Tools"
 sudo yum install python2-devel libffi-devel openssl-devel
 pip2.7 install Scrapy
+```
+Even though I left the environment "active", when I restarted the instance, I still had to run      
+`source 27env/bin/activate`    
+to get into python2.7, so this snippet will have to go into out bootstrap script.     
+Even when in the 27env, you still have to use `pip2.7` to install stuff (if you use just pip, it will install to 2.6 and you won't know wtf happened)
 
-
-
+```
 pip2.7 list
 cffi (1.3.0)
 characteristic (14.3.0)
@@ -57,8 +66,10 @@ Twisted (15.4.0)
 w3lib (1.13.0)
 wheel (0.24.0)
 zope.interface (4.1.3)
+```
 
-
+Then I ran python, to check that all the goodies are working. As you can see some of the module names are not identical when you go to import them, and apparently according to the interwebs, you don't import pyOpenSSL, so this is OK.
+```
 python
 >>> import cffi
 >>> import characteristic
@@ -100,6 +111,7 @@ ImportError: No module named Twisted
 >>> import w3lib
 >>> import wheel
 >>> import zope.interface
+```
 
-# to switch back to python2.6:
-deactivate
+### to switch back to python2.6:
+`deactivate`
