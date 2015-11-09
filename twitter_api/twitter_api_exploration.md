@@ -17,8 +17,8 @@ This is an unique identifier associated with each data point. The main objects a
 
 ### The Main Objects
 
-1) Users   
-2) Tweets   
+1) Tweets   
+2) Users   
 3) Entities & Entities in Objects   
 4) Places   
 
@@ -128,6 +128,8 @@ Zero or more --> Null, Empty or Not Present (Perspectival).
 * An Entity has one or more Array of Objects.
 * The entitites object has one of each: media[], hashtags[], user_mentions[], symbols[] and urls[].
 * The extended_entities has one of media[].
+
+![](https://github.com/kyleiwaniec/w205Project/blob/sharmila_dev/twitter_api/Tweet_Object_Diagram.png)
 
 __Tweet - List of Fields to Retain__
 
