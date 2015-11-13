@@ -10,7 +10,7 @@ getData = function(callback){
 	var xhr = new XMLHttpRequest();
 
 	// todo: remember to enable CORS
-	var url = 'https://w205twitterproject.s3-us-west-2.amazonaws.com/links.json';
+	var url = 'https://w205twitterproject.s3-us-west-2.amazonaws.com/links2.json';
 	// mock url: a public api
 	//var url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=bear';
 
@@ -21,7 +21,7 @@ getData = function(callback){
 	    	//var links = xhr.responseText; // if we do txt
 
 	        console.debug('response', xhr.response);
-
+	        console.debug('success, setting links')
 	        var links = xhr.response.links;
 	        // mock response:
 	        //var links = ["/wiki/MediaWiki_talk:Spam-blacklist#Proposed_additions","/wiki/Wikipedia:Spam"];
@@ -37,7 +37,7 @@ getData = function(callback){
 highlight = function(links) {
     //var links = document.querySelectorAll('a');
     for(var i = 0; i <  links.length; i++) {
-    	var link = Sizzle('[href="'+links[i]+'"]')
+    	var link = Sizzle('[href="'+links[i]["tco"]+'"]')
     	link.map(function(item){
     		item.style.backgroundColor = '#FF0';
 	    	item.style.color = '#000';
