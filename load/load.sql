@@ -15,9 +15,7 @@ CREATE EXTERNAL TABLE tweets (
     user:STRUCT<screen_name:STRING,name:STRING>,
     retweet_count:INT>,
   entities STRUCT<
-    urls:ARRAY<STRUCT<
-      url:STRING>,
-      expanded_url:STRING>>,
+    urls:ARRAY<STRUCT<url:STRING,expanded_url:STRING>>,
     user_mentions:ARRAY<STRUCT<screen_name:STRING,name:STRING>>,
     hashtags:ARRAY<STRUCT<text:STRING>>>,
   text STRING,
