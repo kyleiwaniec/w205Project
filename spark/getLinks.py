@@ -17,5 +17,5 @@ uniqueLInks = links.dropDuplicates(['tco', 'link'])
 
 #uniqueLInks.toJSON()
 
-uniqueLInks.write.mode('append').json("s3n://w205twitterproject.s3-us-west-2.amazonaws.com/links.json")
+uniqueLInks.write.mode('append').json("s3n://w205twitterproject/links.json")
 #dataframe.repartition(1).save("s3n://mybucket/testfile","json")
