@@ -20,3 +20,6 @@ uniqueLInks = links.dropDuplicates(['tco', 'link'])
 #uniqueLInks.toJSON("s3://w205twitterproject/attempt2/links.json")
 #uniqueLInks.write.mode('append').json("s3://w205twitterproject/attempt2")
 uniqueLInks.repartition(1).save("s3n://w205twitterproject/links3","json")
+
+# once the file is in S3, it has to be made public.
+# TODO: aws cli script to make public
