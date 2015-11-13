@@ -10,9 +10,9 @@ getData = function(callback){
 	var xhr = new XMLHttpRequest();
 
 	// todo: remember to enable CORS
-	var url = 'paht/to/our/api';
+	var url = 'https://w205twitterproject.s3-us-west-2.amazonaws.com/links.json';
 	// mock url: a public api
-	var url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=bear';
+	//var url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=bear';
 
 	xhr.open('GET', url);
 	xhr.responseType = 'json'; // if we do json
@@ -20,11 +20,11 @@ getData = function(callback){
 	    if (xhr.status === 200) {
 	    	//var links = xhr.responseText; // if we do txt
 
-	        console.debug('response', xhr.response.responseData.results);
+	        console.debug('response', xhr.response);
 
-	        var links = xhr.response.responseData.results[0];
+	        var links = xhr.response.links;
 	        // mock response:
-	        var links = ["/wiki/MediaWiki_talk:Spam-blacklist#Proposed_additions","/wiki/Wikipedia:Spam"];
+	        //var links = ["/wiki/MediaWiki_talk:Spam-blacklist#Proposed_additions","/wiki/Wikipedia:Spam"];
 	        callback(links);
 	    }
 	    else {
