@@ -19,3 +19,12 @@ For now this outputs one record to the console as a sanity check
 
 - [ ] run scraper on all links to determine "spam links", and store in S3 for use by plugin  
 - [ ] parse (potentially using ML) to determine "spam user", and store in S3 for use by plugin  
+
+
+{color: red}
+#### Note from Sharmila
+Added load_tmp.sql for two reasons:1
+1) Unable to get partitions to work with load.sql. Also had to change the flume sink configuration.
+2) Added some more fields for extraction. 
+Once we review the fields extracted as well as the best way to establish partitions, we can update load.sql and delete the load_tmp.sql.
+{color: red}
