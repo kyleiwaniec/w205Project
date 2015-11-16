@@ -34,9 +34,16 @@ CREATE EXTERNAL TABLE tweets (
 	verified:BOOLEAN>,
   in_reply_to_screen_name STRING
 ) 
-PARTITIONED BY (date String)
+PARTITIONED BY (tweets_date String)
 ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'
 LOCATION '/user/flume/tweets';
 
 
-ALTER TABLE tweets ADD IF NOT EXISTS PARTITION (date='2015-11-15');
+ALTER TABLE tweets ADD IF NOT EXISTS PARTITION (tweets_date='2015/11/15')
+LOCATION '/user/flume/tweets';
+
+ALTER TABLE tweets ADD IF NOT EXISTS PARTITION (tweets_date='2015/11/16')
+LOCATION '/user/flume/tweets';
+
+ALTER TABLE tweets ADD IF NOT EXISTS PARTITION (tweets_date='2015/11/17')
+LOCATION '/user/flume/tweets';

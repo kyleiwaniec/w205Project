@@ -10,6 +10,3 @@ This is not a simple or intuitive task in Hive. UDTF only works with SELECT.
 Also created_at needs to go through string manipulation before it can be treated as date in Hive.
 Spark- scala should make this a lot easier.
 
-#### TODO:
-1) Review fields extracted.
-2) Deterine how to append inrementally on a daily basis.
