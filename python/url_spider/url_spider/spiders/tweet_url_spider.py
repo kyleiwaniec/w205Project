@@ -1,10 +1,14 @@
 import scrapy
 from snakebite.client import Client
 import os
+import util
+import logging
 
 # TODO:
 # - Retrieve the urls that will start the crawler before initializing the crawler
-# - Push urls to S3 bucket
+# - Push urls to S3 bucket - DONE
+
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 def is_url(url):
 	return url.startswith('http') or url.startswith('file') or url.startswith('ssh') or url.startswith('ftp') or url.startswith('ftp') or url.startswith('ssl')
@@ -16,39 +20,38 @@ def get_urls(response):
 
 # def hdfs_write(file):
 	# client = Client("localhost", 8020, use_trash=False)
-	
+
+# def retrieve_start_urls():
+	# This function returns an array of urls to initiallize the crawler
+	#
+	# return start_urls_array
 
 class TweetURLSpider(scrapy.Spider):
 	name = "TweetURLSpider"
+	# start_urls = util.retrieve_start_urls()
 	start_urls = [
         "http://www.dmoz.org/Computers/Programming/Languages/Python/Books/",
         "http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/"
     ]
-	# hdfs_output = "hello"
-	# print hdfs_output
+	# By definition, we will NOT have an allowed domains restraint; the below is only for testing purposes
 	allowed_domains = ["dmoz.org"]
 
 	def parse(self, response):
-	#	filename = response.url.split("/")[-2] + '.hmtl'
-	#	with open(filename, 'wb') as f:
-	#		f.write(response.body)
 		for href in get_urls(response):
 			url = response.urljoin(href)
-			filename = "spammy_urls.txt" 
+			filename = "logs/spammy_urls.log" 
 			with open(filename, 'ab') as f:
 				f.write(url + "\n")
-			print "URL scraped at first level: ", url
+			logging.debug("URL scraped at first level: %s" % url)
 			yield scrapy.Request(url, callback=self.parse_next_urls)
 
 	def parse_next_urls(self, response):
-		# hdfs_output = "hello"
 		for href in get_urls(response):
 			url = response.urljoin(href)
-			filename = "spammy_urls.txt"
+			filename = "logs/spammy_urls.log"
                         with open(filename, 'ab') as f:
                                 f.write(url + "\n")
-			print "URL scraped at second level: ", url
-			# hdfs_output += hdfs_output + url + "\n"
+			logging.debug("URL scraped at second level: %s" % url)
 			yield scrapy.Request(url, self.parse_next_urls)
 		# os.system('echo "%s" | sudo -u hdfs hdfs dfs -put - /user/w205/test_tweets/test.txt' %(hdfs_output))
 # TODO:
