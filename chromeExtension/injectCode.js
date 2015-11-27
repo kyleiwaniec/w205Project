@@ -45,7 +45,7 @@ function getData(callback){
 
 function highlight(spamLinks) {
 	console.debug("highlighting")
-    // just the filtered links: minimize DOM anipulation.
+    // just the filtered links: minimize DOM manipulation.
     var filteredLinks = filter(linksTable, spamLinks);
 
     for(var i = 0,l = filteredLinks.length; i < l; i++) {
