@@ -4,7 +4,7 @@ var pageLinks = document.links; // typeof document.links is object. do not use f
 var linksTable = {};
 var links_array = Array.prototype.slice.call(pageLinks);
 links_array.map(function(link){
-	linksTable[link.getAttribute('href')] = link.getAttribute('href') // tabel where keys are links for fast lookuo
+	linksTable[link.getAttribute('href')] = link.getAttribute('href') // table where keys are links for fast lookup
 })
 
 
@@ -12,7 +12,7 @@ function getData(callback){
 	var xhr = new XMLHttpRequest();
 
 	// todo: remember to enable CORS
-	var url = 'https://w205twitterproject.s3-us-west-2.amazonaws.com/links2.json';
+	var url = 'https://w205twitterproject.s3-us-west-2.amazonaws.com/test.json';
 
 	xhr.open('GET', url);
 	xhr.responseType = 'json'; // if we do json
