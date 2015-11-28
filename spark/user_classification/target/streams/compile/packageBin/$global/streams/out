@@ -1,0 +1,17 @@
+[0m[[0minfo[0m] [0mPackaging /data/w205Project/spark/user_classification/target/scala-2.11/user_classification_2.11-1.0.jar ...[0m
+[0m[[0mdebug[0m] [0mInput file mappings:[0m
+[0m[[0mdebug[0m] [0m	mids/w205/spark/TransformTweetsData.class[0m
+[0m[[0mdebug[0m] [0m	  /data/w205Project/spark/user_classification/target/scala-2.11/classes/mids/w205/spark/TransformTweetsData.class[0m
+[0m[[0mdebug[0m] [0m	mids/w205/spark/TransformTweetsData$TwitterUserSummary$4$.class[0m
+[0m[[0mdebug[0m] [0m	  /data/w205Project/spark/user_classification/target/scala-2.11/classes/mids/w205/spark/TransformTweetsData$TwitterUserSummary$4$.class[0m
+[0m[[0mdebug[0m] [0m	mids/w205/spark/TransformTweetsData$TwitterUserSummary$3.class[0m
+[0m[[0mdebug[0m] [0m	  /data/w205Project/spark/user_classification/target/scala-2.11/classes/mids/w205/spark/TransformTweetsData$TwitterUserSummary$3.class[0m
+[0m[[0mdebug[0m] [0m	mids[0m
+[0m[[0mdebug[0m] [0m	  /data/w205Project/spark/user_classification/target/scala-2.11/classes/mids[0m
+[0m[[0mdebug[0m] [0m	mids/w205/spark/TransformTweetsData$.class[0m
+[0m[[0mdebug[0m] [0m	  /data/w205Project/spark/user_classification/target/scala-2.11/classes/mids/w205/spark/TransformTweetsData$.class[0m
+[0m[[0mdebug[0m] [0m	mids/w205[0m
+[0m[[0mdebug[0m] [0m	  /data/w205Project/spark/user_classification/target/scala-2.11/classes/mids/w205[0m
+[0m[[0mdebug[0m] [0m	mids/w205/spark[0m
+[0m[[0mdebug[0m] [0m	  /data/w205Project/spark/user_classification/target/scala-2.11/classes/mids/w205/spark[0m
+[0m[[0minfo[0m] [0mDone packaging.[0m

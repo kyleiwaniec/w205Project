@@ -2,6 +2,9 @@
 -- FLUME SINK FILE CONFIG NEEDS TO MATCH THE EXPECTATIONS HERE
 -- THIS IS A TEMP LOAD FILE UNTIL WE TEST AND CHOOSE THE BEST METHOD
 
+-- add the JSON SERDE -- 
+ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;
+
 -- CLEAN-UP ALLOWS RERUNS OF THIS SCRIPT
 DROP TABLE TWEETS;
 
@@ -31,19 +34,16 @@ CREATE EXTERNAL TABLE tweets (
 	friends_count:INT,
 	followers_count:INT,
 	statuses_count:INT,
-	verified:BOOLEAN>,
-  in_reply_to_screen_name STRING
+	verified:BOOLEAN>
 ) 
 PARTITIONED BY (tweets_date String)
 ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'
 LOCATION '/user/flume/tweets';
 
+ALTER TABLE TWEETS ADD IF NOT EXISTS
+PARTITION (tweets_date='2015/11/16')
+LOCATION 'user/flume/tweets/2015/11/16';
 
-ALTER TABLE tweets ADD IF NOT EXISTS PARTITION (tweets_date='2015/11/15')
-LOCATION '/user/flume/tweets';
+-- sanity check
+SELECT * FROM TWEETS LIMIT 1;
 
-ALTER TABLE tweets ADD IF NOT EXISTS PARTITION (tweets_date='2015/11/16')
-LOCATION '/user/flume/tweets';
-
-ALTER TABLE tweets ADD IF NOT EXISTS PARTITION (tweets_date='2015/11/17')
-LOCATION '/user/flume/tweets';
