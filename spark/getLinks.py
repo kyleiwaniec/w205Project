@@ -28,8 +28,9 @@ uniqueLInks.repartition(1).save("s3n://w205twitterproject/links3","json")
 tweets = sqlContext.sql("""
 	select 
 		text as tweet, 
-		urls, user_mentions, 
-		hashtags, 
+		entities.urls as urls, 
+		entities.user_mentions as mentions, 
+		entities.hashtags as hashtags, 
 		user.friends_count as num_friends, 
 		user.followers_count as num_followers,
 		user.verified
