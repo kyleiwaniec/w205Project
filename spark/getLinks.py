@@ -73,14 +73,14 @@ allTweets['num_hashtags'] = allTweets['tweet'].apply(lambda x: len(hashtags.find
 allTweets['num_urls'] = allTweets['tweet'].apply(lambda x: len(urls.findall(x)))
 allTweets['num_mentions'] = allTweets['tweet'].apply(lambda x: len(mentions.findall(x)))
 
-print allTweets.head()
+#print allTweets.head()
 
 train_cols = allTweets.columns[5:9]
 
 logit = sm.Logit(allTweets['isPolluter'], allTweets[train_cols])
 model = logit.fit()
 
-print model.summary()
+#print model.summary()
 
 # Print the odds ratios
 print "Odds Ratios: \n"
