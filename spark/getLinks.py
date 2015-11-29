@@ -24,21 +24,6 @@ uniqueLInks.repartition(1).save("s3n://w205twitterproject/links3","json")
 #                  ANALYZE                    #
 ###############################################
 
-'''
-tweets = sqlContext.sql("""
-	select 
-		text as tweet, 
-		entities.urls as urls, 
-		entities.user_mentions as mentions, 
-		entities.hashtags as hashtags, 
-		user.friends_count as num_friends, 
-		user.followers_count as num_followers,
-		user.verified
-	from tweets 
-	""");
-
-print tweets.take(5)
-'''
 
 # pip install pandas
 # pip install statsmodels
@@ -57,10 +42,23 @@ polluterTweets = pd.read_csv("/data/w205Project/python/classify/sample_polluter_
 legitTweets['isPolluter'] = False
 polluterTweets['isPolluter'] = True
 
-allTweets = pd.concat([legitTweets,polluterTweets])
+legitUsers = pd.read_csv("/data/w205Project/python/classify/legitimate_users.csv")
+polluterUsers = pd.read_csv("/data/w205Project/python/classify/content_polluters.csv")
 
+legitUsers['isPolluter'] = False
+polluterUsers['isPolluter'] = True
+
+allTweets = pd.concat([legitTweets,polluterTweets])
 # rename the columns 
 allTweets.columns = ["user_id","tweet_id","tweet","created_at","isPolluter"]
+
+allUsers = pd.concat([legitTweets,polluterTweets])
+# rename the columns 
+allUsers.columns = ["user_id","user_created_at","num_following","mum_followers","num_tweets","LengthOfScreenName","LengthOfDescriptionInUserProfile","isPolluter"]
+
+allData = allUsers.join(allTweets, allUsers.user_id == allTweets.user_id, 'inner')
+allData.show(5)
+
 
 #regex
 words = re.compile('\S+')
@@ -80,23 +78,35 @@ train_cols = allTweets.columns[5:9]
 logit = sm.Logit(allTweets['isPolluter'], allTweets[train_cols])
 model = logit.fit()
 
-#print model.summary()
-
-# Print the odds ratios
+'''
+print model.summary()
 print "Odds Ratios: \n"
 print np.exp(model.params)
-
+'''
 
 # USERS_TWEETS_ATTRIBUTES
 # user_id|tweet_id|tweet|num_words|created_ts|user_created_ts|tweet_created_ts|screen_name|name|num_following|num_followers|num_tweets|retweeted|retweet_count|num_urls|num_mentions|num_hastags|user_profile_url|tweeted_urls
 
-newdata = USERS_TWEETS_ATTRIBUTES
-newdata.show(5)
+newdata = sqlContext.sql("select *, num_hastags as num_hashtags from USERS_TWEETS_ATTRIBUTES")
 
-df = pd.DataFrame(newdata)
+pdf = newdata.toPandas()
 
 # set the isPulluter variable by predicting if tweet is spammy
-df['isPolluter'] = model.predict(df[train_cols])
+pdf['isPolluter'] = model.predict(pdf[train_cols])
 
 print "Predictions: \n"
-print df.head()
+print pdf.head()
+
+
+
+polluters = pdf[pdf.isPolluter > 0.5]
+
+print links
+
+uniqueLInks = links.dropDuplicates(['tco', 'link'])
+uniqueLInks.repartition(1).save("s3n://w205twitterproject/links3","json")
+
+
+
+
+
