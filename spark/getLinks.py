@@ -39,6 +39,10 @@ tweets = sqlContext.sql("""
 
 tweets.show(5)
 
+
+# pip install pandas
+# pip install statsmodels
+# pip install numpy
 import re
 import pandas as pd
 import statsmodels.api as sm
@@ -86,6 +90,15 @@ print np.exp(model.params)
 newdata = [ {'num_words' : 20, 'num_hashtags' : 0, 'num_urls' : 0, 'num_mentions' : 1},
 			{'num_words' : 20, 'num_hashtags' : 2, 'num_urls' : 20, 'num_mentions' : 1},
 			{'num_words' : 6, 'num_hashtags' : 1, 'num_urls' : 0, 'num_mentions' : 1}]
+
+
+newdata = tweets.select(
+	(len(tweets.tweet.split(' '))).alias('num_words'), 
+	(len(tweets.hashtags)).alias('num_hashtags'), 
+	(len(tweets.urls)).alias('num_urls'), 
+	(len(tweets.mentions)).alias('num_mentions'))
+
+newdata.show(5)
 
 df = pd.DataFrame(newdata)
 
