@@ -3,6 +3,7 @@ package mids.w205.spark
 import java.sql.{Date, Timestamp}
 import java.util.Calendar
 import org.apache.spark.sql._
+import org.apache.spark.sql.types._
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
@@ -44,13 +45,13 @@ object TransformTweetsData  {
         //Generate the load path based on Year/Month/Date folder structure in HDFS
         //This may need to be revisited based on scheduling
 
-       /* val todaysPath = new StringBuilder(Calendar.getInstance().get(Calendar.YEAR).toString())
+        val todaysPath = new StringBuilder(Calendar.getInstance().get(Calendar.YEAR).toString())
            todaysPath.append( "/" )
            todaysPath.append((Calendar.getInstance().get(Calendar.MONTH) + 1).toString())
            todaysPath.append( "/" )
-           todaysPath.append((Calendar.getInstance().get(Calendar.DATE)).toString())*/
+           todaysPath.append((Calendar.getInstance().get(Calendar.DATE)).toString())
 
-        val todaysPath = "2015/11/16"
+       // val todaysPath = "2015/11/16"
         val fileName = new StringBuilder("/user/flume/tweets/").append(todaysPath)
 
         // read JSON dataset actually loads the data into a Data Frame
@@ -80,11 +81,16 @@ object TransformTweetsData  {
             sqlTwitterUser.append("ENTITIES.URLS AS TWEETED_URLS, ")
             sqlTwitterUser.append("ENTITIES.HASHTAGS AS TWEETED_HASHTAGS, ")
             sqlTwitterUser.append("ENTITIES.USER_MENTIONS AS USERMENTIONS ")
-            sqlTwitterUser.append("FROM TWEETS_TODAY  T, KNOWN_SPAMMERS S ")
+            sqlTwitterUser.append("FROM TWEETS_TODAY  T ")
             sqlTwitterUser.append("WHERE USER.VERIFIED IS NULL OR USER.VERIFIED <> TRUE ")
 
         //Create the twitterUser data frame
-        val twitterUsers = sqlContext.sql(sqlTwitterUser.toString())
+        val allUsers = sqlContext.sql(sqlTwitterUser.toString())
+        //remove the known spammers in order to process a new set of users
+        //two steps could be combined to 1 (join and except, leaving it in for readability
+        //one day when Im a superstar scala programmer, I will write true FP code!
+        val oldSpammers = allUsers.join(knownSpamUsers, Seq("user_id"))
+        val twitterUsers = allUsers.except(oldSpammers)
         twitterUsers.cache()
         twitterUsers.registerTempTable("TWITTER_USERS_RAW_FLAT")
 
@@ -93,15 +99,14 @@ object TransformTweetsData  {
         //1. classify users as spam or ham
         //2. update spam user and url list for further processing
 
-        //create a formatter to parse date for calculations
-        val format = new java.text.SimpleDateFormat("E MMM dd HH mm ss Z yyyy")
-        //this will not work in SQL, but works as both UDF and UDAF in scala code
-        sqlContext.udf.register("getRepuationScore", getReputationScore _)
+        //let us try a UDF/UDAF function
+        //this is a trivial implementation, but allows us to learn other techniques
+        sqlContext.udf.register("getRatio", getRatio _)
 
         val sqlUsersSummary: StringBuilder  = new StringBuilder("select user_id, ")
-        sqlUsersSummary.append("max(number_of_followers)/ max(number_of_following) as reputation_score, ")
-        sqlUsersSummary.append("count(tweet_id)/max(number_of_tweets) as avg_num_tweets_per_day, ")
-        sqlUsersSummary.append("count(tweeted_urls.url)/count(tweet_id) as avg_num_urls_per_tweet ")
+        sqlUsersSummary.append("getRatio(max(number_of_followers), max(number_of_following)) as reputation_score, ")
+        sqlUsersSummary.append("getRatio(count(tweet_id), max(number_of_tweets)) as avg_num_tweets_per_day, ")
+        sqlUsersSummary.append("getRatio(count(tweeted_urls.url), count(tweet_id)) as avg_num_urls_per_tweet ")
         sqlUsersSummary.append(" from twitter_users_raw_flat group by user_id")
         val twitterUserSummary =  sqlContext.sql(sqlUsersSummary.toString())
         twitterUserSummary.cache()
@@ -109,34 +114,82 @@ object TransformTweetsData  {
 
         val schemaString = "user_id is_spam"
         val classifiedSchema = StructType(schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, true)))
-        val classified = sqlContext.createDataFrame(twitterUserSummary.map(r=>classify(r)), classifiedSchema )
-        classified.filter("is_spam='Y'").show()
-        classified.registerTempTable("SPAM_USERS")
-        classified.filter("is_spam='Y'").write.format("parquet").save("/user/w205/twitter_spammers.parquet").mode(SaveMode.Append)
+        val classified = sqlContext.createDataFrame(twitterUserSummary.map(r => classify(r)), classifiedSchema )
+        classified.filter("is_spam='Y'").registerTempTable("SPAM_USERS")
+        classified.filter("is_spam='Y'").write.format("parquet").mode(SaveMode.Append).save("/user/w205/twitter_spammers.parquet")
 
-        val sqlSuspiciousUrls = new StringBuilder("select tweeted_urls.expanded_url  ")
-        sqlSuspiciousUrls.append(" from twitter_users_raw_flat t inner join spam_users s on (s.user_id=t.user_id )")
-        val suspiciousUrls = sqlContext.sql(sqlSuspiciousUrls)
-        suspiciousUrls.write.format("parquet").save("/user/w205/suspicious_urls.parquet").mode(SaveMode.Append)
 
-        val twitterUsersClassified = twitterUserSummary.join(classified, )
-    }
+        val userUrls = twitterUsers.select("user_id", "tweeted_urls.expanded_url")
+            .explode("expanded_url", "url_in_tweet"){c:TraversableOnce[String]=>c}
+            .orderBy("user_id").drop("expanded_url")
+        val suspiciousUrls = userUrls.intersect(classified.filter("is_spam='Y'"))
+        suspiciousUrls.select("url_in_tweet").write.format("parquet").mode(SaveMode.Append).save("/user/w205/suspicious_urls.parquet")
 
-    def getReputationScore(numFollowers: Long, numFriends: Long) : Float =    {
-        if (numFriends == 0) {
-            return 0.0F
-        }  else {
-            return numFollowers.toFloat/numFriends.toFloat
+        val twitterUsersClassified = twitterUserSummary.join(classified, Seq("user_id"))
+        twitterUsersClassified .write.format("parquet").mode(SaveMode.Append).saveAsTable("/user/w205/classified_users.parquet")
+
+        //TODO connect with outside datastores on the cloud
+        /*
+
+        ADD AWS DEPENDENCIES TO SBT FIRST:
+        libraryDependencies += "com.amazonaws" % "aws-java-sdk-core" % "1.10.37"
+        libraryDependencies += "com.amazonaws" % "aws-java-sdk-config" % "1.10.37"
+        libraryDependencies += "com.amazonaws" % "aws-java-sdk-dynamodb" % "1.10.37"
+
+        */
+        /*
+
+        DO WE NEED STOREHAUS?
+         libraryDependencies += "com.twitter" %% "storehaus-dynamodb" % "0.12.0"
+         libraryDependencies += "com.twitter" %% "storehaus-core" % "0.12.0"
+         import com.twitter.storehaus._
+         import com.twitter.storehaus.dynamodb._
+         */
+
+        /*
+        import com.amazonaws.auth.BasicAWSCredentials
+        import com.amazonaws.regions.{ Region, Regions }
+        import com.amazonaws.services.dynamodbv2.{ AmazonDynamoDBClient, AmazonDynamoDB }
+        import com.amazonaws.services.dynamodbv2.model._
+        import com.amazonaws.services.dynamodbv2.document._
+        val cred = new BasicAWSCredentials("AKIAJCHOVEWJZZ4L4PJQ", "MGPgq4R1FAgaAvoLb7TTSUZFH89dVRQtyBz7CzYV")
+        val dynamoDB: DynamoDB = new DynamoDB(new AmazonDynamoDBClient(cred))
+        val tableName = "twitter_users_processed"
+        val table: Table = dynamoDB.getTable(tableName)
+        val currentDate = new StringBuilder(Calendar.getInstance().get(Calendar.YEAR).toString())
+        currentDate .append((Calendar.getInstance().get(Calendar.MONTH) + 1).toString())
+        currentDate .append((Calendar.getInstance().get(Calendar.DATE)).toString())
+        val item: Item = new Item()
+            .withKeyComponent("user_name", "test_from_spark" )
+            .withKeyComponent("date_YYYYMMDD", currentDate)
+            .withNumber("Followers", 10)
+            .withNumber("Following", 20)
+            .withString("Tweet_Content", "Free Spam iPad Viagra")
+            .withList("URLS", ("http://bit.ly/3920", "http://tiny.url/go/343"))
+
+        try {
+
+           val  outcome: PutItemOutcome = table.putItem(item)
+            if (outcome != null) {
+                println(outcome.getItem().toString())
+            }
+        } catch {
+            case ex: Exception =>//TODO
         }
+       */
+
     }
+
+    def getRatio(n: Long, d: Long) : Float =
+        if (d == 0)  0.0F  else  n.toFloat/d.toFloat
 
     def classify(r: Row): Row = {
-        var score: Double = 0.0D;
-        if (r.getDouble(r.fieldIndex("reputation_score"))>3) score += 4.0D
-        if (r.getDouble(r.fieldIndex("avg_num_urls_per_tweet"))>2) score += 4.0D
-        if (r.getDouble(r.fieldIndex("avg_num_urls_per_tweet"))>1) score += 3.0D
-        if (r.getDouble(r.fieldIndex("avg_num_tweets_per_day"))>2) score += 2.0D
-        if (score > 3.0D) return Row(r.getString(r.fieldIndex("user_id")), "Y")
-        return Row(r.getString(r.fieldIndex("user_id")), "N")
+        var score: Float = 0.0F;
+        if (r.getAs[Float](r.fieldIndex("reputation_score"))>3) score += 4.0F
+        if (r.getAs[Float](r.fieldIndex("avg_num_urls_per_tweet"))>2) score += 4.0F
+        if (r.getAs[Float](r.fieldIndex("avg_num_urls_per_tweet"))>1) score += 3.0F
+        if (r.getAs[Float](r.fieldIndex("avg_num_tweets_per_day"))>2) score += 2.0F
+        if (score > 3.0D)  Row(r.getString(r.fieldIndex("user_id")), "Y")
+        Row(r.getString(r.fieldIndex("user_id")), "N")
     }
 }

@@ -4,7 +4,7 @@
 		module="user_classification_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20151128080915"
+		publication="20151129155533"
 	>
 		<description>
 		user_classification
@@ -35,8 +35,10 @@
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.11.7" conf="scala-tool->default,optional(default)"/>
 		<dependency org="org.scala-lang" name="scala-library" rev="2.11.7" conf="scala-tool->default,optional(default);compile->default(compile)"/>
 		<dependency org="org.apache.spark" name="spark-core_2.11" rev="1.5.2" conf="compile->default(compile)"/>
-		<dependency org="com.twitter" name="storehaus-dynamodb_2.11" rev="0.12.0" conf="compile->default(compile)"/>
 		<dependency org="org.apache.spark" name="spark-sql_2.11" rev="1.5.2" conf="compile->default(compile)"/>
 		<dependency org="org.apache.spark" name="spark-hive_2.11" rev="1.5.2" conf="compile->default(compile)"/>
+		<dependency org="com.amazonaws" name="aws-java-sdk-core" rev="1.10.37" conf="compile->default(compile)"/>
+		<dependency org="com.amazonaws" name="aws-java-sdk-config" rev="1.10.37" conf="compile->default(compile)"/>
+		<dependency org="com.amazonaws" name="aws-java-sdk-dynamodb" rev="1.10.37" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>
