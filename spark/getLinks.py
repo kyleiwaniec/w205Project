@@ -98,7 +98,7 @@ newdata = tweets.select(
 	#(len(tweets.urls)).alias('num_urls'), 
 	#(len(tweets.mentions)).alias('num_mentions'))
 
-newdata.show(5)
+print newdata
 
 '''
 
