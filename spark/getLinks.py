@@ -37,7 +37,7 @@ tweets = sqlContext.sql("""
 	from tweets 
 	""");
 
-tweets.show(5)
+tweets.take(5)
 
 
 # pip install pandas
