@@ -94,11 +94,13 @@ newdata = [ {'num_words' : 20, 'num_hashtags' : 0, 'num_urls' : 0, 'num_mentions
 
 newdata = tweets.select(
 	#(len(tweets.tweet.split(' '))).alias('num_words'), 
-	(len(tweets.hashtags)).alias('num_hashtags'), 
-	(len(tweets.urls)).alias('num_urls'), 
-	(len(tweets.mentions)).alias('num_mentions'))
+	(tweets.hashtags.map(lambda x : len(x)).alias('num_hashtags')
+	#(len(tweets.urls)).alias('num_urls'), 
+	#(len(tweets.mentions)).alias('num_mentions'))
 
 newdata.show(5)
+
+'''
 
 df = pd.DataFrame(newdata)
 
@@ -107,3 +109,5 @@ df['isPolluter'] = model.predict(df[train_cols])
 
 print "Predictions: \n"
 print df.head()
+
+'''
