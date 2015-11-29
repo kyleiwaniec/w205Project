@@ -97,8 +97,8 @@ newdata = tweets.select(
 	(tweets.hashtags.map(lambda x : len(x)).alias('num_hashtags')
 	#(len(tweets.urls)).alias('num_urls'), 
 	#(len(tweets.mentions)).alias('num_mentions'))
-
-print newdata
+)
+newdata.show(5)
 
 '''
 
