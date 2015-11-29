@@ -24,7 +24,7 @@ uniqueLInks.repartition(1).save("s3n://w205twitterproject/links3","json")
 #                  ANALYZE                    #
 ###############################################
 
-
+'''
 tweets = sqlContext.sql("""
 	select 
 		text as tweet, 
@@ -38,7 +38,7 @@ tweets = sqlContext.sql("""
 	""");
 
 print tweets.take(5)
-
+'''
 
 # pip install pandas
 # pip install statsmodels
@@ -86,21 +86,12 @@ model = logit.fit()
 print "Odds Ratios: \n"
 print np.exp(model.params)
 
-# this will be replaced by the actual collected data
-newdata = [ {'num_words' : 20, 'num_hashtags' : 0, 'num_urls' : 0, 'num_mentions' : 1},
-			{'num_words' : 20, 'num_hashtags' : 2, 'num_urls' : 20, 'num_mentions' : 1},
-			{'num_words' : 6, 'num_hashtags' : 1, 'num_urls' : 0, 'num_mentions' : 1}]
 
+# USERS_TWEETS_ATTRIBUTES
+# user_id|tweet_id|tweet|num_words|created_ts|user_created_ts|tweet_created_ts|screen_name|name|num_following|num_followers|num_tweets|retweeted|retweet_count|num_urls|num_mentions|num_hastags|user_profile_url|tweeted_urls
 
-newdata = tweets.select(
-	#(len(tweets.tweet.split(' '))).alias('num_words'), 
-	(tweets.hashtags.map(lambda x : len(x)).alias('num_hashtags')
-	#(len(tweets.urls)).alias('num_urls'), 
-	#(len(tweets.mentions)).alias('num_mentions'))
-)
+newdata = USERS_TWEETS_ATTRIBUTES
 newdata.show(5)
-
-'''
 
 df = pd.DataFrame(newdata)
 
@@ -109,5 +100,3 @@ df['isPolluter'] = model.predict(df[train_cols])
 
 print "Predictions: \n"
 print df.head()
-
-'''
