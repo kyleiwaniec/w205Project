@@ -53,19 +53,27 @@ allTweets.columns = ["user_id",
 # Get the honeypot user data
 legitUsers = pd.read_csv("/data/w205Project/python/classify/legitimate_users.csv")
 polluterUsers = pd.read_csv("/data/w205Project/python/classify/content_polluters.csv")
-legitUsers['isPolluter'] = False
-polluterUsers['isPolluter'] = True
-allUsers = pd.concat([legitUsers,polluterUsers])
 # rename the columns 
-allUsers.columns = ["user_id",
+legitUsers.columns = ["user_id",
 					"user_created_at",
 					"collected_at",
 					"num_following",
 					"num_followers",
 					"num_tweets",
 					"LengthOfScreenName",
-					"LengthOfDescriptionInUserProfile",
-					"isPolluter"]
+					"LengthOfDescriptionInUserProfile"]
+polluterUsers.columns = ["user_id",
+					"user_created_at",
+					"collected_at",
+					"num_following",
+					"num_followers",
+					"num_tweets",
+					"LengthOfScreenName",
+					"LengthOfDescriptionInUserProfile"]	
+legitUsers['isPolluter'] = False
+polluterUsers['isPolluter'] = True
+allUsers = pd.concat([legitUsers,polluterUsers])
+
 
 # merge tweets and users for use in regression
 # This merge is not quite what we're looking for, and is not currently in use:
