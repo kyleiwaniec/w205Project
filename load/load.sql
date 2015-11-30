@@ -1,4 +1,4 @@
--- add the JSON SERDE -- 
+-- add the JSON SERDE --
 ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;
 
 -- drop and create an external table partitioned by the date YYYY/MM/DD
@@ -6,10 +6,12 @@ ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;
 
 DROP TABLE tweets;
 CREATE EXTERNAL TABLE tweets (
-  id BIGINT,
+  id_str STRING,
   created_at STRING,
   source STRING,
   favorited BOOLEAN,
+  retweet_count INT,
+  retweeted BOOLEAN,
   retweeted_status STRUCT<
     text:STRING,
     user:STRUCT<screen_name:STRING,name:STRING>,
@@ -21,7 +23,11 @@ CREATE EXTERNAL TABLE tweets (
   text STRING,
   user STRUCT<
     screen_name:STRING,
+    id_str:string,
+    created_at:STRING,
     name:STRING,
+    screen_name:STRING,
+    url:STRING,
     friends_count:INT,
     followers_count:INT,
     statuses_count:INT,
@@ -29,7 +35,7 @@ CREATE EXTERNAL TABLE tweets (
     utc_offset:INT,
     time_zone:STRING>,
   in_reply_to_screen_name STRING
-) 
+)
 PARTITIONED BY (datehour STRING)
 ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'
 LOCATION '/user/flume/tweets';
@@ -37,9 +43,9 @@ LOCATION '/user/flume/tweets';
 -- Define the partition column by setting a starting point.
 -- From here on, CRON will add partitions. We may ultimately take the below snippet out.
 
-ALTER TABLE tweets ADD IF NOT EXISTS 
-PARTITION (datehour = '2015/11/04') 
-LOCATION '/user/flume/tweets/2015/11/04';
+ALTER TABLE tweets ADD IF NOT EXISTS
+PARTITION (datehour = '2015/11/29')
+LOCATION '/user/flume/tweets/2015/11/29';
 
 -- sanity check
 select * from tweets limit 1;
