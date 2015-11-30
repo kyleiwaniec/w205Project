@@ -151,19 +151,20 @@ uniqueLInks.toPandas().to_json(orient="records",path_or_buf='/data/w205Project/p
 #################################################################################################################
 #    SAVE TO POSTGRES
 #################################################################################################################
-'''
-url = "jdbc:postgresql://localhost/foobar?user=foo&password=bar"
-df.write.jdbc(url=url, table="baz", mode="overwrite")
-'''
 
+# pip install sqlalchemy
+# pip install psycopg2
 
 from sqlalchemy import create_engine
 engine = create_engine('postgresql://postgres:pass@localhost:5432/twitter')
-polluters.to_sql('twitters', engine)
+con = engine.connect()
 
+polluters.to_sql(con=con, name='twitters', if_exists='append', flavor='postgresql')
 
 '''
-import psycopg2
-
-conn = psycopg2.connect(database="Tcount", user="postgres", password="pass", host="localhost", port="5432")
+if_exists: {'fail', 'replace', 'append'}, default 'fail'
+     fail: If table exists, do nothing.
+     replace: If table exists, drop it, recreate it, and insert data.
+     append: If table exists, insert data. Create if does not exist.
 '''
+
