@@ -47,17 +47,20 @@ polluterUsers = pd.read_csv("/data/w205Project/python/classify/content_polluters
 
 legitUsers['isPolluter'] = False
 polluterUsers['isPolluter'] = True
+legitUsers.columns = ["user_id","user_created_at","collected_at","num_following","num_followers","num_tweets","LengthOfScreenName","LengthOfDescriptionInUserProfile","isPolluter"]
+polluterUsers.columns = ["user_id","user_created_at","collected_at","num_following","num_followers","num_tweets","LengthOfScreenName","LengthOfDescriptionInUserProfile","isPolluter"]
+
 
 allTweets = pd.concat([legitTweets,polluterTweets])
 # rename the columns 
 allTweets.columns = ["user_id","tweet_id","tweet","created_at","isPolluter"]
 
-allUsers = pd.concat([legitTweets,polluterTweets])
+allUsers = pd.concat([legitUsers,polluterUsers])
 # rename the columns 
-allUsers.columns = ["user_id","user_created_at","num_following","mum_followers","num_tweets","LengthOfScreenName","LengthOfDescriptionInUserProfile","isPolluter"]
+allUsers.columns = ["user_id","user_created_at","collected_at","num_following","num_followers","num_tweets","LengthOfScreenName","LengthOfDescriptionInUserProfile","isPolluter"]
 
-allData = allUsers.join(allTweets, allUsers.user_id == allTweets.user_id, 'inner')
-allData.show(5)
+
+allData = allTweets.merge(allUsers, how='left', left_on='user_id', right_on='user_id')
 
 
 #regex
@@ -66,16 +69,17 @@ hashtags = re.compile('^\\#')
 urls = re.compile('^(http|www)')
 mentions = re.compile('^\\@')
 
-allTweets['num_words'] = allTweets['tweet'].apply(lambda x: len(words.findall(x)))
-allTweets['num_hashtags'] = allTweets['tweet'].apply(lambda x: len(hashtags.findall(x)))
-allTweets['num_urls'] = allTweets['tweet'].apply(lambda x: len(urls.findall(x)))
-allTweets['num_mentions'] = allTweets['tweet'].apply(lambda x: len(mentions.findall(x)))
+allData['num_words'] = allData['tweet'].apply(lambda x: len(words.findall(x)))
+allData['num_hashtags'] = allData['tweet'].apply(lambda x: len(hashtags.findall(x)))
+allData['num_urls'] = allData['tweet'].apply(lambda x: len(urls.findall(x)))
+allData['num_mentions'] = allData['tweet'].apply(lambda x: len(mentions.findall(x)))
 
-#print allTweets.head()
+#list(allData.columns.values)
 
-train_cols = allTweets.columns[5:9]
 
-logit = sm.Logit(allTweets['isPolluter'], allTweets[train_cols])
+train_cols = allUsers.columns[3:5]
+
+logit = sm.Logit(allUsers['isPolluter'], allUsers[train_cols])
 model = logit.fit()
 
 '''
@@ -87,7 +91,7 @@ print np.exp(model.params)
 # USERS_TWEETS_ATTRIBUTES
 # user_id|tweet_id|tweet|num_words|created_ts|user_created_ts|tweet_created_ts|screen_name|name|num_following|num_followers|num_tweets|retweeted|retweet_count|num_urls|num_mentions|num_hastags|user_profile_url|tweeted_urls
 
-newdata = sqlContext.sql("select *, num_hastags as num_hashtags from USERS_TWEETS_ATTRIBUTES")
+newdata = sqlContext.sql("select * from USERS_TWEETS_ATTRIBUTES")
 
 pdf = newdata.toPandas()
 
@@ -98,13 +102,14 @@ print "Predictions: \n"
 print pdf.head()
 
 
+polluters = pdf[pdf.isPolluter > 0.85]
 
-polluters = pdf[pdf.isPolluter > 0.5]
-
-print links
-
-uniqueLInks = links.dropDuplicates(['tco', 'link'])
-uniqueLInks.repartition(1).save("s3n://w205twitterproject/links3","json")
+print polluters.head()
+#.to_json(orient="records")
+links = polluters.tweeted_urls
+#uniqueLInks = links.dropDuplicates(['tco', 'link'])
+df = sqlContext.createDataFrame(pd.DataFrame(links))
+df.repartition(1).save("s3n://w205twitterproject/links4","json")
 
 
 
