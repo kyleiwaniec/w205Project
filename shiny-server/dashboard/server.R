@@ -1,3 +1,6 @@
+
+install.packages('ggplot2',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)
+
 library(shiny)
 library(ggplot2)
 #install.packages("RAmazonS3", repos = "http://www.omegahat.org/R")

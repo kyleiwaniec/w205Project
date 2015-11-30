@@ -25,3 +25,17 @@ Otherwise leave as is, and create a new security group with port 3838 open
 vi /etc/shiny-server/shiny-server.conf
 sudo restart shiny-server
 ```
+
+copy the dashboard app to the server dir:
+
+```
+cd /srv/shiny-server
+mkdir dashboard
+cp -r /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
+sudo start shiny-server
+```
+
+you may need to start R, and install packages:
+```
+install.packages('ggplot2',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)
+```
