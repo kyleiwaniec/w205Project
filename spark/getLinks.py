@@ -148,4 +148,22 @@ print "saving file to /data/w205Project/python/classify/temp_urls.json...."
 uniqueLInks.toPandas().to_json(orient="records",path_or_buf='/data/w205Project/python/classify/temp_urls.json')
 
 
+#################################################################################################################
+#    SAVE TO POSTGRES
+#################################################################################################################
+'''
+url = "jdbc:postgresql://localhost/foobar?user=foo&password=bar"
+df.write.jdbc(url=url, table="baz", mode="overwrite")
+'''
 
+
+from sqlalchemy import create_engine
+engine = create_engine('postgresql://postgres:pass@localhost:5432/twitter')
+polluters.to_sql('twitters', engine)
+
+
+'''
+import psycopg2
+
+conn = psycopg2.connect(database="Tcount", user="postgres", password="pass", host="localhost", port="5432")
+'''

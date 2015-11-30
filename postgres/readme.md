@@ -1,3 +1,5 @@
+###SETUP###
+
 ```
 psql –U postgres
 
@@ -6,8 +8,8 @@ CREATE DATABASE TWITTER
 \c twitter
 ```
 
-run the sql to create tables:
+Run the sql to create tables. This will overwite any tables and data!
 
 ```
-\i twitter.sql
+\i /data/w205Project/postgres/twitter.sql
 ```
