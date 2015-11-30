@@ -16,20 +16,20 @@
 
 <property>
 	<name>fs.s3n.awsAccessKeyId</name>
-	<value>aws_access_key_id</value>
+	<value>awsAccessKeyId</value>
 </property>
 <property>
 	<name>fs.s3.awsAccessKeyId</name>
-	<value>aws_access_key_id</value>
+	<value>awsAccessKeyId</value>
 </property>
 
 <property>
 	<name>fs.s3n.awsSecretAccessKey</name>
-	<value>aws_secret_access_key</value>
+	<value>awsSecretAccessKey</value>
 </property>
 <property>
 	<name>fs.s3.awsSecretAccessKey</name>
-	<value>aws_secret_access_key</value>
+	<value>awsSecretAccessKey</value>
 </property>
 ```
 
