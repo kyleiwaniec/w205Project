@@ -16,20 +16,20 @@
 
 <property>
 	<name>fs.s3n.awsAccessKeyId</name>
-	<value>AKIAJRFDVXFWBB4IJAWQ</value>
+	<value>awsAccessKeyId</value>
 </property>
 <property>
 	<name>fs.s3.awsAccessKeyId</name>
-	<value>AKIAJRFDVXFWBB4IJAWQ</value>
+	<value>awsAccessKeyId</value>
 </property>
 
 <property>
 	<name>fs.s3n.awsSecretAccessKey</name>
-	<value>XmeIHSvkleXVg3MT8QyYFnH9tdOeMH34AlGRyB1t</value>
+	<value>awsSecretAccessKey</value>
 </property>
 <property>
 	<name>fs.s3.awsSecretAccessKey</name>
-	<value>XmeIHSvkleXVg3MT8QyYFnH9tdOeMH34AlGRyB1t</value>
+	<value>awsSecretAccessKey</value>
 </property>
 ```
 
