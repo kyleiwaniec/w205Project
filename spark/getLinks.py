@@ -32,8 +32,7 @@ import pandas as pd
 import statsmodels.api as sm
 import numpy as np
 
-# read the training data in
-# TODO: JOIN the users tables to get the follwers/following counts
+
 # TODO: set paths as env vars os.environ["TRAINING_DATA"]
 
 # get the honeypot tweets data
@@ -107,6 +106,8 @@ allTweets['num_mentions'] = allTweets['tweet'].apply(lambda x: len(mentions.find
 #
 #################################################################################################################
 
+
+print "fitting the model..."
 train_cols = allUsers.columns[3:5]
 
 logit = sm.Logit(allUsers['isPolluter'], allUsers[train_cols])
@@ -142,7 +143,7 @@ uniqueLInks = links_df.dropDuplicates(['url', 'expanded_url'])
 
 # forget about S3:
 # uniqueLInks.repartition(1).save("s3n://w205twitterproject/temp_urls","json")
-
+print "saving file to /data/w205Project/python/classify/temp_urls.json...."
 # instead, save to file on local disk for use by scrapy
 uniqueLInks.toPandas().to_json(orient="records",path_or_buf='/data/w205Project/python/classify/temp_urls.json')
 
