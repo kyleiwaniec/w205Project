@@ -7,7 +7,7 @@ from pyspark.sql.window import Window
 
 sqlContext.sql("ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar");
 sqlContext.sql("ADD JAR /usr/lib/hadoop/hadoop-aws.jar");
-#sqlContext.sql("ADD JAR /usr/lib/hadoop/lib/aws-java-sdk-1.7.14.jar");
+sqlContext.sql("ADD JAR /usr/lib/hadoop/lib/aws-java-sdk-1.7.14.jar");
 
 ###############################################
 #    EXTRACT ALL THE LINKS INDISCRIMINATELY   #
@@ -16,7 +16,7 @@ sqlContext.sql("ADD JAR /usr/lib/hadoop/hadoop-aws.jar");
 '''
 links = sqlContext.sql("select entities.urls.url[0] as tco, entities.urls.expanded_url[0] as link from tweets where entities.urls.url[0] IS NOT NULL");
 uniqueLInks = links.dropDuplicates(['tco', 'link'])
-uniqueLInks.repartition(1).save("s3n://w205twitterproject/links3","json")
+uniqueLInks.repartition(1).save("s3n://w205twitterproject/links5","json")
 '''
 
 
@@ -107,9 +107,12 @@ polluters = pdf[pdf.isPolluter > 0.85]
 print polluters.head()
 #.to_json(orient="records")
 links = polluters.tweeted_urls
-#uniqueLInks = links.dropDuplicates(['tco', 'link'])
+
 df = sqlContext.createDataFrame(pd.DataFrame(links))
-df.repartition(1).save("s3n://w205twitterproject/links4","json")
+df = df.select(['tweeted_urls.url', 'tweeted_urls.expanded_url'])
+uniqueLInks = df.dropDuplicates(['url', 'expanded_url'])
+
+uniqueLInks.repartition(1).save("s3n://w205twitterproject/temp_urls","json")
 
 
 
