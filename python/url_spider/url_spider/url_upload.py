@@ -32,12 +32,12 @@ logging.debug(type(json.dumps(response)))
 
 upload = json.dumps(response)
 
-with open('test_links.json', 'w') as outfile:
+with open('logs/test_links.json', 'w') as outfile:
     json.dump(response, outfile)
 
 f = open('test_links.json','r')
-util.upload_json(conn,"test.json",f)
+util.upload_json(conn,"logs/test.json",f)
 
-new_response = util.get_json(conn,"test.json")
+#new_response = util.get_json(conn,"test.json")
 
-logging.debug("original length of spammy urls list: %3f" % len(util.get_links(new_response)))
+#logging.debug("original length of spammy urls list: %3f" % len(util.get_links(new_response)))

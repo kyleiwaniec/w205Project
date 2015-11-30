@@ -21,18 +21,23 @@ def get_urls(response):
 # def hdfs_write(file):
 	# client = Client("localhost", 8020, use_trash=False)
 
-# def retrieve_start_urls():
+#def retrieve_start_urls():
 	# This function returns an array of urls to initiallize the crawler
 	#
 	# return start_urls_array
+	#start_urls = []
+	#f=open('logs/temp_urls.log','r')
+	#for line in f:
+		#logging.debug("retrieving url: %s" % str(line))
+		#start_urls.append(str(line))
+	#f.close()
+	#return start_urls
 
 class TweetURLSpider(scrapy.Spider):
 	name = "TweetURLSpider"
-	# start_urls = util.retrieve_start_urls()
-	start_urls = [
-        "http://www.dmoz.org/Computers/Programming/Languages/Python/Books/",
-        "http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/"
-    ]
+	start_urls = util.retrieve_start_urls('logs/temp_urls.log')
+	#start_urls = ["http://www.dmoz.org/Computers/Programming/Languages/Python/Books/", "http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/"]
+	logging.debug("The array of starting URLs is: %s" % start_urls)
 	# By definition, we will NOT have an allowed domains restraint; the below is only for testing purposes
 	allowed_domains = ["dmoz.org"]
 
@@ -62,4 +67,14 @@ class TweetURLSpider(scrapy.Spider):
 
 	def set_start_urls(self, new_start_urls):
 		self.start_urls = new_start_urls
-
+	#def retrieve_start_urls(self):
+        # This function returns an array of urls to initiallize the crawler
+        #
+        # return start_urls_array
+        #	start_urls = []
+        #	f=open('logs/temp_urls.log','r')
+        #	for line in f:
+         #       	logging.debug("retrieving url: %s" % str(line))
+          #      	start_urls.append(str(line))
+        #	f.close()
+        #	return start_urls

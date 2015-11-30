@@ -14,6 +14,8 @@ BOT_NAME = 'url_spider'
 SPIDER_MODULES = ['url_spider.spiders']
 NEWSPIDER_MODULE = 'url_spider.spiders'
 
+# The maximum depth that will be allowed to crawl for any site
+DEPTH_LIMIT = 1
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'url_spider (+http://www.yourdomain.com)'

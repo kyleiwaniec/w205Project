@@ -10,6 +10,7 @@ To run the python scripts for URL retrieval you will need to ensure that you hav
 
 You should create a virtualenv with Python2.7 explicitly and the following packages and their respective versions:
 
+```
 cffi==1.3.0
 characteristic==14.3.0
 cryptography==1.1
@@ -37,7 +38,7 @@ Twisted==15.4.0
 w3lib==1.13.0
 wheel==0.24.0
 zope.interface==4.1.3
-
+```
 Note that you will need to run all the scripts in the virtualenv.
 
 Actual setup commands:
@@ -47,15 +48,19 @@ yum install libxml2 libxml2-dev libxslt-devel python-dev python-setuptools
 pip install virtualenv
 
 # VIRTUALENV_NAME is the name you are giving your autoenv and requirements.txt contains the packages above
-virtualenv -p python2.7 VIRTUALENV_NAME -r requirements.txt
+virtualenv -p python2.7 VIRTUALENV_NAME 
 
 source VIRTUALENV_NAME/bin/activate
+
+pip install -r requirements.txt
 
 ```
 
 #URL crawl work flow
 
 **NOTE**: Below code is run from the w205Project/python/url_spider/url_spider folder.
+
+You will need to set the s3 credentials in your `~/.passwords` file as follows 
 
 To proactively crawl the new suspicious URLs, you can run the following from the command line:
 ```
