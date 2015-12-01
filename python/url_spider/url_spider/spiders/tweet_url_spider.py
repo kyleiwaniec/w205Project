@@ -35,7 +35,7 @@ class TweetURLSpider(scrapy.Spider):
 		for href in get_urls(response):
 			url = response.urljoin(href)
 			filename = "logs/spammy_urls.log"
-            with open(filename, 'ab') as f:
-                f.write(url + "\n")
+			with open(filename, 'ab') as f:
+				f.write(url + "\n")
 			logging.debug("URL scraped at second level: %s" % url)
 			yield scrapy.Request(url, self.parse_next_urls)
