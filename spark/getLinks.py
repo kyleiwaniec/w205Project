@@ -1,4 +1,4 @@
-#execfile('/data/w205Project/spark/getLinks.py')
+#execfile('/data/w205Project/spark/getLinks.py') <-- don't use. use spark-submit instead.
 
 from pyspark import SparkContext, HiveContext
 sc = SparkContext()

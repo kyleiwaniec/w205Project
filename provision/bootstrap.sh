@@ -52,8 +52,7 @@ sudo cp -r /data/w205Project/provision/hive-site.xml /data/spark15/conf/hive-sit
 #####################################
 
 
-# already activated in the bash profile
-# source ENV27/bin/activate
+source ~/ENV27/bin/activate
 # install any additonal python modules
 pip install -r /data/w205Project/provision/requirements.txt
 

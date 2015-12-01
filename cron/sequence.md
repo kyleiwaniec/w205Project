@@ -42,25 +42,33 @@ git checkout shinyserver
 then run we'll the scheduler...
 
 
-Remember to add the twitter keys:
+Remember to add the twitter keys in /data/w205Project/flume/conf/flume.conf:   
+(not sure how to script this)
 ```
 sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
+```
 
-hive -f /data/w205Project/load/load.sql  
-hive -f /data/w205Project/transform/transform.sql
-
+After a coouple of hours, kill flume, and load the tables.   
+###TODO: Write script to trigger the add-partition.sql###
+####this whole thing needs some work - Sharmila?####
 
 ```
+hive -f /data/w205Project/load/load.sql  
+hive -f /data/w205Project/load/add-partition.sql  
+hive -f /data/w205Project/transform/transform.sql
+
+```
+
+
 
 then pyspark:
 ```
-	/data/spark15/bin/pyspark
-	execfile('/data/w205Project/spark/getLinks.py')
+/data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py
 ```
-TODO: convert to submit-spark (or whatever..), just need to put the context lines at the top of the file
 
+then crawler:
 ```
-cd url_spider/url_spider
+cd /data/w205Project/python/url_spider/url_spider
 scrapy crawl TweetURLSpider
 python url_upload.py
 ```
