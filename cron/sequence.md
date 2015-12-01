@@ -5,7 +5,7 @@ fdisk –l
 wget https://s3-us-west-2.amazonaws.com/w205twitterproject/provision.sh
 . provision.sh <DEVICE PATH>
 ```
-then run your personal git-keys script, or however you wan to to authorize git
+then run your personal git-keys script, or however you wan to to authorize git.   
 here is a template, if you know what yer keys are:   
 git-keys-template.sh
 
@@ -25,12 +25,15 @@ sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
 hive -f /data/w205Project/load/load.sql  
 hive -f /data/w205Project/transform/transform.sql
 
-/data/spark15/bin/pyspark
+
 ```
 
-then in pyspark:
-	`execfile('/data/w205Project/spark/getLinks.py')`
-
+then pyspark:
+```
+	/data/spark15/bin/pyspark
+	execfile('/data/w205Project/spark/getLinks.py')
+```
+TODO: convert to submit-spark (or whatever..), just need to put the context lines at the top of the file
 
 ```
 cd url_spider/url_spider
