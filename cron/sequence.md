@@ -1,10 +1,29 @@
-###With a brand new volume: ###
+###With a brand new instance and volume: ###
 run these scripts first:
+
+use this AMI:   
+w205Project_V1.1 <- nvm, this is f'd
+
+create a new m3.large instance with security group containing:
+
+```
+Ports	Protocol	Source	tableau
+4040	tcp	0.0.0.0/0	✔
+50070	tcp	0.0.0.0/0	✔
+8080	tcp	0.0.0.0/0	✔
+22		tcp	0.0.0.0/0	✔
+10000	tcp	0.0.0.0/0	✔
+8020	tcp	0.0.0.0/0	✔
+8088	tcp	0.0.0.0/0	✔
+```
+
+
 ```
 fdisk –l
 wget https://s3-us-west-2.amazonaws.com/w205twitterproject/provision.sh
 . provision.sh <DEVICE PATH>
 ```
+
 then run your personal git-keys script, or however you wan to to authorize git.   
 here is a template, if you know what yer keys are:   
 git-keys-template.sh
@@ -13,12 +32,15 @@ git clone git@github.com:kyleiwaniec/w205Project.git
 
 pull the repo, then run:  
 ```
-. w205Project/provision/bootstrap.sh
+cd w205twitterproject
+git checkout shinyserver
+. provision/bootstrap.sh
 ```
 
-then run scheduler...
+then run we'll the scheduler...
 
 
+Remember to add the twitter keys:
 ```
 sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
 

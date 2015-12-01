@@ -30,7 +30,7 @@ copy the dashboard app to the server dir:
 
 ```
 cd /srv/shiny-server
-mkdir dashboard
+mkdir /srv/shiny-server/dashboard
 cp -r /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
 sudo start shiny-server
 ```
