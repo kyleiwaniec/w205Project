@@ -1,76 +1,40 @@
-###What is currently working:###
+###With a brand new volume: ###
+run these scripts first:
+```
+fdisk –l
+wget https://s3-us-west-2.amazonaws.com/w205twitterproject/provision.sh
+. provision.sh <DEVICE PATH>
+```
+then run your personal git-keys script, or however you wan to to authorize git
+here is a template, if you know what yer keys are:   
+git-keys-template.sh
 
-
-as root: start all the services, hadoop, postgres metastore, etc..   
-
-`. /data/bootstrap.sh`   
-
-`sudo -u hdfs bash /data/w205Project/flume/start-flume.sh`
-
-as w205:
-
-`hive -f /data/w205Project/load/load.sql`   
-`hive -f /data/w205Project/transform/transform.sql`
-
-
-as root: 
-create postgres db
+pull the repo, then run:  
+```
+. w205Project/provision/bootstrap.sh
 ```
 
-psql –U postgres
+then run scheduler...
 
-CREATE DATABASE TWITTER
-
-\c twitter
-```
-
-Run the sql to create tables. This will overwite any tables and data!
 
 ```
-\i /data/w205Project/postgres/twitter.sql
+sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
+
+hive -f /data/w205Project/load/load.sql  
+hive -f /data/w205Project/transform/transform.sql
+
+/data/spark15/bin/pyspark
 ```
 
-as root:   
-install R - see the readme in shiny-server
-
-
-
-as root:   
-(so as to be able to access hdfs and write to S3, see readme in /data/w205Project/spark/readme.md to set your keys)
-
-```
-virtualenv -p python2.7 env27
-source env27/bin/activate
-
-pip install pandas
-pip install statsmodels
-pip install numpy
-pip install sqlalchemy
-pip install psycopg2
-```
-
-
-
-run the version that plays nice with S3   
-```
-/data/spark15_h24/bin/pyspark
-```
 then in pyspark:
 	`execfile('/data/w205Project/spark/getLinks.py')`
 
+
 ```
-pip install -r requirements.txt
-
 cd url_spider/url_spider
-pip install snakebite
-pip install tinys3
-
 scrapy crawl TweetURLSpider
-
-export S3_ACCESS_KEY=xxx
-export S3_SECRET_ACCESS_KEY=xxx
-
 python url_upload.py
 ```
 
-
+GO TO THE DASHBOARD:   
+http://ec2-52-2-158-11.compute-1.amazonaws.com:10000/dashboard/
