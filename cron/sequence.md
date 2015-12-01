@@ -18,7 +18,7 @@ Ports	Protocol	Source	tableau
 8020	tcp	0.0.0.0/0	✔
 8088	tcp	0.0.0.0/0	✔
 ```
-
+Attach a 100GB Volume in the same region
 
 ```
 fdisk –l
