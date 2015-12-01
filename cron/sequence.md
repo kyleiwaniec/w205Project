@@ -7,13 +7,35 @@ as root: start all the services, hadoop, postgres metastore, etc..
 
 `sudo -u hdfs bash /data/w205Project/flume/start-flume.sh`
 
-as w205
+as w205:
 
 `hive -f /data/w205Project/load/load.sql`   
 `hive -f /data/w205Project/transform/transform.sql`
 
 
-as root:
+as root: 
+create postgres db
+```
+
+psql –U postgres
+
+CREATE DATABASE TWITTER
+
+\c twitter
+```
+
+Run the sql to create tables. This will overwite any tables and data!
+
+```
+\i /data/w205Project/postgres/twitter.sql
+```
+
+as root:   
+install R - see the readme in shiny-server
+
+
+
+as root:   
 (so as to be able to access hdfs and write to S3, see readme in /data/w205Project/spark/readme.md to set your keys)
 
 ```
@@ -23,9 +45,13 @@ source env27/bin/activate
 pip install pandas
 pip install statsmodels
 pip install numpy
+pip install sqlalchemy
+pip install psycopg2
 ```
 
-run the version that plays nice with S3
+
+
+run the version that plays nice with S3   
 ```
 /data/spark15_h24/bin/pyspark
 ```

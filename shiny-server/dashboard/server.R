@@ -1,8 +1,7 @@
 
-install.packages('ggplot2',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)
-
 library(shiny)
 library(ggplot2)
+library(RPostgreSQL)
 #install.packages("RAmazonS3", repos = "http://www.omegahat.org/R")
 #library(rmongodb)
 
@@ -13,6 +12,13 @@ require("stringr")
 #library(RAmazonS3)
 
 #library(RJSONIO)
+
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
+twitters <- dbReadTable(con, "twitters")
+dbDisconnect(con)
+
+
 
 function(input, output) {
   
@@ -28,12 +34,6 @@ function(input, output) {
    return(d)
   
   }
-  
-  
-  
-  
-  
-  
   
   
   

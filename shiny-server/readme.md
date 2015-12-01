@@ -38,4 +38,5 @@ sudo start shiny-server
 you may need to start R, and install packages:
 ```
 install.packages('ggplot2',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)
+install.packages('RPostgreSQL',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)
 ```
