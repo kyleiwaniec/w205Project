@@ -2,7 +2,10 @@
 
 sudo yum install epel-release
 sudo yum install R
-
+sudo su - \
+  -c "R -e \"install.packages('ggplot2',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
+sudo su - \
+  -c "R -e \"install.packages('RPostgreSQL',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
 sudo su - \
   -c "R -e \"install.packages('shiny', repos='http://cran.rstudio.com/')\""
 
@@ -15,7 +18,8 @@ sudo yum install --nogpgcheck shiny-server-1.4.1.759-rh5-x86_64.rpm
 #set the port to 10000, since this is already open in the security group I'm using.
 #Otherwise leave as is, and create a new security group with port 3838 open
 #vi /etc/shiny-server/shiny-server.conf
-echo > /etc/shiny-server/shiny-server.conf<<EOF
+sudo rm /etc/shiny-server/shiny-server.conf
+sudo cat > /etc/shiny-server/shiny-server.conf <<EOF
 # Instruct Shiny Server to run applications as the user "shiny"
 run_as shiny;
 
@@ -40,14 +44,6 @@ server {
 EOF
 
 
-
 mkdir /srv/shiny-server/dashboard
 cp -r /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
-
-
-sudo su - \
-  -c "R -e \"install.packages('ggplot2',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
-sudo su - \
-  -c "R -e \"install.packages('RPostgreSQL',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
-
 sudo restart shiny-server

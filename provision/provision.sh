@@ -14,10 +14,6 @@ mkfs.ext4 $1
 mount -t ext4 $1 /data
 chmod a+rwx /data
 
-cat > /etc/hadoop/conf.pseudo/hadoop-env.sh <<EOF
-export JAVA_HOME=/opt/jdk1.7.0_79
-EOF
-
 
 #set up directories for postgres
 mkdir /data/pgsql
@@ -149,7 +145,15 @@ cat > /data/hadoop/hive/conf/hive-site.xml <<EOF
 </configuration>
 EOF
 
+cat > /data/make_twitter_postgres.sql <<EOF
+CREATE DATABASE TWITTER;
+\c twitter
+\i /data/w205Project/postgres/twitter.sql
+\q
+EOF
 
+#run the twitter creation sql
+sudo -u postgres psql -f /data/make_twitter_postgres.sql
 
 # make the start_metastore file
 cat > /data/start_metastore.sh <<EOF
@@ -163,6 +167,11 @@ cat > /data/stop_metastore.sh <<EOF
 ps aux|grep org.apache.hadoop.hive.metastore.HiveMetaStore|awk '{print $2}'|xargs kill -9
 EOF
 
-
+mkdir /data/spark15
+cd ~
+wget http://mirror.nexcess.net/apache/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz
+tar -xvf spark-1.5.2-bin-hadoop2.6.tgz
+sudo mv spark-1.5.2-bin-hadoop2.6/* /data/spark15
+ln -s /data/spark15 $HOME/spark15
 
 

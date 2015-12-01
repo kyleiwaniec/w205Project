@@ -25,12 +25,11 @@ echo "starting servers"
 
 
 #####################################
-# SHINY
+# SHINY (wasn't able to pre-install on AMI)
 #####################################
 
-# mkdir /srv/shiny-server/dashboard
-cp -r /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
-sudo start shiny-server
+. /data/w205Project/shiny-server/install-shiny.sh
+
 
 
 #####################################
@@ -38,23 +37,14 @@ sudo start shiny-server
 #####################################
 
 # write setup script for twitter table
-cat > /data/make_twitter_postgres.sql <<EOF
-CREATE DATABASE TWITTER;
-\c twitter
-\i /data/w205Project/postgres/twitter.sql
-\q
-EOF
-
-#run the twitter creation sql
-sudo -u postgres psql -f /data/make_twitter_postgres.sql
+# moved to provision.
 
 #####################################
 # SPARK
 #####################################
 
-mv ~/spark15 /data
-ln -s /data/spark15 $HOME/spark15
-cp /data/hadoop/hive/conf/hive-site.xml /data/spark15/conf
+sudo cp -r /data/w205Project/provision/hive-site.xml /data/spark15/conf/hive-site.xml
+
 
 
 #####################################
@@ -80,7 +70,7 @@ function AWSKEYID {
 	read answer
 
 	if [[ "$answer" != "" ]]; then
-		export S3_ACCESS_KEY="$answer"
+		echo "export S3_ACCESS_KEY=$answer" >> ~/.passwords 
 	else
 		STR=$'AWS ACCESS KEY ID can\'t be empty: \n'
 		echo "$STR"
@@ -93,7 +83,7 @@ function AWSSECRETKEY {
 	read answer
 
 	if [[ "$answer" != "" ]]; then
-		export S3_SECRET_ACCESS_KEY="$answer"
+		echo "export S3_SECRET_ACCESS_KEY=$answer" >> ~/.passwords
 	else
 		STR=$'AWS SECRET ACCESS KEY can\'t be empty: \n'
 		echo "$STR"

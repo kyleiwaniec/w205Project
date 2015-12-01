@@ -112,3 +112,6 @@ $ vi .bash_profile
 [http://scottchacon.com/2011/08/31/github-flow.html](http://scottchacon.com/2011/08/31/github-flow.html).
 
 :stuck_out_tongue_winking_eye:
+
+In case you tried to push a really big file, and now it just won't bloody go away, remove the cache   
+`git filter-branch -f --index-filter 'git rm --cached --ignore-unmatch path/to/bigFolder/*'`
