@@ -145,7 +145,7 @@ uniqueLInks = links_df.dropDuplicates(['url', 'expanded_url'])
 # uniqueLInks.repartition(1).save("s3n://w205twitterproject/temp_urls","json")
 print "saving file to /data/w205Project/python/classify/temp_urls.json...."
 # instead, save to file on local disk for use by scrapy
-uniqueLInks.toPandas().to_json(orient="records",path_or_buf='/data/w205Project/python/classify/temp_urls.json')
+uniqueLInks.toPandas().to_json(orient="records",path_or_buf='/data/w205Project/python/url_spider/url_spider/logs/temp_urls.log')
 
 
 #################################################################################################################
