@@ -1,15 +1,15 @@
 #TODO:
-- Connect to Hive to obtain the tweet URLS
-- Scrape pages from the URLs in the tweets URL Hive table
-- Magnify the URL list through reverse DNS lookup
-- Pump the total URLs into S3 -> DONE
+- Connect to Hive to obtain the tweet URLS -> SCRAPPED
+- Scrape pages from the URLs in the tweets URL Hive table -> DONE
+- Magnify the URL list through reverse DNS lookup -> N/D
 
 ###Installation prerequisites
 
 To run the python scripts for URL retrieval you will need to ensure that you have this set of packages: libxml2, libxml2-dev, libxslt-devel, python-dev, python-setuptools (all with yum).
 
-You should create a virtualenv with Python2.7 explicitly and the following packages and their respective versions:
+You should create a virtualenv with Python2.7 explicitly and the following packages and their respective versions stored in a file called requirements.txt:
 
+```
 cffi==1.3.0
 characteristic==14.3.0
 cryptography==1.1
@@ -37,7 +37,7 @@ Twisted==15.4.0
 w3lib==1.13.0
 wheel==0.24.0
 zope.interface==4.1.3
-
+```
 Note that you will need to run all the scripts in the virtualenv.
 
 Actual setup commands:
@@ -47,21 +47,34 @@ yum install libxml2 libxml2-dev libxslt-devel python-dev python-setuptools
 pip install virtualenv
 
 # VIRTUALENV_NAME is the name you are giving your autoenv and requirements.txt contains the packages above
-virtualenv -p python2.7 VIRTUALENV_NAME -r requirements.txt
+virtualenv -p python2.7 VIRTUALENV_NAME 
 
 source VIRTUALENV_NAME/bin/activate
+
+pip install -r requirements.txt
 
 ```
 
 #URL crawl work flow
 
-**NOTE**: Below code is run from the w205Project/python/url_spider/url_spider folder.
+**NOTE**: Below code is run from the /data/w205Project/python/url_spider/url_spider folder.
+
+First, you will need to set the s3 credentials in your `~/.passwords` file as follows:
+```
+export S3_ACCESS_KEY=[INSERT_S3_ACCESS_KEY_HERE]
+export S3_SECRET_ACCESS_KEY=[INSERT_S3_SECRET_ACCESS_KEY_HERE]
+```
+
+Next you will have to source your .passwords file:
+```
+source ~/.passwords
+```
 
 To proactively crawl the new suspicious URLs, you can run the following from the command line:
 ```
 scrapy crawl TweetURLSpider
 ```
-The crawler goes through the URLs that have been stored in HDFS and logs them in `logs/spammy_urls.log`.
+The crawler goes through the URLs that have been stored in the local file `/data/w205Project/python/url_spider/url_spider/logs/temp_urls.log` and logs the resulting crawled urls in `/data/w205Project/python/url_spider/url_spider/logs/spammy_urls.log`.
 
 Next we update the urls used by our plugin by running `python url_upload.py` from the command line.
 
