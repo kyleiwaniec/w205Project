@@ -43,7 +43,7 @@ then run we'll the scheduler...
 
 
 Remember to add the twitter keys in /data/w205Project/flume/conf/flume.conf:   
-(not sure how to script this)
+(not sure how to script this, so my keys are in here)
 ```
 sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
 ```

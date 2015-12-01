@@ -30,8 +30,8 @@ function(input, output) {
     
    #raw <- getFile("w205twitterproject", "legitimate_users.txt", auth = NA)
    #d = read.delim(text = raw, stringsAsFactors = FALSE)
-   d = read.delim("http://s3-us-west-2.amazonaws.com/w205twitterproject/legitimate_users.txt")
-   return(d)
+   #d = read.delim("http://s3-us-west-2.amazonaws.com/w205twitterproject/legitimate_users.txt")
+   #return(d)
   
   }
   
@@ -43,7 +43,7 @@ function(input, output) {
   
   #legitimate_users <- read.delim("legitimate_users.txt", header=FALSE)
   
-  legitimate_users <- loadData()
+  legitimate_users <- read.delim("legitimate_users.txt", header=FALSE)
   
   legitimate_users = na.omit(legitimate_users)
   
@@ -63,8 +63,9 @@ function(input, output) {
   fit_polluters = lm(NumberOfFollowers~NumerOfFollowings, data = content_polluters)
   fit_legit = lm(NumberOfFollowers~NumerOfFollowings, data = legitimate_users)
   
-  output$s3plot <- renderPlot({
-    #View(loadData())
+  output$postgresData <- renderPlot({
+    fitPolluters = lm(num_following[isPolluter > 0.8] ~ num_followers[isPolluter > 0.8]) 
+    plot(fitPolluters)
   })
   
   output$plot <- renderPlot({

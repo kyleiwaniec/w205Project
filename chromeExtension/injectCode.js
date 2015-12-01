@@ -12,7 +12,7 @@ function getData(callback){
 	var xhr = new XMLHttpRequest();
 
 	// todo: remember to enable CORS
-	var url = 'https://w205twitterproject.s3-us-west-2.amazonaws.com/test.json';
+	var url = 'https://w205twitterproject.s3-us-west-2.amazonaws.com/links2.json';
 
 	xhr.open('GET', url);
 	xhr.responseType = 'json'; // if we do json
