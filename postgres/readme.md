@@ -3,7 +3,7 @@
 
 
 ```
-psql –U postgres
+psql -U postgres
 
 CREATE DATABASE TWITTER
 

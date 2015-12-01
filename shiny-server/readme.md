@@ -9,7 +9,7 @@ sudo su - \
 
 ```
 
-download server:
+download server (breaks java :( ):
 
 ```
 wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.4.1.759-rh5-x86_64.rpm
@@ -29,10 +29,10 @@ sudo restart shiny-server
 copy the dashboard app to the server dir:
 
 ```
-cd /srv/shiny-server
+
 mkdir /srv/shiny-server/dashboard
 cp -r /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
-sudo start shiny-server
+sudo restart shiny-server
 ```
 
 you may need to start R, and install packages:

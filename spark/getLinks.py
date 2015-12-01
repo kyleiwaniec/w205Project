@@ -1,5 +1,10 @@
 #execfile('/data/w205Project/spark/getLinks.py')
 
+from pyspark import SparkContext, HiveContext
+sc = SparkContext()
+sqlContext = HiveContext(sc)
+
+
 from pyspark.sql.functions import UserDefinedFunction
 from pyspark.sql.types import *
 from pyspark.sql import functions as F
@@ -25,7 +30,7 @@ uniqueLInks.repartition(1).save("s3n://w205twitterproject/links5","json")
 ###############################################
 
 # pip install pandas
-# pip install statsmodels
+# pip install statsmodels (Installing collected packages: numpy, scipy, six, python-dateutil, pytz, pandas, patsy, statsmodels)
 # pip install numpy
 import re
 import pandas as pd

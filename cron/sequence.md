@@ -2,7 +2,9 @@
 run these scripts first:
 
 use this AMI:   
-w205Project_V1.1 <- nvm, this is f'd
+~~w205Project_V1.1~~ <- nvm, this is f'd
+
+w205Project_V1.4
 
 create a new m3.large instance with security group containing:
 
