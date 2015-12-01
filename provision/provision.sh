@@ -167,6 +167,15 @@ cat > /data/stop_metastore.sh <<EOF
 ps aux|grep org.apache.hadoop.hive.metastore.HiveMetaStore|awk '{print $2}'|xargs kill -9
 EOF
 
+cat > /data/stop-all.sh <<EOF
+#! /bin/bash
+. /root/stop-hadoop.sh
+. /data/stop_postgres.sh
+. /data/stop_metastore.sh
+sudo stop shiny-server
+EOF
+
+# download and install spark
 mkdir /data/spark15
 cd ~
 wget http://mirror.nexcess.net/apache/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz

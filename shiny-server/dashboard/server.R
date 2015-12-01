@@ -63,10 +63,46 @@ function(input, output) {
   fit_polluters = lm(NumberOfFollowers~NumerOfFollowings, data = content_polluters)
   fit_legit = lm(NumberOfFollowers~NumerOfFollowings, data = legitimate_users)
   
+
+  fitPolluters = lm(num_following[isPolluter > 0.8] ~ num_followers[isPolluter > 0.8], data=twitters) 
+  fitLegit = lm(num_following[isPolluter <= 0.8] ~ num_followers[isPolluter <= 0.8], data=twitters) 
+  polluters_ps = subset(twitters, isPolluter > 0.8)
+  legit_ps = subset(twitters, isPolluter <= 0.8)
+
+
   output$postgresData <- renderPlot({
-    fitPolluters = lm(num_following[isPolluter > 0.8] ~ num_followers[isPolluter > 0.8]) 
-    plot(fitPolluters)
-  })
+
+
+    ggplot() +
+      geom_point(data = polluters_ps, aes(num_followers, num_following), colour = "orange", shape=1) +
+      geom_abline(slope=as.numeric(fitPolluters$coefficients[2]), colour='orange') + 
+      geom_point(data = legit_ps, aes(num_followers, num_following), shape=1) +
+      geom_abline(slope=as.numeric(fitLegit$coefficients[2])) +
+      scale_x_continuous(limits = c(0, 200000)) +
+      theme(
+       # axis.text = element_text(size = 14),
+       # legend.key = element_rect(fill = "navy"),
+       # legend.background = element_rect(fill = "white"),
+       # legend.position = c(0.14, 0.80),
+       # panel.grid.major = element_line(colour = "grey40"),
+       # panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "white")
+      )
+    
+    
+    
+    
+  }, height=700)
+
+  output$summary <- renderText({
+
+
+
+    summary(fitPolluters)
+    summary(fitLegit)
+
+    })
+  
   
   output$plot <- renderPlot({
     
