@@ -39,7 +39,7 @@ sudo start shiny-server
 
 # write setup script for twitter table
 cat > /data/make_twitter_postgres.sql <<EOF
-CREATE DATABASE TWITTER
+CREATE DATABASE TWITTER;
 \c twitter
 \i /data/w205Project/postgres/twitter.sql
 \q
@@ -52,7 +52,7 @@ sudo -u postgres psql -f /data/make_twitter_postgres.sql
 # SPARK
 #####################################
 
-mv spark15 /data
+mv ~/spark15 /data
 ln -s /data/spark15 $HOME/spark15
 cp /data/hadoop/hive/conf/hive-site.xml /data/spark15/conf
 
@@ -65,7 +65,7 @@ cp /data/hadoop/hive/conf/hive-site.xml /data/spark15/conf
 # already activated in the bash profile
 # source ENV27/bin/activate
 # install any additonal python modules
-pip install -r requirements.txt
+pip install -r /data/w205Project/provision/requirements.txt
 
 
 #####################################

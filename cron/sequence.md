@@ -9,6 +9,8 @@ then run your personal git-keys script, or however you wan to to authorize git
 here is a template, if you know what yer keys are:   
 git-keys-template.sh
 
+git clone git@github.com:kyleiwaniec/w205Project.git
+
 pull the repo, then run:  
 ```
 . w205Project/provision/bootstrap.sh

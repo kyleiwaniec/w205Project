@@ -14,22 +14,10 @@ mkfs.ext4 $1
 mount -t ext4 $1 /data
 chmod a+rwx /data
 
-#format the hadoop namenode
-sudo -u hdfs hdfs namenode -format
+cat > /etc/hadoop/conf.pseudo/hadoop-env.sh <<EOF
+export JAVA_HOME=/opt/jdk1.7.0_79
+EOF
 
-#start hdfs
-for x in `cd /etc/init.d ; ls hadoop-hdfs-*` ; do sudo service $x restart ; done
-
-#make the hadoop directories
-/usr/lib/hadoop/libexec/init-hdfs.sh
-
-sudo -u hdfs hdfs dfs -mkdir /user/w205
-sudo -u hdfs hdfs dfs -chown w205 /user/w205
-
-#start YARN services
-service hadoop-yarn-resourcemanager restart
-service hadoop-yarn-nodemanager restart
-service hadoop-mapreduce-historyserver restart
 
 #set up directories for postgres
 mkdir /data/pgsql
