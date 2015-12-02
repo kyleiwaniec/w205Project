@@ -1,9 +1,7 @@
 ###With a brand new instance and volume: ###
-run these scripts first:
+follow these steps in order:   
 
 use this AMI:   
-~~w205Project_V1.1~~ <- nvm, this is f'd. can't pre-install shiny - boo hoo.
-
 w205Project_V2.0 <-- has the works!
 
 create a new m3.large instance with security group containing:
