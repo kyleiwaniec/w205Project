@@ -9,7 +9,6 @@ require("httr")
 require("RCurl")
 require("stringr")
 
-install.packages("scatterplot3d") # Install
 library('scatterplot3d')
 
 drv <- dbDriver("PostgreSQL")
@@ -35,7 +34,12 @@ function(input, output) {
   }
   
   
-  
+  [1] "index"            "user_id"          "tweet_id"         "tweet"           
+ [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"
+ [9] "screen_name"      "name"             "num_following"    "num_followers"   
+[13] "num_tweets"       "retweeted"        "retweet_count"    "num_urls"        
+[17] "num_mentions"     "num_hastags"      "user_profile_url" "tweeted_urls"    
+[21] "isPolluter" 
   
   
   
@@ -93,24 +97,35 @@ function(input, output) {
     
   }, height=700)
 
-  output$summary <- renderText({
-
-
-
+  output$summary_poll <- renderPrint({
     summary(fitPolluters)
+  })
+  output$summary_leg <- renderPrint({
     summary(fitLegit)
+  })
 
-    })
-  
-  output$cube <- renderPlot({
+  output$cube_p <- renderPlot({
 
     ## 6 a) The named colors in R, i.e. colors()
     cc <- colors()
     crgb <- t(col2rgb(cc))
     par(xpd = TRUE)
-    rr <- scatterplot3d(crgb, color = cc, box = FALSE, angle = 24,
-    xlim = c(-50, 300), ylim = c(-50, 300), zlim = c(-50, 300))
+    clr <- sample(cc, nrow(polluters_ps), replace=T)
+    rr <- scatterplot3d(polluters_ps[, c("num_hastags","num_urls","num_mentions")], color=clr, box = FALSE, angle = 45)
 
+  })
+  output$cube_l <- renderPlot({
+
+    ## 6 a) The named colors in R, i.e. colors()
+    cc <- colors()
+    crgb <- t(col2rgb(cc))
+    par(xpd = TRUE)
+    clr <- sample(cc, nrow(legit_ps), replace=T)
+    rr <- scatterplot3d(legit_ps[, c("num_hastags","num_urls","num_mentions")], color=clr, box = FALSE, angle = 45)
+
+  })
+  output$texts <- renderText({
+        colnames(twitters)
 
   })
   
@@ -137,5 +152,25 @@ function(input, output) {
     
     
   }, height=700)
+
+
+  output$aliens <- renderPlot({
+
+    temp <- seq(-pi, 0, length = 50)
+    x <- c(rep(1, 50) %*% t(cos(temp)))
+    y <- c(cos(temp) %*% t(sin(temp)))
+    z <- 10 * c(sin(temp) %*% t(sin(temp)))
+    color <- rep("green", length(x))
+    temp <- seq(-10, 10, 0.01)
+    x <- c(x, cos(temp))
+    y <- c(y, sin(temp))
+
+    z <- c(z, temp)
+    color <- c(color, rep("orange", length(temp)))
+    scatterplot3d(x, y, z, color, pch=20, zlim=c(-2, 10),
+    main="scatterplot3d - 3")
+
+  })
+
   
 }

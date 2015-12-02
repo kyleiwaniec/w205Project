@@ -9,6 +9,11 @@ sudo su - \
 sudo su - \
   -c "R -e \"install.packages('shiny', repos='http://cran.rstudio.com/')\""
 
+
+sudo su - \
+  -c "R -e \"install.packages('scatterplot3d',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
+
+
 wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.4.1.759-rh5-x86_64.rpm
 sudo yum install --nogpgcheck shiny-server-1.4.1.759-rh5-x86_64.rpm
 
