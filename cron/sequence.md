@@ -51,14 +51,11 @@ sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
 ```
 
 After a coouple of hours, kill flume, and load the tables.   
-###TODO: Write script to trigger the add-partition.sql###
-####this whole thing needs some work - Sharmila?####
-As it is, you have to open in texteditor and update the date 
+Executing from command line to be able to use variables. No easy way to do this directly in HIVE SQL.   
 
 ```
-hive -f /data/w205Project/load/load.sql  
-# hive -f /data/w205Project/load/add-partition.sql  # don't need this right now, because we're doing everything manually in load.sql
-hive -f /data/w205Project/transform/transform.sql
+. /data/w205Project/load/load-hive-table.sh
+. /data/w205Project/transform/transform.sh
 
 ```
 
