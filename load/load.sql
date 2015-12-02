@@ -40,11 +40,4 @@ PARTITIONED BY (today_date STRING)
 ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'
 LOCATION '/user/flume/tweets';
 
--- Define the partition column by setting a starting point.
 -- From here on, CRON will add partitions. We may ultimately take the below snippet out.
-
-ALTER TABLE tweets ADD IF NOT EXISTS
-  PARTITION (today_date = '2015/12/02')
-  LOCATION '/user/flume/tweets/2015/12/02';
---PARTITION (today_date = '2015/12/02')--
---LOCATION '/user/flume/tweets/2015/12/02';--
