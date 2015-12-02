@@ -20,6 +20,7 @@ Attach a 100GB Volume in the same region
 ssh into your instance   
 
 ```
+ssh -i "xxx.pem" root@ec2-xx-x-xxx-xx.compute-1.amazonaws.com
 fdisk –l
 wget https://s3-us-west-2.amazonaws.com/w205twitterproject/provision.sh
 . provision.sh <DEVICE PATH>
