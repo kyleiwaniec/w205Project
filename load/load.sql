@@ -44,8 +44,8 @@ LOCATION '/user/flume/tweets';
 -- From here on, CRON will add partitions. We may ultimately take the below snippet out.
 
 ALTER TABLE tweets ADD IF NOT EXISTS
-PARTITION (datehour = '2015/11/29')
-LOCATION '/user/flume/tweets/2015/11/29';
+PARTITION (datehour = '2015/12/02')
+LOCATION '/user/flume/tweets/2015/12/02';
 
 -- sanity check
 select * from tweets limit 1;
