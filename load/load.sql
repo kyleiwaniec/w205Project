@@ -36,7 +36,7 @@ CREATE EXTERNAL TABLE tweets (
     time_zone:STRING>,
   in_reply_to_screen_name STRING
 )
-PARTITIONED BY (datehour STRING)
+PARTITIONED BY (today_date STRING)
 ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'
 LOCATION '/user/flume/tweets';
 
@@ -44,8 +44,10 @@ LOCATION '/user/flume/tweets';
 -- From here on, CRON will add partitions. We may ultimately take the below snippet out.
 
 ALTER TABLE tweets ADD IF NOT EXISTS
-PARTITION (datehour = '2015/12/02')
-LOCATION '/user/flume/tweets/2015/12/02';
+  PARTITION (today_date = YEAR(FROM_UNIXTIME(UNIX_TIMESTAMP()))/MONTH(FROM_UNIXTIME(UNIX_TIMESTAMP()))/DAY(FROM_UNIXTIME(UNIX_TIMESTAMP()))) 
+  LOCATION '/user/flume/tweets/'YEAR(FROM_UNIXTIME(UNIX_TIMESTAMP()))/MONTH(FROM_UNIXTIME(UNIX_TIMESTAMP()))/DAY(FROM_UNIXTIME(UNIX_TIMESTAMP()));
+--PARTITION (today_date = '2015/12/02')--
+--LOCATION '/user/flume/tweets/2015/12/02';--
 
 -- sanity check
 select * from tweets limit 1;
