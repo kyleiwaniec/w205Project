@@ -67,7 +67,7 @@ then pyspark:
 /data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py
 ```
 
-then crawler:   
+then crawler: (ENV27 is already running, all the modules have been installed, and S3 passwords were entered via bootstrap script)   
 TODO: fix Kyle's shitty encoding
 ```
 cd /data/w205Project/python/url_spider/url_spider
