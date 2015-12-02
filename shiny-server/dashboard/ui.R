@@ -7,6 +7,7 @@ fluidPage(
   tabsetPanel(
     tabPanel('Honeypot data', tags$div(class="divclass",tags$h2("Following to Followers Ratio"), plotOutput('plot'))),
     tabPanel('Postgres', plotOutput("postgresData"))
+    tabPanel('Cube', plotOutput("cube"))
   )
   
   #tags$div(class="divclass",plotOutput('plot')),

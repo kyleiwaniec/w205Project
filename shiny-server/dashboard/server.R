@@ -9,9 +9,8 @@ require("httr")
 require("RCurl")
 require("stringr")
 
-#library(RAmazonS3)
-
-#library(RJSONIO)
+install.packages("scatterplot3d") # Install
+library('scatterplot3d')
 
 drv <- dbDriver("PostgreSQL")
 con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
@@ -103,6 +102,17 @@ function(input, output) {
 
     })
   
+  output$cube <- renderPlot({
+
+    ## 6 a) The named colors in R, i.e. colors()
+    cc <- colors()
+    crgb <- t(col2rgb(cc))
+    par(xpd = TRUE)
+    rr <- scatterplot3d(crgb, color = cc, box = FALSE, angle = 24,
+    xlim = c(-50, 300), ylim = c(-50, 300), zlim = c(-50, 300))
+
+
+  })
   
   output$plot <- renderPlot({
     
