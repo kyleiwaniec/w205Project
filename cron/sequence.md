@@ -27,11 +27,10 @@ wget https://s3-us-west-2.amazonaws.com/w205twitterproject/provision.sh
 ```
 
 then run your personal git-keys script, or however you wan to to authorize git.   
-here is a template, if you know what yer keys are:   
-git-keys-template.sh
-
+here is a template, if you know what yer keys are: `git-keys-template.sh`
+```
 git clone git@github.com:kyleiwaniec/w205Project.git
-
+```
 pull the repo, then run:  
 ```
 cd /data/w205Project
