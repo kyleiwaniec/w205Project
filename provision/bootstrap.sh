@@ -31,11 +31,16 @@ echo "starting servers"
 
 
 #####################################
-# SHINY (wasn't able to pre-install on AMI)
+# SHINY (wasn't able to pre-install on AMI)8:20
 #####################################
 
-. /data/w205Project/shiny-server/install-shiny.sh
+STR=$'Does your AMI have shiny? [y/n]: '
+echo "$STR"
+read answer
 
+if [[ "$answer" != "n" ]]; then
+	. /data/w205Project/shiny-server/install-shiny.sh
+fi
 
 
 #####################################
