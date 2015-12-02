@@ -34,7 +34,7 @@ git clone git@github.com:kyleiwaniec/w205Project.git
 
 pull the repo, then run:  
 ```
-cd w205twitterproject
+cd /data/w205Project
 git checkout testall
 . provision/bootstrap.sh
 ```
