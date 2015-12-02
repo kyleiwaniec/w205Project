@@ -44,16 +44,7 @@ LOCATION '/user/flume/tweets';
 -- From here on, CRON will add partitions. We may ultimately take the below snippet out.
 
 ALTER TABLE tweets ADD IF NOT EXISTS
-  PARTITION (today_date = from_unixtime(unix_timestamp() ,  'yyyy/MM/dd') 
-  LOCATION '/user/flume/tweets/'from_unixtime(unix_timestamp() ,  'yyyy/MM/dd');
+  PARTITION (today_date = '2015/12/02')
+  LOCATION '/user/flume/tweets/2015/12/02';
 --PARTITION (today_date = '2015/12/02')--
 --LOCATION '/user/flume/tweets/2015/12/02';--
-
--- sanity check
-select * from tweets limit 1;
-
-
--- SELECT
---     *
---   , from_unixtime(unix_timestamp() - (86400*2) ,  'yyyy/MM/dd')
--- FROM tweets;
