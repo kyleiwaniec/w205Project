@@ -13,6 +13,9 @@ export PS1
 # START SERVICES
 #####################################
 
+
+chmod 777 -R /data/hadoop-hdfs
+
 # make sure the hive metastore is set
 cp /data/hadoop/hive/conf/hive-site.xml /etc/hive/conf.dist/hive-site.xml
 
