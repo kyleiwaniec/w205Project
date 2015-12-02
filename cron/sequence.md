@@ -18,7 +18,7 @@ Ports	Protocol	Source	tableau
 8020	tcp	0.0.0.0/0	✔
 8088	tcp	0.0.0.0/0	✔
 ```
-
+Attach a 100GB Volume in the same region
 
 ```
 fdisk –l
@@ -34,7 +34,7 @@ git clone git@github.com:kyleiwaniec/w205Project.git
 
 pull the repo, then run:  
 ```
-cd w205twitterproject
+cd /data/w205Project
 git checkout testall
 . provision/bootstrap.sh
 ```
