@@ -183,4 +183,21 @@ tar -xvf spark-1.5.2-bin-hadoop2.6.tgz
 sudo mv spark-1.5.2-bin-hadoop2.6/* /data/spark15
 ln -s /data/spark15 $HOME/spark15
 
+#####################################
+# CONFIGURE HADOOP
+#####################################
+
+#sudo -u hdfs hdfs namenode -format
+chown hdfs:hdfs /data
+chmod 777 /data
+sudo -u hdfs hdfs namenode -format
+
+
+# make sure the hive metastore is set
+cp /data/hadoop/hive/conf/hive-site.xml /etc/hive/conf.dist/hive-site.xml
+
+# start servers
+echo "starting Hadoop"
+. /root/start-hadoop.sh
+sudo /usr/lib/hadoop/libexec/init-hdfs.sh # HistoryServer needs this.. 
 

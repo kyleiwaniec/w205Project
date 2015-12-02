@@ -11,7 +11,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 sqlContext.sql("ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar");
-sqlContext.sql("ADD JAR /usr/lib/hadoop/hadoop-aws.jar");
+# sqlContext.sql("ADD JAR /usr/lib/hadoop/hadoop-aws.jar");
 #sqlContext.sql("ADD JAR /usr/lib/hadoop/lib/aws-java-sdk-1.7.14.jar");
 
 ###############################################

@@ -13,17 +13,8 @@ export PS1
 # START SERVICES
 #####################################
 
-#sudo -u hdfs hdfs namenode -format
-chown hdfs:hdfs /data
-chmod 777 /data
-sudo -u hdfs hdfs namenode -format
-/usr/lib/hadoop/libexec/init-hdfs.sh
-
-# make sure the hive metastore is set
-cp /data/hadoop/hive/conf/hive-site.xml /etc/hive/conf.dist/hive-site.xml
-
 # start servers
-echo "starting servers"
+echo "starting hadoop.."
 . /root/start-hadoop.sh
 . /data/start_postgres.sh
 . /data/start_metastore.sh
@@ -31,16 +22,16 @@ echo "starting servers"
 
 
 #####################################
-# SHINY (wasn't able to pre-install on AMI)8:20
+# SHINY (already installed)
 #####################################
 
-STR=$'Does your AMI have shiny? [y/n]: '
-echo "$STR"
-read answer
+# STR=$'Does your AMI have shiny? [yes/n]: '
+# echo "$STR"
+# read answer
 
-if [[ "$answer" != "n" ]]; then
-	. /data/w205Project/shiny-server/install-shiny.sh
-fi
+# if [[ "$answer" != "yes" ]]; then
+# 	. /data/w205Project/shiny-server/install-shiny.sh
+# fi
 
 
 #####################################
@@ -48,7 +39,15 @@ fi
 #####################################
 
 # write setup script for twitter table
-# moved to provision.
+# moved to provision script. 
+
+
+#####################################
+# HIVE
+#####################################
+# make sure the hive metastore is set
+cp /data/hadoop/hive/conf/hive-site.xml /etc/hive/conf.dist/hive-site.xml
+
 
 #####################################
 # SPARK
@@ -57,11 +56,9 @@ fi
 sudo cp -r /data/w205Project/provision/hive-site.xml /data/spark15/conf/hive-site.xml
 
 
-
 #####################################
 # PYTHON
 #####################################
-
 
 source ~/ENV27/bin/activate
 # install any additonal python modules
@@ -103,3 +100,5 @@ function AWSSECRETKEY {
 
 AWSKEYID
 AWSSECRETKEY
+
+source ~/.passwords
