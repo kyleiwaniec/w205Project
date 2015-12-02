@@ -20,8 +20,9 @@
 # Enviroment variables can be set here.
 
 # export JAVA_HOME=/usr/lib/jvm/java-6-sun
+export JAVA_HOME=/opt/jdk1.7.0_79
+ #Give Flume more memory and pre-allocate, enable remote monitoring via JMX
 
-# Give Flume more memory and pre-allocate, enable remote monitoring via JMX
 # export JAVA_OPTS="-Xms100m -Xmx2000m -Dcom.sun.management.jmxremote"
 
 # Note that the Flume conf directory is always included in the classpath.
