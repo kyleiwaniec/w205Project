@@ -4,7 +4,7 @@ run these scripts first:
 use this AMI:   
 ~~w205Project_V1.1~~ <- nvm, this is f'd. can't pre-install shiny - boo hoo.
 
-w205Project_V1.2
+w205Project_V2.0 <-- has the works!
 
 create a new m3.large instance with security group containing:
 
@@ -29,12 +29,15 @@ wget https://s3-us-west-2.amazonaws.com/w205twitterproject/provision.sh
 then run your personal git-keys script, or however you wan to to authorize git.   
 here is a template, if you know what yer keys are: `git-keys-template.sh`
 ```
+vi git-keys.sh # copypasta from the template
+. git-keys.sh
+
 git clone git@github.com:kyleiwaniec/w205Project.git
 ```
 pull the repo, then run:  
 ```
 cd /data/w205Project
-git checkout testall
+git checkout testall # this will change to master when we're ready
 . provision/bootstrap.sh
 ```
 
@@ -50,27 +53,27 @@ sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
 After a coouple of hours, kill flume, and load the tables.   
 ###TODO: Write script to trigger the add-partition.sql###
 ####this whole thing needs some work - Sharmila?####
+As it is, you have to open in texteditor and update the date 
 
 ```
 hive -f /data/w205Project/load/load.sql  
-hive -f /data/w205Project/load/add-partition.sql  
+# hive -f /data/w205Project/load/add-partition.sql  # don't need this right now, because we're doing everything manually in load.sql
 hive -f /data/w205Project/transform/transform.sql
 
 ```
-
-
 
 then pyspark:
 ```
 /data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py
 ```
 
-then crawler:
+then crawler:   
+TODO: fix Kyle's shitty encoding
 ```
 cd /data/w205Project/python/url_spider/url_spider
 scrapy crawl TweetURLSpider
 python url_upload.py
 ```
 
-GO TO THE DASHBOARD:   
-http://ec2-52-2-158-11.compute-1.amazonaws.com:10000/dashboard/
+GO TO YOUR INSTANCE's DASHBOARD:   
+http://ec2-xx-x-xxx-xx.compute-1.amazonaws.com:10000/dashboard/
