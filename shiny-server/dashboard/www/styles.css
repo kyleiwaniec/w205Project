@@ -1,5 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Libre+Baskerville);
+body{
+	margin: 20px 50px;
+}
 h2{
 	color:#f05;
 	font-family: 'Libre Baskerville', serif;
 }
+
