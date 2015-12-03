@@ -3,13 +3,9 @@ Install R
 ```
 sudo yum install epel-release
 sudo yum install R
-
-sudo su - \
-  -c "R -e \"install.packages('shiny', repos='http://cran.rstudio.com/')\""
-
 ```
 
-download server (breaks java :( ):
+Install shiny-server:
 
 ```
 wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.4.1.759-rh5-x86_64.rpm
@@ -35,8 +31,9 @@ cp -r /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
 sudo restart shiny-server
 ```
 
-you may need to start R, and install packages:
+Start R, and install packages:
 ```
+install.packages('shiny', repos='http://cran.rstudio.com/',dependencies = TRUE)
 install.packages('ggplot2',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)
 install.packages('RPostgreSQL',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)
 ```
