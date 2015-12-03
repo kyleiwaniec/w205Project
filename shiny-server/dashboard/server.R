@@ -16,7 +16,6 @@ con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres
 twitters <- dbReadTable(con, "twitters")
 dbDisconnect(con)
 
-# remove nulls
 twitters = na.omit(twitters)
 
 function(input, output) {
@@ -90,28 +89,33 @@ function(input, output) {
   }, height=700)
 
   output$summary_poll <- renderPrint({
-   print( ( summary(fitPolluters))
+   print( summary(fitPolluters) )
   })
   output$summary_leg <- renderPrint({
-   print( summary(fitLegit))
+   print( summary(fitLegit) )
   })
   
   output$words_poll <- renderPlot({
-    hist(as.numeric(polluters_ps$num_words))  
-  })
+
+    hist(polluters_ps$num_words, col="gold2", border="white",main = paste("Content Polluters"), breaks=30)
+	axis(1,col="gray100")
+	axis(2,col="gray100")
+})
   output$words_leg <- renderPlot({
-    hist(legit_ps$num_words)
-  })
-  output$texts <- renderText({
-	 print( colnames(twitters) )
+    hist(legit_ps$num_words, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30)
+        axis(1,col="gray100")
+        axis(2,col="gray100")  
+})
+  output$texts <- renderPrint({
+	 print( head(twitters$num_words) )
   })
 
   output$plot <- renderPlot({
       ggplot() +
-      geom_point(data = content_polluters, aes(NumberOfFollowers, NumerOfFollowings), colour = "red", shape=1) +
-      geom_abline(slope=as.numeric(fit_polluters$coefficients[2]), colour='red') + 
-      geom_point(data = legitimate_users, aes(NumberOfFollowers, NumerOfFollowings), shape=1) +
-      geom_abline(slope=as.numeric(fit_legit$coefficients[2])) +
+      geom_point(data = content_polluters, aes(NumberOfFollowers, NumerOfFollowings), colour = "gold2", shape=1) +
+      geom_abline(slope=as.numeric(fit_polluters$coefficients[2]), colour='gold2') + 
+      geom_point(data = legitimate_users, aes(NumberOfFollowers, NumerOfFollowings), colour = "darkolivegreen3", shape=1) +
+      geom_abline(slope=as.numeric(fit_legit$coefficients[2]), colour='darkolivegreen3') +
       scale_x_continuous(limits = c(0, 200000)) +
       theme(
        # axis.text = element_text(size = 14),

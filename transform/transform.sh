@@ -37,3 +37,4 @@ RETWEETED, RETWEET_COUNT, TEXT;
 
 #hive -e "ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;select * from tweets where today_date='$today' limit 1"
 #hive -e "ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;select num_words from USERS_TWEETS_ATTRIBUTES limit 10"
+#hive -e "ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;select * from USERS_TWEETS_ATTRIBUTES limit 1"

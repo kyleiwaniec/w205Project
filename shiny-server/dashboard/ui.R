@@ -10,7 +10,7 @@ fluidPage(
     tabPanel('Word counts', 
       tags$h4(textOutput('texts')),
       tags$div(class="col-sm-6",plotOutput('words_poll')),
-      tags$div(class="col-sm-6",plotOutput('words_leg')),
+      tags$div(class="col-sm-6",plotOutput('words_leg'))
       #tags$div(class="col-sm-6",textOutput('summary_poll')),
       #tags$div(class="col-sm-6",verbatimTextOutput('summary_leg'))
    ),
