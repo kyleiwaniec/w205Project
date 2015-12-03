@@ -89,10 +89,10 @@ function(input, output) {
   }, height=700)
 
   output$summary_poll <- renderPrint({
-   print( summary(fitPolluters) )
+   print(summary(polluters_ps$num_words) )
   })
   output$summary_leg <- renderPrint({
-   print( summary(fitLegit) )
+   print( summary(legit_ps$num_words) )
   })
   
   output$words_poll <- renderPlot({
