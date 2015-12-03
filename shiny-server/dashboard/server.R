@@ -65,17 +65,17 @@ function(input, output) {
 
   fitPolluters = lm(num_following[isPolluter > 0.8] ~ num_followers[isPolluter > 0.8], data=twitters) 
   fitLegit = lm(num_following[isPolluter <= 0.8] ~ num_followers[isPolluter <= 0.8], data=twitters) 
-  polluters_ps = subset(twitters, isPolluter > 0.8)
-  legit_ps = subset(twitters, isPolluter <= 0.8)
+  polluters_ps = subset(twitters, isPolluter > 0.95)
+  legit_ps = subset(twitters, isPolluter <= 0.95)
 
 
   output$postgresData <- renderPlot({
     ggplot() +
-      geom_point(data = polluters_ps, aes(num_followers, num_following), colour = "orange", shape=1) +
-      geom_abline(slope=as.numeric(fitPolluters$coefficients[2]), colour='orange') + 
-      geom_point(data = legit_ps, aes(num_followers, num_following), shape=1) +
-      geom_abline(slope=as.numeric(fitLegit$coefficients[2])) +
-      scale_x_continuous(limits = c(0, 200000)) +
+      geom_point(data = polluters_ps, aes(log(num_followers), log(num_following)), colour = "gold2", shape=1) +
+      geom_abline(slope=as.numeric(fitPolluters$coefficients[2]), colour='gold2') + 
+      geom_point(data = legit_ps, aes(log(num_followers), log(num_following)), colour="darkolivegreen3",shape=1) +
+      geom_abline(slope=as.numeric(fitLegit$coefficients[2]), colour="darkolivegreen3") +
+      #scale_x_continuous(limits = c(0, 200000)) +
       theme(
        # axis.text = element_text(size = 14),
        # legend.key = element_rect(fill = "navy"),
@@ -112,11 +112,12 @@ function(input, output) {
 
   output$plot <- renderPlot({
       ggplot() +
-      geom_point(data = content_polluters, aes(NumberOfFollowers, NumerOfFollowings), colour = "gold2", shape=1) +
+
+      geom_point(data = content_polluters, aes(log(NumberOfFollowers), log(NumerOfFollowings)), colour = "gold2", shape=1) +
       geom_abline(slope=as.numeric(fit_polluters$coefficients[2]), colour='gold2') + 
-      geom_point(data = legitimate_users, aes(NumberOfFollowers, NumerOfFollowings), colour = "darkolivegreen3", shape=1) +
-      geom_abline(slope=as.numeric(fit_legit$coefficients[2]), colour='darkolivegreen3') +
-      scale_x_continuous(limits = c(0, 200000)) +
+      geom_point(data = legitimate_users, aes(log(NumberOfFollowers), log(NumerOfFollowings)), colour = "darkolivegreen3", shape=1) +
+      geom_abline(slope=as.numeric(fit_legit$coefficients[2]), colour='darkolivegreen3') +      
+      #scale_x_continuous(limits = c(0, 200000)) +
       theme(
        # axis.text = element_text(size = 14),
        # legend.key = element_rect(fill = "navy"),
@@ -141,8 +142,8 @@ function(input, output) {
     y <- c(y, sin(temp))
 
     z <- c(z, temp)
-    color <- c(color, rep("orange", length(temp)))
+    color <- c(color, rep("maroon1", length(temp)))
     scatterplot3d(x, y, z, color, pch=20, zlim=c(-2, 10),
-    main="scatterplot3d - 3")
+    main="Hello, do you like my hat?", grid=FALSE, axis=FALSE,box=FALSE)
   }) 
 }
