@@ -41,8 +41,8 @@ import numpy as np
 # TODO: set paths as env vars os.environ["TRAINING_DATA"]
 
 # get the honeypot tweets data
-legitTweets = pd.read_csv("/data/w205Project/python/classify/sample_legit_tweets.csv")
-polluterTweets = pd.read_csv("/data/w205Project/python/classify/sample_polluter_tweets.csv")
+legitTweets = pd.read_csv("/data/w205Project/honeypot/sample_legit_tweets.csv")
+polluterTweets = pd.read_csv("/data/w205Project/honeypot/sample_polluter_tweets.csv")
 legitTweets['isPolluter'] = False
 polluterTweets['isPolluter'] = True
 allTweets = pd.concat([legitTweets,polluterTweets])
@@ -55,8 +55,8 @@ allTweets.columns = ["user_id",
 
 
 # Get the honeypot user data
-legitUsers = pd.read_csv("/data/w205Project/python/classify/legitimate_users.csv")
-polluterUsers = pd.read_csv("/data/w205Project/python/classify/content_polluters.csv")
+legitUsers = pd.read_csv("/data/w205Project/honeypot/legitimate_users.csv")
+polluterUsers = pd.read_csv("/data/w205Project/honeypot/content_polluters.csv")
 # rename the columns 
 legitUsers.columns = ["user_id",
 				"user_created_at",
@@ -148,7 +148,7 @@ uniqueLInks = links_df.dropDuplicates(['url', 'expanded_url'])
 
 # forget about S3:
 # uniqueLInks.repartition(1).save("s3n://w205twitterproject/temp_urls","json")
-print "saving file to /data/w205Project/python/classify/temp_urls.json...."
+print "saving file to /data/w205Project/honeypot/temp_urls.json...."
 # instead, save to file on local disk for use by scrapy
 uniqueLInks.toPandas().to_json(orient="records",path_or_buf='/data/w205Project/python/url_spider/url_spider/logs/temp_urls.log')
 

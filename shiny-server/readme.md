@@ -10,8 +10,9 @@ sudo yum install R
 Install shiny-server:
 
 ```
-wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.4.1.759-rh5-x86_64.rpm
-sudo yum install --nogpgcheck shiny-server-1.4.1.759-rh5-x86_64.rpm
+# wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.4.1.759-rh5-x86_64.rpm
+# since we already have it, might as well use it. who knows when it will get moved on the rstudio server
+sudo yum install --nogpgcheck /data/shiny-server/shiny-server-1.4.1.759-rh5-x86_64.rpm
 ```
 
 administration guide   
