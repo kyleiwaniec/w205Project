@@ -16,7 +16,7 @@ con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres
 twitters <- dbReadTable(con, "twitters")
 dbDisconnect(con)
 
-
+twitters = na.omit(twitters)
 
 function(input, output) {
   
@@ -89,20 +89,24 @@ function(input, output) {
   }, height=700)
 
   output$summary_poll <- renderPrint({
-   print( ( summary(fitPolluters))
+   print( summary(fitPolluters) )
   })
   output$summary_leg <- renderPrint({
-   print( summary(fitLegit))
+   print( summary(fitLegit) )
   })
   
   output$words_poll <- renderPlot({
-    hist(polluters_ps$num_words)  
-  })
+    hist(polluters_ps$num_words, col="gold2", border="white",main = paste("Content Polluters"), breaks=30)
+	axis(1,col="gray100")
+	axis(2,col="gray100")
+})
   output$words_leg <- renderPlot({
-    hist(legit_ps$num_words)
-  })
-  output$texts <- renderText({
-	 print( colnames(twitters) )
+    hist(legit_ps$num_words, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30)
+        axis(1,col="gray100")
+        axis(2,col="gray100")  
+})
+  output$texts <- renderPrint({
+	 print( head(twitters$num_words) )
   })
 
   output$plot <- renderPlot({
