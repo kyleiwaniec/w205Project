@@ -3,19 +3,24 @@ library(ggplot2)
 
 fluidPage(
   includeCSS("www/styles.css"),
-  #tags$div(class="divclass",tags$h2("Following to Followers Ratio 2")),
+ 
   tabsetPanel(
-    tabPanel('Honeypot data', tags$div(class="divclass",tags$h2("Following to Followers Ratio"), plotOutput('plot'))),
-    tabPanel('Postgres', plotOutput("postgresData")),
-    tabPanel('Cube', 
-      tags$h4(printOutput('texts')),
-      tags$div(class="col-sm-6",plotOutput('cube_p')),
-      tags$div(class="col-sm-6",plotOutput('cube_l'))  
-    ),
-    tabPanel('Aliens', plotOutput("aliens"))
-  )
-  
-  #tags$div(class="divclass",plotOutput('plot')),
+    tabPanel('Honeypot data', tags$div(class="divclass",tags$h4("Following to Followers Ratio"), plotOutput('plot'))),
+    tabPanel('Following/Followers', plotOutput("postgresData")),
+    tabPanel('Word counts', 
+      tags$h4(textOutput('texts')),
+      tags$div(class="col-sm-6",plotOutput('words_poll')),
+      tags$div(class="col-sm-6",plotOutput('words_leg')),
+      #tags$div(class="col-sm-6",textOutput('summary_poll')),
+      #tags$div(class="col-sm-6",verbatimTextOutput('summary_leg'))
+   ),
+   tabPanel('Aliens', plotOutput("aliens"))
+
+
+)
+
+ 
+  #tags$div(class="divclass",printOutput('texts')),
   
   
   

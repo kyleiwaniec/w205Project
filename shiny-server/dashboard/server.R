@@ -20,9 +20,6 @@ dbDisconnect(con)
 
 function(input, output) {
   
-
-
-  
   loadData <- function() {
    
     
@@ -33,15 +30,14 @@ function(input, output) {
   
   }
   
-  
-  [1] "index"            "user_id"          "tweet_id"         "tweet"           
- [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"
- [9] "screen_name"      "name"             "num_following"    "num_followers"   
-[13] "num_tweets"       "retweeted"        "retweet_count"    "num_urls"        
-[17] "num_mentions"     "num_hastags"      "user_profile_url" "tweeted_urls"    
-[21] "isPolluter" 
-  
-  
+  # twitters
+  # [1] "index"            "user_id"          "tweet_id"         "tweet"           
+  # [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"
+  # [9] "screen_name"      "name"             "num_following"    "num_followers"   
+  # [13] "num_tweets"       "retweeted"        "retweet_count"    "num_urls"        
+  # [17] "num_mentions"     "num_hastags"      "user_profile_url" "tweeted_urls"    
+  # [21] "isPolluter" 
+    
   
   
   #legitimate_users <- read.delim("legitimate_users.txt", header=FALSE)
@@ -74,8 +70,6 @@ function(input, output) {
 
 
   output$postgresData <- renderPlot({
-
-
     ggplot() +
       geom_point(data = polluters_ps, aes(num_followers, num_following), colour = "orange", shape=1) +
       geom_abline(slope=as.numeric(fitPolluters$coefficients[2]), colour='orange') + 
@@ -90,49 +84,29 @@ function(input, output) {
        # panel.grid.major = element_line(colour = "grey40"),
        # panel.grid.minor = element_blank(),
         panel.background = element_rect(fill = "white")
-      )
-    
-    
-    
+      )    
     
   }, height=700)
 
   output$summary_poll <- renderPrint({
-    summary(fitPolluters)
+   print( ( summary(fitPolluters))
   })
   output$summary_leg <- renderPrint({
-    summary(fitLegit)
-  })
-
-  output$cube_p <- renderPlot({
-
-    ## 6 a) The named colors in R, i.e. colors()
-    cc <- colors()
-    crgb <- t(col2rgb(cc))
-    par(xpd = TRUE)
-    clr <- sample(cc, nrow(polluters_ps), replace=T)
-    rr <- scatterplot3d(polluters_ps[, c("num_hastags","num_urls","num_mentions")], color=clr, box = FALSE, angle = 45)
-
-  })
-  output$cube_l <- renderPlot({
-
-    ## 6 a) The named colors in R, i.e. colors()
-    cc <- colors()
-    crgb <- t(col2rgb(cc))
-    par(xpd = TRUE)
-    clr <- sample(cc, nrow(legit_ps), replace=T)
-    rr <- scatterplot3d(legit_ps[, c("num_hastags","num_urls","num_mentions")], color=clr, box = FALSE, angle = 45)
-
-  })
-  output$texts <- renderText({
-        colnames(twitters)
-
+   print( summary(fitLegit))
   })
   
+  output$words_poll <- renderPlot({
+    hist(polluters_ps$num_words)  
+  })
+  output$words_leg <- renderPlot({
+    hist(legit_ps$num_words)
+  })
+  output$texts <- renderText({
+	 print( colnames(twitters) )
+  })
+
   output$plot <- renderPlot({
-    
-   
-    ggplot() +
+      ggplot() +
       geom_point(data = content_polluters, aes(NumberOfFollowers, NumerOfFollowings), colour = "red", shape=1) +
       geom_abline(slope=as.numeric(fit_polluters$coefficients[2]), colour='red') + 
       geom_point(data = legitimate_users, aes(NumberOfFollowers, NumerOfFollowings), shape=1) +
@@ -146,16 +120,12 @@ function(input, output) {
        # panel.grid.major = element_line(colour = "grey40"),
        # panel.grid.minor = element_blank(),
         panel.background = element_rect(fill = "white")
-      )
-    
-    
-    
+      )    
     
   }, height=700)
 
 
   output$aliens <- renderPlot({
-
     temp <- seq(-pi, 0, length = 50)
     x <- c(rep(1, 50) %*% t(cos(temp)))
     y <- c(cos(temp) %*% t(sin(temp)))
@@ -169,8 +139,5 @@ function(input, output) {
     color <- c(color, rep("orange", length(temp)))
     scatterplot3d(x, y, z, color, pch=20, zlim=c(-2, 10),
     main="scatterplot3d - 3")
-
-  })
-
-  
+  }) 
 }
