@@ -9,21 +9,16 @@ require("httr")
 require("RCurl")
 require("stringr")
 
-#library(RAmazonS3)
-
-#library(RJSONIO)
+library('scatterplot3d')
 
 drv <- dbDriver("PostgreSQL")
 con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
 twitters <- dbReadTable(con, "twitters")
 dbDisconnect(con)
 
-
+twitters = na.omit(twitters)
 
 function(input, output) {
-  
-
-
   
   loadData <- function() {
    
@@ -35,10 +30,14 @@ function(input, output) {
   
   }
   
-  
-  
-  
-  
+  # twitters
+  # [1] "index"            "user_id"          "tweet_id"         "tweet"           
+  # [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"
+  # [9] "screen_name"      "name"             "num_following"    "num_followers"   
+  # [13] "num_tweets"       "retweeted"        "retweet_count"    "num_urls"        
+  # [17] "num_mentions"     "num_hastags"      "user_profile_url" "tweeted_urls"    
+  # [21] "isPolluter" 
+    
   
   
   #legitimate_users <- read.delim("legitimate_users.txt", header=FALSE)
@@ -66,19 +65,17 @@ function(input, output) {
 
   fitPolluters = lm(num_following[isPolluter > 0.8] ~ num_followers[isPolluter > 0.8], data=twitters) 
   fitLegit = lm(num_following[isPolluter <= 0.8] ~ num_followers[isPolluter <= 0.8], data=twitters) 
-  polluters_ps = subset(twitters, isPolluter > 0.8)
-  legit_ps = subset(twitters, isPolluter <= 0.8)
+  polluters_ps = subset(twitters, isPolluter > 0.95)
+  legit_ps = subset(twitters, isPolluter <= 0.95)
 
 
   output$postgresData <- renderPlot({
-
-
     ggplot() +
-      geom_point(data = polluters_ps, aes(num_followers, num_following), colour = "orange", shape=1) +
-      geom_abline(slope=as.numeric(fitPolluters$coefficients[2]), colour='orange') + 
-      geom_point(data = legit_ps, aes(num_followers, num_following), shape=1) +
-      geom_abline(slope=as.numeric(fitLegit$coefficients[2])) +
-      scale_x_continuous(limits = c(0, 200000)) +
+      geom_point(data = polluters_ps, aes(log(num_followers), log(num_following)), colour = "gold2", shape=1) +
+      geom_abline(slope=as.numeric(fitPolluters$coefficients[2]), colour='gold2') + 
+      geom_point(data = legit_ps, aes(log(num_followers), log(num_following)), colour="darkolivegreen3",shape=1) +
+      geom_abline(slope=as.numeric(fitLegit$coefficients[2]), colour="darkolivegreen3") +
+      #scale_x_continuous(limits = c(0, 200000)) +
       theme(
        # axis.text = element_text(size = 14),
        # legend.key = element_rect(fill = "navy"),
@@ -87,32 +84,40 @@ function(input, output) {
        # panel.grid.major = element_line(colour = "grey40"),
        # panel.grid.minor = element_blank(),
         panel.background = element_rect(fill = "white")
-      )
-    
-    
-    
+      )    
     
   }, height=700)
 
-  output$summary <- renderText({
-
-
-
-    summary(fitPolluters)
-    summary(fitLegit)
-
-    })
+  output$summary_poll <- renderPrint({
+   print( summary(fitPolluters) )
+  })
+  output$summary_leg <- renderPrint({
+   print( summary(fitLegit) )
+  })
   
-  
+  output$words_poll <- renderPlot({
+
+    hist(polluters_ps$num_words, col="gold2", border="white",main = paste("Content Polluters"), breaks=30)
+	axis(1,col="gray100")
+	axis(2,col="gray100")
+})
+  output$words_leg <- renderPlot({
+    hist(legit_ps$num_words, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30)
+        axis(1,col="gray100")
+        axis(2,col="gray100")  
+})
+  output$texts <- renderPrint({
+	 print( head(twitters$num_words) )
+  })
+
   output$plot <- renderPlot({
-    
-   
-    ggplot() +
-      geom_point(data = content_polluters, aes(NumberOfFollowers, NumerOfFollowings), colour = "red", shape=1) +
-      geom_abline(slope=as.numeric(fit_polluters$coefficients[2]), colour='red') + 
-      geom_point(data = legitimate_users, aes(NumberOfFollowers, NumerOfFollowings), shape=1) +
-      geom_abline(slope=as.numeric(fit_legit$coefficients[2])) +
-      scale_x_continuous(limits = c(0, 200000)) +
+      ggplot() +
+
+      geom_point(data = content_polluters, aes(log(NumberOfFollowers), log(NumerOfFollowings)), colour = "gold2", shape=1) +
+      geom_abline(slope=as.numeric(fit_polluters$coefficients[2]), colour='gold2') + 
+      geom_point(data = legitimate_users, aes(log(NumberOfFollowers), log(NumerOfFollowings)), colour = "darkolivegreen3", shape=1) +
+      geom_abline(slope=as.numeric(fit_legit$coefficients[2]), colour='darkolivegreen3') +      
+      #scale_x_continuous(limits = c(0, 200000)) +
       theme(
        # axis.text = element_text(size = 14),
        # legend.key = element_rect(fill = "navy"),
@@ -121,11 +126,24 @@ function(input, output) {
        # panel.grid.major = element_line(colour = "grey40"),
        # panel.grid.minor = element_blank(),
         panel.background = element_rect(fill = "white")
-      )
-    
-    
-    
+      )    
     
   }, height=700)
-  
+
+
+  output$aliens <- renderPlot({
+    temp <- seq(-pi, 0, length = 50)
+    x <- c(rep(1, 50) %*% t(cos(temp)))
+    y <- c(cos(temp) %*% t(sin(temp)))
+    z <- 10 * c(sin(temp) %*% t(sin(temp)))
+    color <- rep("green", length(x))
+    temp <- seq(-10, 10, 0.01)
+    x <- c(x, cos(temp))
+    y <- c(y, sin(temp))
+
+    z <- c(z, temp)
+    color <- c(color, rep("maroon1", length(temp)))
+    scatterplot3d(x, y, z, color, pch=20, zlim=c(-2, 10),
+    main="Hello, do you like my hat?", grid=FALSE, axis=FALSE,box=FALSE)
+  }) 
 }
