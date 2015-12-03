@@ -1,9 +1,101 @@
 @import url(https://fonts.googleapis.com/css?family=Libre+Baskerville);
-body{
-	margin: 20px 50px;
-}
+@import url(http://fonts.googleapis.com/css?family=Roboto:200,300,500,700,400);
 h2{
-	color:#f05;
+	color:#000;
 	font-family: 'Libre Baskerville', serif;
+}
+body,html{
+  height: 766px;
+}
+body{
+  background-color:#02202d;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #666;
+  font-family:Roboto;
+  font-weight: 100;
+}
+.container-fluid{
+  max-width:1370px;
+  height: 100%;
+  min-height:100%;
+  overflow: scroll;
+  background-color:#fff;
+}
+.row{
+  
+
+}
+.home{
+  background:url(../img/home-bg.jpg) no-repeat;
+}
+.shiny-plot-output{
+  height:auto;
+}
+/* QUICK AND DIRTY OVERRIDES   */
+
+.nav{
+  margin-top:100px;
+}
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 0;
+}
+
+.nav-pills>li>a {
+  border-radius:0;
+  color:#999;
+  background-color:#fff;
+  border-bottom: 1px solid #999;
+}
+.nav-pills>li.active>a{
+  color:#999;
+  background-color: #fff;
+}
+.nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+    color: #000;
+    background-color: #fff;
+}
+.nav>li>a:hover, .nav>li>a:focus {
+    text-decoration: underline;
+    color:#000;
+    background-color: #fff;
+}
+.nav-pills>li>a[data-value="Project home"]{
+  top:-70px;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 24px;
+  color: #e1b12b;
+  border-bottom:0;
+}
+.nav-pills>li>a[data-value="Recent Activity"]{
+  border-bottom: 4px solid #00aced;
+  margin-top: 70px;
+  padding-left:60px;
+  color:#00aced;
+}
+.nav-pills>li>a[data-value="Recent Activity"]:before{
+  content:"";
+  position:absolute;
+  width:150px;
+  height:100px;
+  top: -50px;
+  left: -1px;
+  background:url(../img/birds.png) no-repeat;
+}
+
+.nav-pills>li>a[data-value="Honeypot"]{
+  border-bottom: 4px solid #e1b12b;
+  color:#e1b12b;
+}
+.nav-pills>li>a[data-value="Honeypot"]:before{
+  content:"";
+  position:absolute;
+  width:100px;
+  height:100px;
+  top: -50px;
+  left: -1px;
+  background:url(../img/honey.png) no-repeat;
 }
 
