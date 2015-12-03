@@ -1,3 +1,5 @@
+# ALL OF THIS IS DEPRACATED. WE ARE NOT USING S3 FOR THIS. LEAVING IT HERE FOR FUTURE OPPORTUNITIES
+
 ###To use S3, make sure to add your keys to AWS, and enable s3 and s3native filesystem
 
 `vi /etc/hadoop/conf/core-site.xml`   
