@@ -1,3 +1,5 @@
+### Run install-shiny.sh, OR, follow these instructions: ###
+
 Install R
 
 ```
