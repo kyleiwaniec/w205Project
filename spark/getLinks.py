@@ -48,10 +48,10 @@ polluterTweets['isPolluter'] = True
 allTweets = pd.concat([legitTweets,polluterTweets])
 # name the columns 
 allTweets.columns = ["user_id",
-					"tweet_id",
-					"tweet",
-					"created_at",
-					"isPolluter"]
+				"tweet_id",
+				"tweet",
+				"created_at",
+				"isPolluter"]
 
 
 # Get the honeypot user data
@@ -59,21 +59,21 @@ legitUsers = pd.read_csv("/data/w205Project/python/classify/legitimate_users.csv
 polluterUsers = pd.read_csv("/data/w205Project/python/classify/content_polluters.csv")
 # rename the columns 
 legitUsers.columns = ["user_id",
-					"user_created_at",
-					"collected_at",
-					"num_following",
-					"num_followers",
-					"num_tweets",
-					"LengthOfScreenName",
-					"LengthOfDescriptionInUserProfile"]
+				"user_created_at",
+				"collected_at",
+				"num_following",
+				"num_followers",
+				"num_tweets",
+				"LengthOfScreenName",
+				"LengthOfDescriptionInUserProfile"]
 polluterUsers.columns = ["user_id",
-					"user_created_at",
-					"collected_at",
-					"num_following",
-					"num_followers",
-					"num_tweets",
-					"LengthOfScreenName",
-					"LengthOfDescriptionInUserProfile"]	
+				"user_created_at",
+				"collected_at",
+				"num_following",
+				"num_followers",
+				"num_tweets",
+				"LengthOfScreenName",
+				"LengthOfDescriptionInUserProfile"]	
 legitUsers['isPolluter'] = False
 polluterUsers['isPolluter'] = True
 allUsers = pd.concat([legitUsers,polluterUsers])
@@ -104,10 +104,10 @@ allTweets['num_mentions'] = allTweets['tweet'].apply(lambda x: len(mentions.find
 #
 #   USING ONLY THE allTweets DATA, DIDN'T PRODUCE ANY SPAMMERS - MAYBE THEY GOT SMART SINCE THAT PAPER WAS WRITTEN.
 #   USING THE allUsers DATA TO FIT A MODEL DOES INDEED PRODUCE RESULTS. IN THE INTEREST OF SEEING SOMETHING
-#   INTERESTING, I'M JUST GONNA GO WITH IT.
+#   AT ALL, I'M JUST GONNA GO WITH IT.
 #
-#	THE BIG CAVEAT IS... THE MODEL IS NOT SO AWESOME. HENSE, FOR DEMONSTRATION PURPOSES ONLY. 
-#   HOWEVER, IT IS NOT THE FOCUS OF THE PROJECT, SO BE IT...
+#   THE BIG CAVEAT IS... THE MODEL IS NOT SO AWESOME. HENSE, FOR DEMONSTRATION PURPOSES ONLY. 
+#   HOWEVER, IT IS NOT THE FOCUS OF THE PROJECT, SO BE IT... THIS ML IS IS SUPER NAIVE ANYWAY (I HAVE NOT TAKEN 207 YET!)
 #
 #################################################################################################################
 
@@ -154,7 +154,7 @@ uniqueLInks.toPandas().to_json(orient="records",path_or_buf='/data/w205Project/p
 
 
 #################################################################################################################
-#    SAVE TO POSTGRES
+#    APPEND CLASSIFIED DATA TO POSTGRES FOR DASHBOARD
 #################################################################################################################
 
 # pip install sqlalchemy
