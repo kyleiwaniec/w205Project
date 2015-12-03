@@ -13,7 +13,7 @@ CREATE TABLE USERS_TWEETS_ATTRIBUTES AS
 SELECT USER.ID_STR AS USER_ID, 
 ID_STR AS TWEET_ID,
 TEXT AS TWEET,
-COUNT(split(TEXT,' ')) AS NUM_WORDS,
+SIZE(SPLIT(TEXT,' ')) AS NUM_WORDS,
 CURRENT_TIMESTAMP AS CREATED_TS,
 USER.CREATED_AT AS USER_CREATED_TS,
 CREATED_AT AS TWEET_CREATED_TS,
@@ -36,4 +36,4 @@ RETWEETED, RETWEET_COUNT, TEXT;
 "
 
 #hive -e "ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;select * from tweets where today_date='$today' limit 1"
-#hive -e "ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;select * from USERS_TWEETS_ATTRIBUTES limit 1"
+#hive -e "ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;select num_words from USERS_TWEETS_ATTRIBUTES limit 10"

@@ -16,7 +16,8 @@ con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres
 twitters <- dbReadTable(con, "twitters")
 dbDisconnect(con)
 
-
+# remove nulls
+twitters = na.omit(twitters)
 
 function(input, output) {
   
@@ -96,7 +97,7 @@ function(input, output) {
   })
   
   output$words_poll <- renderPlot({
-    hist(polluters_ps$num_words)  
+    hist(as.numeric(polluters_ps$num_words))  
   })
   output$words_leg <- renderPlot({
     hist(legit_ps$num_words)
