@@ -50,5 +50,7 @@ EOF
 
 
 mkdir /srv/shiny-server/dashboard
-cp -r /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
+cp -rf /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
 sudo restart shiny-server
+
+#cp -rf /srv/shiny-server/dashboard/* /data/w205Project/shiny-server/dashboard/
