@@ -12,7 +12,7 @@ function consumerKey {
 	read answer
 
 	if [[ "$answer" != "" ]]; then
-		cat "TwitterAgent.sources.Twitter.consumerKey = $answer" > /data/w205Project/flume/conf/flume.conf 
+		echo "TwitterAgent.sources.Twitter.consumerKey = $answer" | cat - /data/w205Project/flume/conf/flume.conf 
 	else
 		STR=$'consumerKey can\'t be empty: \n'
 		echo "$STR"
@@ -25,7 +25,7 @@ function consumerSecret {
 	read answer
 
 	if [[ "$answer" != "" ]]; then
-		cat "TwitterAgent.sources.Twitter.consumerSecret = $answer" > /data/w205Project/flume/conf/flume.conf 
+		echo "TwitterAgent.sources.Twitter.consumerSecret = $answer" | cat - /data/w205Project/flume/conf/flume.conf 
 	else
 		STR=$'consumerSecret can\'t be empty: \n'
 		echo "$STR"
@@ -38,7 +38,7 @@ function accessToken {
 	read answer
 
 	if [[ "$answer" != "" ]]; then
-		cat "TwitterAgent.sources.Twitter.accessToken = $answer" > /data/w205Project/flume/conf/flume.conf 
+		echo "TwitterAgent.sources.Twitter.accessToken = $answer" | cat - /data/w205Project/flume/conf/flume.conf 
 	else
 		STR=$'accessToken can\'t be empty: \n'
 		echo "$STR"
@@ -51,7 +51,7 @@ function accessTokenSecret {
 	read answer
 
 	if [[ "$answer" != "" ]]; then
-		cat "TwitterAgent.sources.Twitter.accessTokenSecret = $answer" > /data/w205Project/flume/conf/flume.conf 
+		echo "TwitterAgent.sources.Twitter.accessTokenSecret = $answer" | cat - /data/w205Project/flume/conf/flume.conf 
 	else
 		STR=$'accessTokenSecret can\'t be empty: \n'
 		echo "$STR"
