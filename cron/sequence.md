@@ -45,14 +45,14 @@ then run we'll the scheduler...
 
 
 Remember to add the twitter keys in /data/w205Project/flume/conf/flume.conf:   
-(not sure how to script this, so my keys are in here)
+~~(not sure how to script this, so my keys are in here)~~ this is done, just not in this branch yet. user will be prompted for keys
 ```
 sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
 ```
 
 After a coouple of hours, kill flume, and load the tables.   
 Executing from command line to be able to use variables. No easy way to do this directly in HIVE SQL.   
-
+(to run transform.sh, flume must be stopped)
 ```
 . /data/w205Project/load/load-hive-table.sh
 . /data/w205Project/transform/transform.sh
@@ -62,6 +62,7 @@ Executing from command line to be able to use variables. No easy way to do this 
 then pyspark:
 ```
 /data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py
+sudo restart shiny-server
 ```
 
 then crawler: (ENV27 is already running, all the modules have been installed, and S3 passwords were entered via bootstrap script)   
