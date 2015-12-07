@@ -32,3 +32,6 @@
 
 [Stackoverflow - spam datasets] (http://opendata.stackexchange.com/questions/1776/publicly-available-spam-dataset-of-social-networks)
 
+### Hoenypot:
+
+http://digital.cs.usu.edu/~kyumin/pubs/lee10sigir.pdf
