@@ -34,4 +34,6 @@
 
 ### Hoenypot:
 
-http://digital.cs.usu.edu/~kyumin/pubs/lee10sigir.pdf
+[Kyumin Lee, honeypot](http://digital.cs.usu.edu/~kyumin/pubs/lee10sigir.pdf)
+
+[Kyumin Lee, long term](http://www.aaai.org/ocs/index.php/ICWSM/ICWSM11/paper/view/2780/3296)
