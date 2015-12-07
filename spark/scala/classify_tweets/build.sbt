@@ -1,3 +1,11 @@
+import sbt.Keys._
+
+name := "saving_data"
+
+version := "1.0"
+
+scalaVersion := "2.11.7"
+
 libraryDependencies += "com.amazonaws" % "aws-java-sdk-config" % "1.10.37"
 
 libraryDependencies += "com.amazonaws" % "aws-java-sdk-dynamodb" % "1.10.37"
