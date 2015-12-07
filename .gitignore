@@ -2,4 +2,10 @@ project/project/*
 project/target/*
 classes/*
 .class
-
+*.csv
+*.data
+*.dat
+*.map
+*.cache
+*idea*
+*iml

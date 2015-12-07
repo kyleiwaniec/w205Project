@@ -30,6 +30,7 @@ object CollectTweets {
         val numTweetsToCollect = 500000
         val intervalSecs = 1
         val partitionsEachInterval = 1
+        val gson = new Gson()
 
         val cb = new ConfigurationBuilder()
         cb.setDebugEnabled(true)
@@ -44,7 +45,7 @@ object CollectTweets {
         val ssc = new StreamingContext(sc, Seconds(intervalSecs))
 
         val tweetStream = TwitterUtils.createStream(ssc, Some(new OAuthAuthorization(cb.build())))
-            .map(DataObjectFactory.getRawJSON(_))
+            .map(gson.toJson(_))
 
         tweetStream.foreachRDD((rdd, time) => {
             val count = rdd.count()
