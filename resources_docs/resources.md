@@ -23,12 +23,20 @@
 
 [How does Google identify spam in search results] (http://www.lauradhamilton.com/how-google-uses-machine-learning-to-detect-spam-blogs-maybe)
 
+#### Social Honeypot Dataset - For our ML implementation
+
+[Social Honeypot Data Description]( http://infolab.tamu.edu/static/users/kyumin/social_honeypot_icwsm_2011.pdf)
+ 
+[Seven Months with the Devils: A Long-Term Study of Content Polluters on Twitter]()http://faculty.cs.tamu.edu/caverlee/pubs/lee11icwsm.pdf)
 
 ### Spam Corpus:
 
-[Spam Trigger Rords](http://blog.hubspot.com/blog/tabid/6307/bid/30684/The-Ultimate-List-of-Email-SPAM-Trigger-Words.aspx) 
+[Spam Trigger Records](http://blog.hubspot.com/blog/tabid/6307/bid/30684/The-Ultimate-List-of-Email-SPAM-Trigger-Words.aspx) 
 
 [TREC 2007 Public Corpus] (http://plg.uwaterloo.ca/~gvcormac/treccorpus/)   
 
 [Stackoverflow - spam datasets] (http://opendata.stackexchange.com/questions/1776/publicly-available-spam-dataset-of-social-networks)
 
+### Project Related Google Docs
+
+[Progress Report - Week 11](https://docs.google.com/document/d/1Xv3TPPuvSPkh_n0xhCugdplkRxnonThEBPN5FOsuzGU/)

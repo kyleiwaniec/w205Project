@@ -6,31 +6,30 @@ ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;
 
 DROP TABLE tweets;
 CREATE EXTERNAL TABLE tweets (
-  id BIGINT,
+  id_str STRING,
   created_at STRING,
   source STRING,
   favorited BOOLEAN,
-  retweeted_status STRUCT<
-    text:STRING,
-    user:STRUCT<screen_name:STRING,name:STRING>,
-    retweet_count:INT>,
+  retweet_count INT,
+  retweeted BOOLEAN,
+  retweeted_status STRUCT<text:STRING,retweet_count:INT>,
   entities STRUCT<
-    urls:ARRAY<STRUCT<url:STRING,expanded_url:STRING>>,
-    user_mentions:ARRAY<STRUCT<screen_name:STRING,name:STRING>>,
-    hashtags:ARRAY<STRUCT<text:STRING>>>,
+	urls:ARRAY<STRUCT<url:STRING,expanded_url:STRING>>,
+	user_mentions:ARRAY<STRUCT<screen_name:STRING,name:STRING>>,
+	hashtags:ARRAY<STRUCT<text:STRING>>>,
   text STRING,
   user STRUCT<
-    screen_name:STRING,
-    name:STRING,
-    friends_count:INT,
-    followers_count:INT,
-    statuses_count:INT,
-    verified:BOOLEAN,
-    utc_offset:INT,
-    time_zone:STRING>,
-  in_reply_to_screen_name STRING
+	created_at:STRING,
+	id_str:STRING,
+	url:STRING,
+	screen_name:STRING,
+	name:STRING,	
+	friends_count:INT,
+	followers_count:INT,
+	statuses_count:INT,
+	verified:BOOLEAN>
 ) 
-PARTITIONED BY (datehour STRING)
+PARTITIONED BY (tweets_date STRING)
 ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'
 LOCATION '/user/flume/tweets';
 
@@ -38,8 +37,8 @@ LOCATION '/user/flume/tweets';
 -- From here on, CRON will add partitions. We may ultimately take the below snippet out.
 
 ALTER TABLE tweets ADD IF NOT EXISTS 
-PARTITION (datehour = '2015/11/04') 
-LOCATION '/user/flume/tweets/2015/11/04';
+PARTITION (tweets_date = '2015/11/16/') 
+LOCATION '/user/flume/tweets/2015/11/16';
 
 -- sanity check
 select * from tweets limit 1;
