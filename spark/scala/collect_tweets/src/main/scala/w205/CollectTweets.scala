@@ -1,4 +1,4 @@
-package mids.w205.spark
+package w205
 
 /**
  * Adapted from databricks streaming data examples & cloudera's flume source
@@ -19,6 +19,7 @@ import com.google.gson.Gson
 object CollectTweets {
     private var numTweetsCollected = 0L
     private var partNum = 0
+    private var gson = new Gson()
     val CONSUMER_KEY = "j9X0NPb6xfqe4QBJ3Q6nUhTkI"
     val CONSUMER_SECRET = "JscwpITQVRRzJQrcbZ3zOxjLLlzrfolIt3qPi1uPKOqolCUhYL"
     val ACCESS_TOKEN = "4027615449-qDOnhw3kS8xedmoKIyxfqXcYIAQ0gO8JHFjNXfL"
@@ -27,10 +28,9 @@ object CollectTweets {
     def main(args: Array[String]) {
 
         val hdfsPath = "hdfs://localhost:8020/user/flume/tweets/training"
-        val numTweetsToCollect = 500000
+        val numTweetsToCollect = 100000
         val intervalSecs = 1
         val partitionsEachInterval = 1
-        val gson = new Gson()
 
         val cb = new ConfigurationBuilder()
         cb.setDebugEnabled(true)

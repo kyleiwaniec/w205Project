@@ -9,3 +9,4 @@ classes/*
 *.cache
 *idea*
 *iml
+*.history

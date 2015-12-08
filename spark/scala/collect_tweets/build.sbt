@@ -1,6 +1,6 @@
 import sbt.Keys._
 
-name := "saving_data"
+name := "collect_tweets"
 
 version := "1.0"
 
