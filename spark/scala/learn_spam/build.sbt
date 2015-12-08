@@ -1,6 +1,6 @@
 import sbt.Keys._
 
-name := "saving_data"
+name := "learn_spam"
 
 version := "1.0"
 
@@ -10,10 +10,7 @@ scalaVersion := "2.11.7"
 libraryDependencies ++= Seq(
 	"org.apache.spark" %% "spark-core" % "1.5.2" % "provided",
 	"org.apache.spark" %% "spark-sql" % "1.5.2" % "provided",
-	"org.apache.spark" %% "spark-hive" % "1.5.2" % "provided",
-	"org.apache.spark" %% "spark-mllib" % "1.5.2" ,
-	"org.apache.spark" %% "spark-streaming" % "1.5.2",
-	"org.apache.spark" %% "spark-streaming-twitter" % "1.5.2"
+	"org.apache.spark" %% "spark-mllib" % "1.5.2"
 )
 
 resolvers ++= Seq(
@@ -23,11 +20,12 @@ resolvers ++= Seq(
 
 assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false)
 
-mainClass in assembly := Some("w205.CollectTweets")
+mainClass in assembly := Some("w205.TrainOnTweets")
 
 assemblyMergeStrategy in assembly := {
 	case PathList("javax", "servlet", xs @ _*) => MergeStrategy.last
 	case PathList("javax", "activation", xs @ _*) => MergeStrategy.last
+	case PathList("javax", "xml", xs @ _*) => MergeStrategy.last
 	case PathList("org", "apache", xs @ _*) => MergeStrategy.last
 	case PathList("com", "google", xs @ _*) => MergeStrategy.last
 	case PathList("com", "esotericsoftware", xs @ _*) => MergeStrategy.last

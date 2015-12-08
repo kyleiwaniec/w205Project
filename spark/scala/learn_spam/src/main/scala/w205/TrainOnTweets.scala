@@ -1,8 +1,5 @@
 package w205
 
-import org.apache.spark.mllib.regression.LabeledPoint
-import org.apache.spark.mllib.regression.LinearRegressionModel
-import org.apache.spark.mllib.regression.LinearRegressionWithSGD
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.clustering.KMeans
 import org.apache.spark.sql.SQLContext
@@ -14,7 +11,7 @@ import org.apache.spark.mllib.feature.HashingTF
  */
 object  TrainOnTweets {
 
-    val numFeatures = 1000
+    val numFeatures = 10000
     val tf = new HashingTF(numFeatures)
 
     /**
@@ -37,24 +34,24 @@ object  TrainOnTweets {
          * Read the stored collection of tweets into a data frame
          * Register as temp table so that can we can query the dataframe using simple SQL
          */
-        val tweetTable = sqlContext.read.format("json").load("/user/flume/tweets/training/tweet*").cache()
+        val tweetTable = sqlContext.read.format("json").load("/user/flume/tweets/training/tweets*/part-*").cache()
         tweetTable.registerTempTable("tweetTable")
 
         /**
          * Let us try to cluster the tweets and see if there is any "spam" cluster that comes up
          */
-        val numClusters: Int = 5
-        val numIterations: Int = 10
+        val numClusters: Int = 10
+        val numIterations: Int = 20
 
-        val texts = sqlContext.sql("SELECT text from tweetTable where user.lang='en'").map(_.head.toString)
+        val texts = sqlContext.sql("SELECT text from tweetTable").map(_.toString)
         // Cache the vectors RDD since it will be used for all the KMeans iterations.
         val vectors = texts.map(featurize).cache()
         vectors.count()  // Calls an action on the RDD to populate the vectors cache.
         val model = KMeans.train(vectors, numClusters, numIterations)
         //persist the model
-        sc.makeRDD(model.clusterCenters, numClusters).saveAsObjectFile("/user/flume/tweets/training/clusters")
+        sc.makeRDD(model.clusterCenters, numClusters).saveAsObjectFile("/user/flume/tweets/training/km_model")
 
-        val some_tweets = df.take(1000)
+        val some_tweets = tweetTable.take(1000)
         println("Example tweets from the clusters")
         //Interested in cluster 10 - this looks most promising in identifying spam
         val i = 9
