@@ -119,8 +119,10 @@ allData['num_mentions'] = allData['tweet'].apply(lambda x: len(mentions.findall(
 #       dtype='object')
 
 print "fitting the model..."
-print allData.columns
+
 train_cols = allData.columns[[6,7,8,12,13,14,15]]
+print train_cols
+
 
 logit = sm.Logit(allData['isPolluter'], allData[train_cols])
 model = logit.fit()
@@ -139,7 +141,7 @@ newdata = sqlContext.sql("select * from USERS_TWEETS_ATTRIBUTES")
 pdf = newdata.toPandas()
 
 predict_cols = pdf.columns[[9,10,11,3,16,14,15]]
-
+print predict_cols
 
 pdf['isPolluter'] = model.predict(pdf[predict_cols])
 
