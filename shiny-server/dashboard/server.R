@@ -77,7 +77,7 @@ function(input, output) {
   # SHINY-TWEETS(TM)
   #############################################################################################
 
-  twitters <- reactiveValues()
+  # twitters <- reactiveValues()
   updateData <- function() {
     drv <- dbDriver("PostgreSQL")
     con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
@@ -91,8 +91,10 @@ function(input, output) {
 
     twitters = na.omit(twitters)
     twitters$isPolluter = ifelse(twitters$isPolluter > 0.85, 1,  0)
+
+    return(twitters)
   }
-  updateData() 
+  twitters <- updateData() 
   
 
   polluters_ps = subset(twitters, isPolluter == 1)
