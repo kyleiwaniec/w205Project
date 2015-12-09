@@ -27,7 +27,7 @@ import org.apache.spark.sql.Row;
  *
  */
 
-/*
+
 object TransformTweetsData  {
 
     def main(args: Array[String]) {
@@ -192,4 +192,4 @@ object TransformTweetsData  {
         if (score > 3.0D)  Row(r.getString(r.fieldIndex("user_id")), "Y")
         Row(r.getString(r.fieldIndex("user_id")), "N")
     }
-}*/
+}

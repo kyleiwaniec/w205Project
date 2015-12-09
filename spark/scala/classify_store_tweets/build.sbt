@@ -1,19 +1,17 @@
 import sbt.Keys._
 
-name := "saving_data"
+name := "store_data"
 
 version := "1.0"
 
 scalaVersion := "2.11.7"
 
-libraryDependencies += "com.github.seratch" %% "awscala" % "0.5.+"
-
-libraryDependencies += "com.google.code.gson" % "gson" % "2.3"
 
 libraryDependencies ++= Seq(
 	"org.apache.spark" %% "spark-core" % "1.5.2" % "provided",
 	"org.apache.spark" %% "spark-sql" % "1.5.2" % "provided",
 	"org.apache.spark" %% "spark-hive" % "1.5.2" % "provided"
+	"com.github.seratch" %% "awscala" % "0.5.+"
 )
 
 resolvers ++= Seq(
@@ -24,6 +22,7 @@ resolvers ++= Seq(
 assemblyMergeStrategy in assembly := {
 	case PathList("javax", "servlet", xs @ _*) => MergeStrategy.last
 	case PathList("javax", "activation", xs @ _*) => MergeStrategy.last
+	case PathList("javax", "xml", xs @ _*) => MergeStrategy.last
 	case PathList("org", "apache", xs @ _*) => MergeStrategy.last
 	case PathList("com", "fasterxml", xs @ _*) => MergeStrategy.last
 	case PathList("com", "google", xs @ _*) => MergeStrategy.last
