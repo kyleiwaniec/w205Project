@@ -22,8 +22,8 @@ load_data <- function(){
               WHERE  oid = 'twitters'::regclass
             )
         )::integer AS index 
-        FROM generate_series(1, 110000) g) r 
-        JOIN  twitters USING (index) LIMIT  100000;" )
+        FROM generate_series(1, 11000) g) r 
+        JOIN  twitters USING (index) LIMIT  10000;" )
 
 
 # count(*) the number of rows: meh...
