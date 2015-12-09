@@ -17,22 +17,35 @@ load_data <- function(){
   #SQL QUERY
   #data <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
 
-  data <- dbGetQuery(con, "WITH params AS (
-    SELECT count(*) AS ct             
-     , min(index)  AS min_id
-     , max(index)  AS max_id
-     , max(index) - min(index) AS id_span
-    FROM   twitters
-    )
-    SELECT *
-    FROM  (
-        SELECT p.min_id + trunc(random() * p.id_span)::integer AS index
-        FROM   params p
-              ,generate_series(1, 110000) g 
-        GROUP  BY 1                       
-        ) r
-    JOIN   twitters USING (index)
-    LIMIT  100000;  ")
+  data <- dbGetQuery(con, " SELECT * FROM  
+    ( SELECT DISTINCT 1 + trunc(random() * (SELECT reltuples::bigint AS estimate
+        FROM   pg_class
+        WHERE  oid = 'twitter.twitters'::regclass;))::integer AS index 
+        FROM generate_series(1, 110000) g) r 
+        JOIN  twitters USING (index) LIMIT  100000;" )
+
+
+
+
+# "WITH params AS (
+#     SELECT count(*) AS ct             
+#      , min(index)  AS min_id
+#      , max(index)  AS max_id
+#      , max(index) - min(index) AS id_span
+#     FROM   twitters
+#     )
+#     SELECT *
+#     FROM  (
+#         SELECT p.min_id + trunc(random() * p.id_span)::integer AS index
+#         FROM   params p
+#               ,generate_series(1, 110000) g 
+#         GROUP  BY 1                       
+#         ) r
+#     JOIN   twitters USING (index)
+#     LIMIT  100000;"
+
+
+
 
 
 
@@ -43,6 +56,8 @@ load_data <- function(){
 #     ( SELECT DISTINCT 1 + trunc(random() * 5100000)::integer AS index 
 #       FROM generate_series(1, 251000) g) r 
 #       JOIN  twitters USING (index) LIMIT  250000;
+
+
 
 
   # SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
