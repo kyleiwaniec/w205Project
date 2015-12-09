@@ -19,19 +19,19 @@ load_data <- function(){
 
   data <- dbGetQuery(con, "WITH params AS (
     SELECT count(*) AS ct             
-     , min(id)  AS min_id
-     , max(id)  AS max_id
-     , max(id) - min(id) AS id_span
+     , min(index)  AS min_id
+     , max(index)  AS max_id
+     , max(index) - min(index) AS id_span
     FROM   twitters
     )
     SELECT *
     FROM  (
-        SELECT p.min_id + trunc(random() * p.id_span)::integer AS id
+        SELECT p.min_id + trunc(random() * p.id_span)::integer AS index
         FROM   params p
               ,generate_series(1, 110000) g 
         GROUP  BY 1                       
         ) r
-    JOIN   twitters USING (id)
+    JOIN   twitters USING (index)
     LIMIT  100000;  ")
 
 
