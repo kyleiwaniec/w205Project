@@ -44,15 +44,20 @@ git checkout testall # this will change to master when we're ready
 then run we'll the scheduler...
 
 
-Remember to add the twitter keys in /data/w205Project/flume/conf/flume.conf:   
-~~(not sure how to script this, so my keys are in here)~~ this is done, just not in this branch yet. user will be prompted for keys
+user is prompted to add twitter keys bootstrap script.
+keywords have been set to all alphanumeric to capture all tweets: a,b,c,...,8,9,0
+
+
 ```
 sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
 ```
 
 After a coouple of hours, kill flume, and load the tables.   
-Executing from command line to be able to use variables. No easy way to do this directly in HIVE SQL.   
-(to run transform.sh, flume must be stopped)
+
+Executing from command line to be able to use variables. No easy way to do this directly in HIVE SQL.  
+Also, Flume must be stopped before running transform 
+
+
 ```
 . /data/w205Project/load/load-hive-table.sh
 . /data/w205Project/transform/transform.sh
