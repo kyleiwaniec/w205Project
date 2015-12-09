@@ -25,7 +25,8 @@ fluidPage(
         tags$div(class="col-sm-6",plotOutput('tweets_poll')),
         tags$div(class="col-sm-6",plotOutput('tweets_leg')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_Tpoll')),
-        tags$div(class="col-sm-6",verbatimTextOutput('summary_Tleg'))      
+        tags$div(class="col-sm-6",verbatimTextOutput('summary_Tleg')),
+        tags$div(class="col-sm-6",plotOutput('tweets_boxplot'))       
     ),
     tabPanel('Mention counts',
         tags$div(class="col-sm-6",plotOutput('mentions_p')),
