@@ -43,45 +43,34 @@ import numpy as np
 # get the honeypot tweets data
 legitTweets = pd.read_csv("/data/w205Project/honeypot/sample_legit_tweets.csv")
 polluterTweets = pd.read_csv("/data/w205Project/honeypot/sample_polluter_tweets.csv")
-legitTweets['isPolluter'] = False
-polluterTweets['isPolluter'] = True
-allTweets = pd.concat([legitTweets,polluterTweets])
+
+
+legit_data = pd.read_csv("/data/w205Project/honeypot/sample_legit_data.csv")
+spam_data = pd.read_csv("/data/w205Project/honeypot/sample_polluter_data.csv")
+
+
+
+legit_data['isPolluter'] = False
+spam_data['isPolluter'] = True
+
+
+allData = pd.concat([legit_data,spam_data])
 # name the columns 
-allTweets.columns = ["user_id",
+allData.columns = ["user_id",
 				"tweet_id",
 				"tweet",
-				"created_at",
+				"tweet_created_at",
+				"user_created_at",
+				"collected_at",
+				"num_following",
+				"num_followers",
+				"num_tweets",
+				"LengthOfScreenName",
+				"LengthOfDescriptionInUserProfile",
 				"isPolluter"]
 
 
-# Get the honeypot user data
-legitUsers = pd.read_csv("/data/w205Project/honeypot/legitimate_users.csv")
-polluterUsers = pd.read_csv("/data/w205Project/honeypot/content_polluters.csv")
-# rename the columns 
-legitUsers.columns = ["user_id",
-				"user_created_at",
-				"collected_at",
-				"num_following",
-				"num_followers",
-				"num_tweets",
-				"LengthOfScreenName",
-				"LengthOfDescriptionInUserProfile"]
-polluterUsers.columns = ["user_id",
-				"user_created_at",
-				"collected_at",
-				"num_following",
-				"num_followers",
-				"num_tweets",
-				"LengthOfScreenName",
-				"LengthOfDescriptionInUserProfile"]	
-legitUsers['isPolluter'] = False
-polluterUsers['isPolluter'] = True
-allUsers = pd.concat([legitUsers,polluterUsers])
 
-
-# merge tweets and users for use in regression
-# This merge is not quite what we're looking for, and is not currently in use:
-allData = allTweets.merge(allUsers, how='left', left_on='user_id', right_on='user_id')
 
 
 #regex to get counts from the tweet text alone:
@@ -90,10 +79,10 @@ hashtags = re.compile('^\\#')
 urls = re.compile('^(http|www)')
 mentions = re.compile('^\\@')
 
-allTweets['num_words'] = allTweets['tweet'].apply(lambda x: len(words.findall(x)))
-allTweets['num_hashtags'] = allTweets['tweet'].apply(lambda x: len(hashtags.findall(x)))
-allTweets['num_urls'] = allTweets['tweet'].apply(lambda x: len(urls.findall(x)))
-allTweets['num_mentions'] = allTweets['tweet'].apply(lambda x: len(mentions.findall(x)))
+allData['num_words'] = allData['tweet'].apply(lambda x: len(words.findall(x)))
+allData['num_hashtags'] = allData['tweet'].apply(lambda x: len(hashtags.findall(x)))
+allData['num_urls'] = allData['tweet'].apply(lambda x: len(urls.findall(x)))
+allData['num_mentions'] = allData['tweet'].apply(lambda x: len(mentions.findall(x)))
 
 #list(allData.columns.values)
 
@@ -113,9 +102,10 @@ allTweets['num_mentions'] = allTweets['tweet'].apply(lambda x: len(mentions.find
 
 
 print "fitting the model..."
-train_cols = allUsers.columns[3:5]
+print allData.columns
+train_cols = allData.columns[3:5]
 
-logit = sm.Logit(allUsers['isPolluter'], allUsers[train_cols])
+logit = sm.Logit(allData['isPolluter'], allData[train_cols])
 model = logit.fit()
 
 '''

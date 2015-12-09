@@ -22,7 +22,7 @@ dbDisconnect(con)
 
 
 twitters = na.omit(twitters)
-twitters$isPolluter = ifelse(twitters$isPolluter > 0.8, 1,  0)
+twitters$isPolluter = ifelse(twitters$isPolluter > 0.85, 1,  0)
 
 
 function(input, output) {
