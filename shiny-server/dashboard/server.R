@@ -12,30 +12,6 @@ require("stringr")
 
 
 
-twitters <- reactiveValues()
-updateData <- function() {
-  drv <- dbDriver("PostgreSQL")
-  con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
-  #twitters <- dbReadTable(con, "twitters")
-
-  #SQL QUERY
-  twitters <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
-  # SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
-
-  dbDisconnect(con)
-
-  twitters = na.omit(twitters)
-  twitters$isPolluter = ifelse(twitters$isPolluter > 0.85, 1,  0)
-}
-updateData()  # also call updateData() whenever you want to reload the data
-
-output$foo <- reactivePlot(function() {
-  # Assuming the .RData file contains a variable named mydata
-  #plot(twitters$mydata)
-}
-
-
-
 
 
 
@@ -100,7 +76,23 @@ function(input, output) {
   #############################################################################################
   # SHINY-TWEETS(TM)
   #############################################################################################
-  
+
+  twitters <- reactiveValues()
+  updateData <- function() {
+    drv <- dbDriver("PostgreSQL")
+    con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
+    #twitters <- dbReadTable(con, "twitters")
+
+    #SQL QUERY
+    twitters <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
+    # SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
+
+    dbDisconnect(con)
+
+    twitters = na.omit(twitters)
+    twitters$isPolluter = ifelse(twitters$isPolluter > 0.85, 1,  0)
+  }
+  updateData() 
   
 
   polluters_ps = subset(twitters, isPolluter == 1)
