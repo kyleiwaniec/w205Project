@@ -11,8 +11,16 @@ require("stringr")
 
 drv <- dbDriver("PostgreSQL")
 con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
-twitters <- dbReadTable(con, "twitters")
+#twitters <- dbReadTable(con, "twitters")
+
+#SQL QUERY
+twitters <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 50")
+
+
+
 dbDisconnect(con)
+
+
 twitters = na.omit(twitters)
 twitters$isPolluter = ifelse(twitters$isPolluter > 0.8, 1,  0)
 
@@ -23,8 +31,8 @@ function(input, output) {
   # [1] "index"            "user_id"          "tweet_id"         "tweet"           
   # [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"
   # [9] "screen_name"      "name"             "num_following"    "num_followers"   
-  # [13] "num_tweets"       "retweeted"        "retweet_count"    "num_urls"        
-  # [17] "num_mentions"     "num_hastags"      "user_profile_url" "tweeted_urls"    
+  # [13] "num_tweets"      "retweeted"        "retweet_count"    "num_urls"        
+  # [17] "num_mentions"    "num_hastags"      "user_profile_url" "tweeted_urls"    
   # [21] "isPolluter" 
     
   
