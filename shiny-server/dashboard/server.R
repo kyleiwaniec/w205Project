@@ -13,9 +13,9 @@ require("stringr")
 load_data <- function(){
   drv <- dbDriver("PostgreSQL")
   con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
-  #twitters <- dbReadTable(con, "twitters")
+  data <- dbReadTable(con, "twitters")
   #SQL QUERY
-  data <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
+  #data <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
   # SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
   dbDisconnect(con)
   data = na.omit(data)
