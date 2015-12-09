@@ -190,15 +190,15 @@ function(input, output) {
   # num_mentions
   ##############
 
-  max_mentions = max(max(polluters_ps$num_mentions), max(legit_ps$num_mentions))
+  #max_mentions = max(max(polluters_ps$num_mentions), max(legit_ps$num_mentions))
 
   output$mentions_p <- renderPlot({
-     hist(polluters_ps$num_mentions, col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,max_mentions))
+     hist(polluters_ps$num_mentions, col="gold2", border="white",main = paste("Content Polluters"), breaks=30)
      axis(1,col="gray100")
      axis(2,col="gray100")
   })
   output$mentions_l <- renderPlot({
-    hist(legit_ps$num_mentions, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,max_mentions))
+    hist(legit_ps$num_mentions, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30,)
     axis(1,col="gray100")
     axis(2,col="gray100")
   })
