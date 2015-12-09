@@ -11,17 +11,11 @@ fluidPage(
       tabPanel('Project home',tags$div(class="home", img(src = "img/home-bg.jpg"))), 
 
       tabPanel('Honeypot', ""),
-      tabPanel('Following/Followers',
-        tags$div(class="divclass",
-          tags$h4("Following to Followers Ratio"), 
-          plotOutput('plot')
-          )
-        ),
+      tabPanel('Following/Followers',tags$div(class="divclass",tags$h4("Following to Followers Ratio"), plotOutput('plot'))),
       tabPanel('Word counts',""),
       tabPanel('Recent Activity', ""),
       tabPanel('Following/Followers', plotOutput("postgresData")),
       tabPanel('Word counts',
-        tags$div(class="col-sm-12",div$h4('Word counts')),
         tags$div(class="col-sm-6",plotOutput('words_poll')),
         tags$div(class="col-sm-6",plotOutput('words_leg')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_poll')),
