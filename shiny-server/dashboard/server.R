@@ -152,7 +152,14 @@ function(input, output) {
     axis(2,col="gray100")
   })
   output$tweets_boxplot <- renderPlot({
-    boxplot(twitters$num_tweets ~ twitters$isPolluter)
+    boxplot(twitters$num_tweets ~ twitters$isPolluter, ylim=c(0,summary(polluters_ps$num_tweets)[5]))
+  })
+  output$summary_diff_model <- renderPrint({
+    mod = glm(isPolluter ~ num_tweets, 
+          data=d,
+          family="binomial"
+          )
+    print(summary(mod))
   })
   output$summary_Tpoll <- renderPrint({
     print(summary(polluters_ps$num_tweets))
