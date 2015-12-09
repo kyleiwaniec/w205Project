@@ -68,7 +68,7 @@ CREATE TABLE twitters (
     num_hastags integer NOT NULL,
     user_profile_url text,
     tweeted_urls text,
-    isPolluter decimal NOT NULL
+    isPolluter double precision NOT NULL
 );
 
 
