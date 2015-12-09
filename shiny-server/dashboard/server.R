@@ -64,7 +64,7 @@ load_data <- function(){
 
   dbDisconnect(con)
   data = na.omit(data)
-  data$isPolluter = ifelse(data$isPolluter > 0.85, 1,  0)
+  data$is_polluter = ifelse(data$is_polluter > 0.85, 1,  0)
   return(data)
 }
 
@@ -81,7 +81,7 @@ function(input, output) {
   # [9] "screen_name"      "name"             "num_following"    "num_followers"   
   # [13] "num_tweets"      "retweeted"        "retweet_count"    "num_urls"        
   # [17] "num_mentions"    "num_hastags"      "user_profile_url" "tweeted_urls"    
-  # [21] "isPolluter" 
+  # [21] "is_polluter" 
     
   
   #############################################################################################
@@ -191,13 +191,13 @@ function(input, output) {
   })
 
   output$words_boxplot <- renderPlot({
-    boxplot(twitters$num_words ~ twitters$isPolluter, 
+    boxplot(twitters$num_words ~ twitters$is_polluter, 
       ylim=c(0,max_words),
       xlab="Legitmate Users Vs Polluters",
       )
   })
   output$summary_words_model <- renderPrint({
-    mod_words = glm(isPolluter ~ num_words, 
+    mod_words = glm(is_polluter ~ num_words, 
           data=twitters,
           family="binomial"
           )
@@ -229,13 +229,13 @@ function(input, output) {
   })
 
   output$tweets_boxplot <- renderPlot({
-    boxplot(twitters$num_tweets ~ twitters$isPolluter, 
+    boxplot(twitters$num_tweets ~ twitters$is_polluter, 
       ylim=c(0,summary(polluters_ps$num_tweets)[5]),
       xlab="Legitmate Users Vs Polluters",
       )
   })
   output$summary_tweets_model <- renderPrint({
-    mod_tweets = glm(isPolluter ~ num_tweets, 
+    mod_tweets = glm(is_polluter ~ num_tweets, 
           data=twitters,
           family="binomial"
           )
