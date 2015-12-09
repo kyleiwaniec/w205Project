@@ -9,6 +9,8 @@ require("httr")
 require("RCurl")
 require("stringr")
 
+
+
 drv <- dbDriver("PostgreSQL")
 con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
 #twitters <- dbReadTable(con, "twitters")
