@@ -157,7 +157,7 @@ print predict_cols
 #       dtype='object')
 
 pdf['isPolluter'] = model.predict(pdf[predict_cols])
-#pdf['isPolluter'] = pdf['isPolluter'].apply(lambda x: float(x))
+pdf['isPolluter'] = pdf['isPolluter'].apply(lambda x: float(x))
 
 
 '''
