@@ -156,7 +156,7 @@ function(input, output) {
   })
   output$summary_diff_model <- renderPrint({
     mod = glm(isPolluter ~ num_tweets, 
-          data=d,
+          data=twitters,
           family="binomial"
           )
     print(summary(mod))
