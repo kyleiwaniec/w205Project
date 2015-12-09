@@ -57,7 +57,7 @@ legit_data.columns = ["user_id",
 				"num_tweets",
 				"LengthOfScreenName",
 				"LengthOfDescriptionInUserProfile"]
-				
+
 spam_data.columns = ["user_id",
 				"tweet_id",
 				"tweet",
@@ -70,8 +70,8 @@ spam_data.columns = ["user_id",
 				"LengthOfScreenName",
 				"LengthOfDescriptionInUserProfile"]
 
-legit_data['isPolluter'] = False
-spam_data['isPolluter'] = True
+legit_data['isPolluter'] = 0
+spam_data['isPolluter'] = 1
 
 
 allData = pd.concat([legit_data,spam_data])
