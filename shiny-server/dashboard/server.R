@@ -14,8 +14,8 @@ con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres
 #twitters <- dbReadTable(con, "twitters")
 
 #SQL QUERY
-twitters <- dbGetQuery(con, "SELECT * FROM twitters TABLESAMPLE  (50)")
-
+twitters <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
+# SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
 
 
 dbDisconnect(con)
