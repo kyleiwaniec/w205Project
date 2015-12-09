@@ -14,7 +14,7 @@ con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres
 #twitters <- dbReadTable(con, "twitters")
 
 #SQL QUERY
-twitters <- dbGetQuery(con, "SELECT * FROM twitters TABLESAMPLE BERNOULLI (50)")
+twitters <- dbGetQuery(con, "SELECT * FROM twitters TABLESAMPLE SYSTEM (50)")
 
 
 
