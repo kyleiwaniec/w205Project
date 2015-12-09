@@ -100,10 +100,27 @@ allData['num_mentions'] = allData['tweet'].apply(lambda x: len(mentions.findall(
 #
 #################################################################################################################
 
+# Index([u'user_id', 
+# 1		u'tweet_id', 
+# 2		u'tweet', 
+# 3		u'tweet_created_at',
+# 4		u'user_created_at', 
+# 5		u'collected_at', 
+# 6		u'num_following', 
+# 7		u'num_followers',
+# 8		u'num_tweets', 
+# 9		u'LengthOfScreenName',
+# 10		u'LengthOfDescriptionInUserProfile', 
+# 11		u'isPolluter', 
+# 12		u'num_words',
+# 13		u'num_hashtags', 
+# 14		u'num_urls', 
+# 15		u'num_mentions'],
+#       dtype='object')
 
 print "fitting the model..."
 print allData.columns
-train_cols = allData.columns[3:5]
+train_cols = allData.columns[[6,7,8,12,13,14,15]]
 
 logit = sm.Logit(allData['isPolluter'], allData[train_cols])
 model = logit.fit()
@@ -115,12 +132,16 @@ print np.exp(model.params)
 '''
 
 # USERS_TWEETS_ATTRIBUTES:
-# user_id|tweet_id|tweet|num_words|created_ts|user_created_ts|tweet_created_ts|screen_name|name|num_following|num_followers|num_tweets|retweeted|retweet_count|num_urls|num_mentions|num_hastags|user_profile_url|tweeted_urls
+# user_id|tweet_id|tweet|num_words|created_ts|user_created_ts|tweet_created_ts|screen_name|name|num_following|num_followers|num_tweets|retweeted|retweet_count|num_urls|num_mentions|num_hashtags|user_profile_url|tweeted_urls
 
 newdata = sqlContext.sql("select * from USERS_TWEETS_ATTRIBUTES")
 
 pdf = newdata.toPandas()
-pdf['isPolluter'] = model.predict(pdf[train_cols])
+
+predict_cols = pdf.columns[[9,10,11,3,16,14,15]]
+
+
+pdf['isPolluter'] = model.predict(pdf[predict_cols])
 
 '''
 print "Predictions: \n"
