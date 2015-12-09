@@ -125,7 +125,7 @@ function(input, output) {
     axis(2,col="gray100")
   })
   output$texts <- renderPrint({
-         print( head(twitters$num_words) )
+    print( head(twitters$num_words) )
   })
   output$summary_poll <- renderPrint({
     print(summary(polluters_ps$num_words) )
@@ -134,6 +134,16 @@ function(input, output) {
     print( summary(legit_ps$num_words) )
   })
 
+  output$words_boxplot <- renderPlot({
+    boxplot(twitters$num_words ~ twitters$isPolluter, ylim=c(0,max_words))
+  })
+  output$summary_diff_model <- renderPrint({
+    mod_words = glm(isPolluter ~ num_words, 
+          data=twitters,
+          family="binomial"
+          )
+    print(summary(mod_words))
+  })
 
   ##############
   # num_tweets
@@ -151,21 +161,23 @@ function(input, output) {
     axis(1,col="gray100")
     axis(2,col="gray100")
   })
-  output$tweets_boxplot <- renderPlot({
-    boxplot(twitters$num_tweets ~ twitters$isPolluter, ylim=c(0,summary(polluters_ps$num_tweets)[5]))
-  })
-  output$summary_diff_model <- renderPrint({
-    mod = glm(isPolluter ~ num_tweets, 
-          data=twitters,
-          family="binomial"
-          )
-    print(summary(mod))
-  })
+  
   output$summary_Tpoll <- renderPrint({
     print(summary(polluters_ps$num_tweets))
   })
   output$summary_Tleg <- renderPrint({
     print( summary(legit_ps$num_tweets))
+  })
+
+  output$tweets_boxplot <- renderPlot({
+    boxplot(twitters$num_tweets ~ twitters$isPolluter, ylim=c(0,summary(polluters_ps$num_tweets)[5]))
+  })
+  output$summary_diff_model <- renderPrint({
+    mod_tweets = glm(isPolluter ~ num_tweets, 
+          data=twitters,
+          family="binomial"
+          )
+    print(summary(mod_tweets))
   })
 
   ##############
