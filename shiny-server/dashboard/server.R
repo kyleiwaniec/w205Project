@@ -139,12 +139,12 @@ function(input, output) {
   max_tweets = max(summary(polluters_ps$num_tweets)[5], summary(legit_ps$num_tweets)[5])
 
   output$tweets_poll <- renderPlot({
-     hist(polluters_ps$num_tweets, col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,max_tweets))
+     hist(polluters_ps$num_tweets, col="gold2", border="white",main = paste("Content Polluters"), breaks=130, xlim=c(0,max_tweets))
      axis(1,col="gray100")
      axis(2,col="gray100")
   })
   output$tweets_leg <- renderPlot({
-    hist(legit_ps$num_tweets, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,max_tweets))
+    hist(legit_ps$num_tweets, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=130, xlim=c(0,max_tweets))
     axis(1,col="gray100")
     axis(2,col="gray100")
   })
