@@ -10,25 +10,26 @@ require("RCurl")
 require("stringr")
 
 
+load_data <- function(){
+  drv <- dbDriver("PostgreSQL")
+  con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
+  #twitters <- dbReadTable(con, "twitters")
+  #SQL QUERY
+  data <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
+  # SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
+  dbDisconnect(con)
+  data = na.omit(data)
+  data$isPolluter = ifelse(data$isPolluter > 0.85, 1,  0)
+  return(data)
+}
 
-drv <- dbDriver("PostgreSQL")
-con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
-#twitters <- dbReadTable(con, "twitters")
-
-#SQL QUERY
-twitters <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
-# SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
-
-
-dbDisconnect(con)
-
-
-twitters = na.omit(twitters)
-twitters$isPolluter = ifelse(twitters$isPolluter > 0.85, 1,  0)
 
 
 function(input, output) {
   
+  twitters <- load_data()
+
+
   # twitters
   # [1] "index"            "user_id"          "tweet_id"         "tweet"           
   # [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"
