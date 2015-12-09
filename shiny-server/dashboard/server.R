@@ -9,47 +9,24 @@ require("httr")
 require("RCurl")
 require("stringr")
 
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
+#twitters <- dbReadTable(con, "twitters")
+
+#SQL QUERY
+twitters <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
+# SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
 
 
+dbDisconnect(con)
 
 
-
-
+twitters = na.omit(twitters)
+twitters$isPolluter = ifelse(twitters$isPolluter > 0.85, 1,  0)
 
 
 function(input, output) {
   
-
-
-  # twitters <- reactiveValues()
-  #updateData <- function() {
-    drv <- dbDriver("PostgreSQL")
-    con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
-    #twitters <- dbReadTable(con, "twitters")
-
-    #SQL QUERY
-    d <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
-    # SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
-
-    dbDisconnect(con)
-
-    d = na.omit(d)
-    d$isPolluter = ifelse(d$isPolluter > 0.85, 1,  0)
-
-    #return(d)
-  #}
-  twitters <- d
-
-
-
-
-
-
-
-
-
-
-
   # twitters
   # [1] "index"            "user_id"          "tweet_id"         "tweet"           
   # [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"
@@ -107,7 +84,6 @@ function(input, output) {
   #############################################################################################
   # SHINY-TWEETS(TM)
   #############################################################################################
-
   
   
 
