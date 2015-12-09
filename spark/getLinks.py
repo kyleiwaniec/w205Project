@@ -148,6 +148,7 @@ print np.exp(model.params)
 
 newdata = sqlContext.sql("select * from USERS_TWEETS_ATTRIBUTES")
 
+
 pdf = newdata.toPandas()
 
 predict_cols = pdf.columns[[9,10,11,3,16,14,15]]
@@ -156,8 +157,8 @@ print predict_cols
 #        u'num_hastags', u'num_urls', u'num_mentions'],
 #       dtype='object')
 
-pdf['isPolluter'] = model.predict(pdf[predict_cols])
-pdf['isPolluter'] = pdf['isPolluter'].apply(lambda x: float(x))
+pdf['is_polluter'] = model.predict(pdf[predict_cols])
+#pdf['isPolluter'] = pdf['isPolluter'].apply(lambda x: float(x))
 
 
 '''
@@ -190,7 +191,7 @@ engine = create_engine('postgresql://postgres:pass@localhost:5432/twitter')
 con = engine.connect()
 print pdf.shape
 print pdf.columns
-pdf.to_sql(con=con, name='twitters', if_exists='replace', flavor='postgresql')
+pdf.to_sql(con=con, name='twitters', if_exists='append', flavor='postgresql')
 
 '''
 if_exists: {'fail', 'replace', 'append'}, default 'fail'
