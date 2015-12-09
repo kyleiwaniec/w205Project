@@ -157,6 +157,7 @@ print predict_cols
 #       dtype='object')
 
 pdf['isPolluter'] = model.predict(pdf[predict_cols])
+format(pdf['isPolluter'], '.2f')
 
 '''
 print "Predictions: \n"
@@ -182,9 +183,6 @@ uniqueLInks.toPandas().to_json(orient="records",path_or_buf='/data/w205Project/p
 #################################################################################################################
 #    APPEND CLASSIFIED DATA TO POSTGRES FOR DASHBOARD
 #################################################################################################################
-
-# pip install sqlalchemy
-# pip install psycopg2
 
 from sqlalchemy import create_engine
 engine = create_engine('postgresql://postgres:pass@localhost:5432/twitter')
