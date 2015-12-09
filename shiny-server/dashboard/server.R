@@ -14,7 +14,7 @@ con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres
 twitters <- dbReadTable(con, "twitters")
 dbDisconnect(con)
 twitters = na.omit(twitters)
-
+twitters$isPolluter = ifelse(twitters$isPolluter > 0.8, 1,  0)
 
 
 function(input, output) {
@@ -77,11 +77,14 @@ function(input, output) {
   # SHINY-TWEETS(TM)
   #############################################################################################
   
-  fitPolluters = lm(num_following[isPolluter > 0.8] ~ num_followers[isPolluter > 0.8], data=twitters) 
-  fitLegit = lm(num_following[isPolluter <= 0.8] ~ num_followers[isPolluter <= 0.8], data=twitters)
+  
 
-  polluters_ps = subset(twitters, isPolluter > 0.95)
-  legit_ps = subset(twitters, isPolluter <= 0.95)
+  polluters_ps = subset(twitters, isPolluter == 1)
+  legit_ps = subset(twitters, isPolluter == 0)
+
+  fitPolluters = lm(num_following ~ num_followers, data=polluters_ps) 
+  fitLegit = lm(num_following ~ num_followers, data=legit_ps)
+
 
 
   output$postgresData <- renderPlot({
