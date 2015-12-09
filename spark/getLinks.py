@@ -45,16 +45,8 @@ import numpy as np
 
 legit_data = pd.read_csv("/data/w205Project/honeypot/sample_legit_data.csv")
 spam_data = pd.read_csv("/data/w205Project/honeypot/sample_polluter_data.csv")
-
-
-
-legit_data['isPolluter'] = False
-spam_data['isPolluter'] = True
-
-
-allData = pd.concat([legit_data,spam_data])
 # name the columns 
-allData.columns = ["user_id",
+legit_data.columns = ["user_id",
 				"tweet_id",
 				"tweet",
 				"tweet_created_at",
@@ -64,8 +56,26 @@ allData.columns = ["user_id",
 				"num_followers",
 				"num_tweets",
 				"LengthOfScreenName",
-				"LengthOfDescriptionInUserProfile",
-				"isPolluter"]
+				"LengthOfDescriptionInUserProfile"]
+				
+spam_data.columns = ["user_id",
+				"tweet_id",
+				"tweet",
+				"tweet_created_at",
+				"user_created_at",
+				"collected_at",
+				"num_following",
+				"num_followers",
+				"num_tweets",
+				"LengthOfScreenName",
+				"LengthOfDescriptionInUserProfile"]
+
+legit_data['isPolluter'] = False
+spam_data['isPolluter'] = True
+
+
+allData = pd.concat([legit_data,spam_data])
+
 
 
 
