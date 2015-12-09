@@ -17,7 +17,7 @@ load_data <- function(){
   #SQL QUERY
   #data <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
 
-  data <- dbGetQuery(con, "SELECT *  FROM  (SELECT DISTINCT 1 + trunc(random() * 5100000)::integer AS id FROM generate_series(1, 1100) g) r JOIN  twitters USING (id) LIMIT  1000;")
+  data <- dbGetQuery(con, "SELECT *  FROM  (SELECT DISTINCT 1 + trunc(random() * 5100000)::integer AS index FROM generate_series(1, 1100) g) r JOIN  twitters USING (index) LIMIT  1000;")
 
   # SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
   dbDisconnect(con)
