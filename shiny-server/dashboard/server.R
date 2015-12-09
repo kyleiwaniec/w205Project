@@ -14,18 +14,19 @@ load_data <- function(){
   drv <- dbDriver("PostgreSQL")
   con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
   #data <- dbReadTable(con, "twitters")
-  #SQL QUERY
-  #data <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000")
 
-  data <- dbGetQuery(con, " SELECT * FROM  
-    ( SELECT DISTINCT 1 + trunc(random() * (SELECT reltuples::bigint AS estimate
-        FROM   pg_class
-        WHERE  oid = 'twitters'::regclass))::integer AS index 
+  data <- dbGetQuery(con, "SELECT * FROM  
+      (SELECT DISTINCT 1 + trunc(random() * (
+              SELECT reltuples::bigint AS estimate
+              FROM   pg_class
+              WHERE  oid = 'twitters'::regclass
+            )
+        )::integer AS index 
         FROM generate_series(1, 110000) g) r 
         JOIN  twitters USING (index) LIMIT  100000;" )
 
 
-
+# count(*) the number of rows: meh...
 
 # "WITH params AS (
 #     SELECT count(*) AS ct             
@@ -46,11 +47,7 @@ load_data <- function(){
 
 
 
-
-
-
-
-
+# approximate the number of rows manually: meh...
 
 # SELECT * FROM  
 #     ( SELECT DISTINCT 1 + trunc(random() * 5100000)::integer AS index 
@@ -58,9 +55,13 @@ load_data <- function(){
 #       JOIN  twitters USING (index) LIMIT  250000;
 
 
+# SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
+
+# SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000 --Booooring....
 
 
-  # SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
+
+
   dbDisconnect(con)
   data = na.omit(data)
   data$isPolluter = ifelse(data$isPolluter > 0.85, 1,  0)
