@@ -19,7 +19,7 @@ load_data <- function(){
       (SELECT DISTINCT 1 + trunc(random() * (
               SELECT reltuples::bigint AS estimate
               FROM   pg_class
-              WHERE  oid = 'twitters'::regclass
+              WHERE  oid = 'public.twitters'::regclass
             )
         )::integer AS index 
         FROM generate_series(1, 11000) g) r 
