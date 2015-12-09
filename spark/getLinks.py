@@ -158,7 +158,6 @@ print predict_cols
 #       dtype='object')
 
 pdf['is_polluter'] = model.predict(pdf[predict_cols])
-#pdf['isPolluter'] = pdf['isPolluter'].apply(lambda x: float(x))
 
 
 '''
@@ -167,7 +166,7 @@ print pdf.head()
 '''
 
 # set a threshhold of 85% probability to flag as spammer
-polluters = pdf[pdf.isPolluter > 0.85]
+polluters = pdf[pdf.is_polluter > 0.85]
 
 #.to_json(orient="records")
 links = polluters.tweeted_urls
