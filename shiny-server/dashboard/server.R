@@ -9,23 +9,79 @@ require("httr")
 require("RCurl")
 require("stringr")
 
-drv <- dbDriver("PostgreSQL")
-con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
-twitters <- dbReadTable(con, "twitters")
-dbDisconnect(con)
-twitters = na.omit(twitters)
-twitters$isPolluter = ifelse(twitters$isPolluter > 0.8, 1,  0)
+
+load_data <- function(){
+  drv <- dbDriver("PostgreSQL")
+  con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
+  #data <- dbReadTable(con, "twitters")
+
+  data <- dbGetQuery(con, "SELECT * FROM  
+      (SELECT DISTINCT 1 + trunc(random() * (
+              SELECT reltuples::bigint AS estimate
+              FROM   pg_class
+              WHERE  oid = 'public.twitters'::regclass
+            )
+        )::integer AS index 
+        FROM generate_series(1, 11000) g) r 
+        JOIN  twitters USING (index) LIMIT  10000;" )
+
+
+# count(*) the number of rows: meh...
+
+# "WITH params AS (
+#     SELECT count(*) AS ct             
+#      , min(index)  AS min_id
+#      , max(index)  AS max_id
+#      , max(index) - min(index) AS id_span
+#     FROM   twitters
+#     )
+#     SELECT *
+#     FROM  (
+#         SELECT p.min_id + trunc(random() * p.id_span)::integer AS index
+#         FROM   params p
+#               ,generate_series(1, 110000) g 
+#         GROUP  BY 1                       
+#         ) r
+#     JOIN   twitters USING (index)
+#     LIMIT  100000;"
+
+
+
+# approximate the number of rows manually: meh...
+
+# SELECT * FROM  
+#     ( SELECT DISTINCT 1 + trunc(random() * 5100000)::integer AS index 
+#       FROM generate_series(1, 251000) g) r 
+#       JOIN  twitters USING (index) LIMIT  250000;
+
+
+# SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
+
+# SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000 --Booooring....
+
+
+
+
+  dbDisconnect(con)
+  data = na.omit(data)
+  data$is_polluter = ifelse(data$is_polluter > 0.85, 1,  0)
+  return(data)
+}
+
 
 
 function(input, output) {
   
+  twitters <- load_data()
+
+
   # twitters
   # [1] "index"            "user_id"          "tweet_id"         "tweet"           
   # [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"
   # [9] "screen_name"      "name"             "num_following"    "num_followers"   
-  # [13] "num_tweets"       "retweeted"        "retweet_count"    "num_urls"        
-  # [17] "num_mentions"     "num_hastags"      "user_profile_url" "tweeted_urls"    
-  # [21] "isPolluter" 
+  # [13] "num_tweets"      "retweeted"        "retweet_count"    "num_urls"        
+  # [17] "num_mentions"    "num_hastags"      "user_profile_url" "tweeted_urls"    
+  # [21] "is_polluter" 
     
   
   #############################################################################################
@@ -79,8 +135,8 @@ function(input, output) {
   
   
 
-  polluters_ps = subset(twitters, isPolluter == 1)
-  legit_ps = subset(twitters, isPolluter == 0)
+  polluters_ps = subset(twitters, is_polluter == 1)
+  legit_ps = subset(twitters, is_polluter == 0)
 
   fitPolluters = lm(num_following ~ num_followers, data=polluters_ps) 
   fitLegit = lm(num_following ~ num_followers, data=legit_ps)
@@ -135,13 +191,13 @@ function(input, output) {
   })
 
   output$words_boxplot <- renderPlot({
-    boxplot(twitters$num_words ~ twitters$isPolluter, 
+    boxplot(twitters$num_words ~ twitters$is_polluter, 
       ylim=c(0,max_words),
       xlab="Legitmate Users Vs Polluters",
       )
   })
   output$summary_words_model <- renderPrint({
-    mod_words = glm(isPolluter ~ num_words, 
+    mod_words = glm(is_polluter ~ num_words, 
           data=twitters,
           family="binomial"
           )
@@ -173,13 +229,13 @@ function(input, output) {
   })
 
   output$tweets_boxplot <- renderPlot({
-    boxplot(twitters$num_tweets ~ twitters$isPolluter, 
+    boxplot(twitters$num_tweets ~ twitters$is_polluter, 
       ylim=c(0,summary(polluters_ps$num_tweets)[5]),
       xlab="Legitmate Users Vs Polluters",
       )
   })
   output$summary_tweets_model <- renderPrint({
-    mod_tweets = glm(isPolluter ~ num_tweets, 
+    mod_tweets = glm(is_polluter ~ num_tweets, 
           data=twitters,
           family="binomial"
           )

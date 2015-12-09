@@ -41,24 +41,15 @@ import numpy as np
 # TODO: set paths as env vars os.environ["TRAINING_DATA"]
 
 # get the honeypot tweets data
-legitTweets = pd.read_csv("/data/w205Project/honeypot/sample_legit_tweets.csv")
-polluterTweets = pd.read_csv("/data/w205Project/honeypot/sample_polluter_tweets.csv")
-legitTweets['isPolluter'] = False
-polluterTweets['isPolluter'] = True
-allTweets = pd.concat([legitTweets,polluterTweets])
+
+
+legit_data = pd.read_csv("/data/w205Project/honeypot/sample_legit_data.csv")
+spam_data = pd.read_csv("/data/w205Project/honeypot/sample_polluter_data.csv")
 # name the columns 
-allTweets.columns = ["user_id",
+legit_data.columns = ["user_id",
 				"tweet_id",
 				"tweet",
-				"created_at",
-				"isPolluter"]
-
-
-# Get the honeypot user data
-legitUsers = pd.read_csv("/data/w205Project/honeypot/legitimate_users.csv")
-polluterUsers = pd.read_csv("/data/w205Project/honeypot/content_polluters.csv")
-# rename the columns 
-legitUsers.columns = ["user_id",
+				"tweet_created_at",
 				"user_created_at",
 				"collected_at",
 				"num_following",
@@ -66,22 +57,28 @@ legitUsers.columns = ["user_id",
 				"num_tweets",
 				"LengthOfScreenName",
 				"LengthOfDescriptionInUserProfile"]
-polluterUsers.columns = ["user_id",
+
+spam_data.columns = ["user_id",
+				"tweet_id",
+				"tweet",
+				"tweet_created_at",
 				"user_created_at",
 				"collected_at",
 				"num_following",
 				"num_followers",
 				"num_tweets",
 				"LengthOfScreenName",
-				"LengthOfDescriptionInUserProfile"]	
-legitUsers['isPolluter'] = False
-polluterUsers['isPolluter'] = True
-allUsers = pd.concat([legitUsers,polluterUsers])
+				"LengthOfDescriptionInUserProfile"]
+
+legit_data['isPolluter'] = 0
+spam_data['isPolluter'] = 1
 
 
-# merge tweets and users for use in regression
-# This merge is not quite what we're looking for, and is not currently in use:
-allData = allTweets.merge(allUsers, how='left', left_on='user_id', right_on='user_id')
+allData = pd.concat([legit_data,spam_data])
+
+
+
+
 
 
 #regex to get counts from the tweet text alone:
@@ -90,10 +87,10 @@ hashtags = re.compile('^\\#')
 urls = re.compile('^(http|www)')
 mentions = re.compile('^\\@')
 
-allTweets['num_words'] = allTweets['tweet'].apply(lambda x: len(words.findall(x)))
-allTweets['num_hashtags'] = allTweets['tweet'].apply(lambda x: len(hashtags.findall(x)))
-allTweets['num_urls'] = allTweets['tweet'].apply(lambda x: len(urls.findall(x)))
-allTweets['num_mentions'] = allTweets['tweet'].apply(lambda x: len(mentions.findall(x)))
+allData['num_words'] = allData['tweet'].apply(lambda x: len(words.findall(x)))
+allData['num_hashtags'] = allData['tweet'].apply(lambda x: len(hashtags.findall(x)))
+allData['num_urls'] = allData['tweet'].apply(lambda x: len(urls.findall(x)))
+allData['num_mentions'] = allData['tweet'].apply(lambda x: len(mentions.findall(x)))
 
 #list(allData.columns.values)
 
@@ -111,11 +108,33 @@ allTweets['num_mentions'] = allTweets['tweet'].apply(lambda x: len(mentions.find
 #
 #################################################################################################################
 
+# Index([u'user_id', 
+# 1		u'tweet_id', 
+# 2		u'tweet', 
+# 3		u'tweet_created_at',
+# 4		u'user_created_at', 
+# 5		u'collected_at', 
+# 6		u'num_following', 
+# 7		u'num_followers',
+# 8		u'num_tweets', 
+# 9		u'LengthOfScreenName',
+# 10		u'LengthOfDescriptionInUserProfile', 
+# 11		u'isPolluter', 
+# 12		u'num_words',
+# 13		u'num_hashtags', 
+# 14		u'num_urls', 
+# 15		u'num_mentions'],
+#       dtype='object')
 
 print "fitting the model..."
-train_cols = allUsers.columns[3:5]
 
-logit = sm.Logit(allUsers['isPolluter'], allUsers[train_cols])
+train_cols = allData.columns[[6,7,8,12,13,14,15]]
+print train_cols
+# Index([u'num_following', u'num_followers', u'num_tweets', u'num_words',
+#        u'num_hashtags', u'num_urls', u'num_mentions'],
+#       dtype='object')
+
+logit = sm.Logit(allData['isPolluter'], allData[train_cols])
 model = logit.fit()
 
 '''
@@ -125,12 +144,21 @@ print np.exp(model.params)
 '''
 
 # USERS_TWEETS_ATTRIBUTES:
-# user_id|tweet_id|tweet|num_words|created_ts|user_created_ts|tweet_created_ts|screen_name|name|num_following|num_followers|num_tweets|retweeted|retweet_count|num_urls|num_mentions|num_hastags|user_profile_url|tweeted_urls
+# user_id|tweet_id|tweet|num_words|created_ts|user_created_ts|tweet_created_ts|screen_name|name|num_following|num_followers|num_tweets|retweeted|retweet_count|num_urls|num_mentions|num_hashtags|user_profile_url|tweeted_urls
 
 newdata = sqlContext.sql("select * from USERS_TWEETS_ATTRIBUTES")
 
+
 pdf = newdata.toPandas()
-pdf['isPolluter'] = model.predict(pdf[train_cols])
+
+predict_cols = pdf.columns[[9,10,11,3,16,14,15]]
+print predict_cols
+# Index([u'num_following', u'num_followers', u'num_tweets', u'num_words',
+#        u'num_hastags', u'num_urls', u'num_mentions'],
+#       dtype='object')
+
+pdf['is_polluter'] = model.predict(pdf[predict_cols])
+
 
 '''
 print "Predictions: \n"
@@ -138,7 +166,7 @@ print pdf.head()
 '''
 
 # set a threshhold of 85% probability to flag as spammer
-polluters = pdf[pdf.isPolluter > 0.85]
+polluters = pdf[pdf.is_polluter > 0.85]
 
 #.to_json(orient="records")
 links = polluters.tweeted_urls
@@ -157,13 +185,11 @@ uniqueLInks.toPandas().to_json(orient="records",path_or_buf='/data/w205Project/p
 #    APPEND CLASSIFIED DATA TO POSTGRES FOR DASHBOARD
 #################################################################################################################
 
-# pip install sqlalchemy
-# pip install psycopg2
-
 from sqlalchemy import create_engine
 engine = create_engine('postgresql://postgres:pass@localhost:5432/twitter')
 con = engine.connect()
 print pdf.shape
+print pdf.columns
 pdf.to_sql(con=con, name='twitters', if_exists='append', flavor='postgresql')
 
 '''
