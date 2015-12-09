@@ -22,7 +22,7 @@ function(input, output) {
 
 
   # twitters <- reactiveValues()
-  updateData <- function() {
+  #updateData <- function() {
     drv <- dbDriver("PostgreSQL")
     con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
     #twitters <- dbReadTable(con, "twitters")
@@ -36,9 +36,9 @@ function(input, output) {
     d = na.omit(d)
     d$isPolluter = ifelse(d$isPolluter > 0.85, 1,  0)
 
-    return(d)
-  }
-  twitters <- updateData() 
+    #return(d)
+  #}
+  twitters <- d
 
 
 
