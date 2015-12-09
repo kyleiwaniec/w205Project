@@ -31,7 +31,7 @@ here is a template, if you know what yer keys are: `git-keys-template.sh`
 ```
 vi git-keys.sh # copypasta from the template
 . git-keys.sh
-
+cd /data
 git clone git@github.com:kyleiwaniec/w205Project.git
 ```
 pull the repo, then run:  
