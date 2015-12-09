@@ -20,7 +20,7 @@ load_data <- function(){
   data <- dbGetQuery(con, " SELECT * FROM  
     ( SELECT DISTINCT 1 + trunc(random() * (SELECT reltuples::bigint AS estimate
         FROM   pg_class
-        WHERE  oid = 'twitter.twitters'::regclass))::integer AS index 
+        WHERE  oid = 'twitters'::regclass))::integer AS index 
         FROM generate_series(1, 110000) g) r 
         JOIN  twitters USING (index) LIMIT  100000;" )
 
