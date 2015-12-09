@@ -9,8 +9,6 @@ require("httr")
 require("RCurl")
 require("stringr")
 
-library('scatterplot3d')
-
 drv <- dbDriver("PostgreSQL")
 con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
 twitters <- dbReadTable(con, "twitters")
@@ -157,19 +155,5 @@ function(input, output) {
   }, height=700)
 
 
-  output$aliens <- renderPlot({
-    temp <- seq(-pi, 0, length = 50)
-    x <- c(rep(1, 50) %*% t(cos(temp)))
-    y <- c(cos(temp) %*% t(sin(temp)))
-    z <- 10 * c(sin(temp) %*% t(sin(temp)))
-    color <- rep("green", length(x))
-    temp <- seq(-10, 10, 0.01)
-    x <- c(x, cos(temp))
-    y <- c(y, sin(temp))
 
-    z <- c(z, temp)
-    color <- c(color, rep("maroon1", length(temp)))
-    scatterplot3d(x, y, z, color, pch=20, zlim=c(-2, 10),
-    main="Hello, do you like my hat?", grid=FALSE, axis=FALSE,box=FALSE)
-  }) 
 }
