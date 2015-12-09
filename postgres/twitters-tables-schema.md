@@ -1,3 +1,4 @@
+```
 (ENV27)(reclassify) root@ip-172-31-21-9:spark $ psql -U postgres twitter
 psql (8.4.20)
 Type "help" for help.
@@ -30,3 +31,4 @@ twitter=# \d+ twitters
  tweeted_urls     | text                        |                                                      | extended |
  is_polluter      | double precision            |                                                      | plain    |
 Has OIDs: no
+```
