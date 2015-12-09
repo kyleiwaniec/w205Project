@@ -47,13 +47,16 @@ then run we'll the scheduler...
 user is prompted to add twitter keys bootstrap script.
 keywords have been set to all alphanumeric to capture all tweets: a,b,c,...,8,9,0
 
+
 ```
 sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
 ```
 
 After a coouple of hours, kill flume, and load the tables.   
+
 Executing from command line to be able to use variables. No easy way to do this directly in HIVE SQL.  
 Also, Flume must be stopped before running transform 
+
 
 ```
 . /data/w205Project/load/load-hive-table.sh
