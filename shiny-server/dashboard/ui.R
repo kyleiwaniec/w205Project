@@ -32,6 +32,12 @@ fluidPage(
         tags$div(class="col-sm-6",plotOutput('mentions_l')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_mentions_p')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_mentions_l'))      
+    ),
+    tabPanel('Hashtag counts',
+        tags$div(class="col-sm-6",plotOutput('hashtags_p')),
+        tags$div(class="col-sm-6",plotOutput('hashtags_l')),
+        tags$div(class="col-sm-6",verbatimTextOutput('summary_hashtags_p')),
+        tags$div(class="col-sm-6",verbatimTextOutput('summary_hashtags_l'))      
     )
   )
 

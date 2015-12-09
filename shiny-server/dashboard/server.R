@@ -159,15 +159,15 @@ function(input, output) {
   # num_mentions
   ##############
 
-  max_mentions = max(max(log(polluters_ps$num_mentions)), max(log(legit_ps$num_mentions)))
+  max_mentions = max(max(polluters_ps$num_mentions), max(legit_ps$num_mentions))
 
   output$mentions_p <- renderPlot({
-     hist(log(polluters_ps$num_mentions), col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,max_mentions))
+     hist(polluters_ps$num_mentions, col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,max_mentions))
      axis(1,col="gray100")
      axis(2,col="gray100")
   })
   output$mentions_l <- renderPlot({
-    hist(log(legit_ps$num_mentions), col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,max_mentions))
+    hist(legit_ps$num_mentions, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,max_mentions))
     axis(1,col="gray100")
     axis(2,col="gray100")
   })
@@ -178,7 +178,28 @@ function(input, output) {
     print( summary(legit_ps$num_mentions))
   })
 
+  ##############
+  # num_hashtags
+  ##############
 
+  max_hashtags = max(max(polluters_ps$num_hastags), max(legit_ps$num_hastags))
+
+  output$hashtags_p <- renderPlot({
+     hist(polluters_ps$num_hastags, col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,max_hashtags))
+     axis(1,col="gray100")
+     axis(2,col="gray100")
+  })
+  output$hashtags_l <- renderPlot({
+    hist(legit_ps$num_hastags, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,max_hashtags))
+    axis(1,col="gray100")
+    axis(2,col="gray100")
+  })
+  output$summary_hashtags_p <- renderPrint({
+    print(summary(polluters_ps$num_hastags))
+  })
+  output$summary_hashtags_l <- renderPrint({
+    print( summary(legit_ps$num_hastags))
+  })
   
 
 
