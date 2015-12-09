@@ -156,7 +156,7 @@ print predict_cols
 #        u'num_hastags', u'num_urls', u'num_mentions'],
 #       dtype='object')
 
-pdf['isPolluter'] = float(model.predict(pdf[predict_cols]))
+pdf['isPolluter'] = map(float, model.predict(pdf[predict_cols]))
 #format(pdf['isPolluter'], '.2f')
 
 '''
