@@ -158,8 +158,9 @@ print predict_cols
 
 pdf['isPolluter'] = model.predict(pdf[predict_cols])
 #format(pdf['isPolluter'], '.2f')
-pdf['isPolluter'] = map(float, pdf['isPolluter'])
-format(pdf['isPolluter'], '.2f')
+# format(float(pdf['isPolluter']), '.2f')
+pdf['isPolluter'] = pdf['isPolluter'].apply(lambda x: format(float(x), '.6f'))
+
 
 '''
 print "Predictions: \n"
