@@ -22,7 +22,7 @@ load_data <- function(){
      , min(id)  AS min_id
      , max(id)  AS max_id
      , max(id) - min(id) AS id_span
-    FROM   twitters;
+    FROM   twitters
     )
     SELECT *
     FROM  (
