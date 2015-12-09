@@ -28,11 +28,11 @@ load_data <- function(){
     FROM  (
         SELECT p.min_id + trunc(random() * p.id_span)::integer AS index
         FROM   params p
-              ,generate_series(1, 11000) g 
+              ,generate_series(1, 110000) g 
         GROUP  BY 1                       
         ) r
     JOIN   twitters USING (index)
-    LIMIT  10000;  ")
+    LIMIT  100000;  ")
 
 
 
