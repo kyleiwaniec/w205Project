@@ -135,8 +135,8 @@ function(input, output) {
   ##############
   # num_tweets
   ##############
-
-  max_tweets = max(max(polluters_ps$num_tweets), max(legit_ps$num_tweets))
+  # max of the 3rd quartile
+  max_tweets = max(summary(polluters_ps$num_tweets)[5], summary(legit_ps$num_tweets)[5])
 
   output$tweets_poll <- renderPlot({
      hist(polluters_ps$num_tweets, col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,max_tweets))
