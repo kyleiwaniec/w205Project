@@ -153,7 +153,7 @@ CREATE DATABASE TWITTER;
 EOF
 
 #run the twitter creation sql
-sudo -u postgres twitter -f /data/make_twitter_postgres.sql
+sudo -u postgres psql -f /data/make_twitter_postgres.sql
 
 # make the start_metastore file
 cat > /data/start_metastore.sh <<EOF
