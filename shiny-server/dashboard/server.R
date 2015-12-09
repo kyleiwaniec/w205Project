@@ -19,8 +19,8 @@ load_data <- function(){
 
   data <- dbGetQuery(con, "SELECT * FROM  
     ( SELECT DISTINCT 1 + trunc(random() * 5100000)::integer AS index 
-      FROM generate_series(1, 100000) g) r 
-      JOIN  twitters USING (index) LIMIT  100000;")
+      FROM generate_series(1, 500000) g) r 
+      JOIN  twitters USING (index) LIMIT  500000;")
 
   # SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
   dbDisconnect(con)
@@ -35,7 +35,7 @@ function(input, output) {
   
   twitters <- load_data()
 
-  
+
   # twitters
   # [1] "index"            "user_id"          "tweet_id"         "tweet"           
   # [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"
