@@ -135,7 +135,10 @@ function(input, output) {
   })
 
   output$words_boxplot <- renderPlot({
-    boxplot(twitters$num_words ~ twitters$isPolluter, ylim=c(0,max_words))
+    boxplot(twitters$num_words ~ twitters$isPolluter, 
+      ylim=c(0,max_words),
+      xlab="Legitmate Users Vs Polluters",
+      )
   })
   output$summary_words_model <- renderPrint({
     mod_words = glm(isPolluter ~ num_words, 
@@ -170,7 +173,10 @@ function(input, output) {
   })
 
   output$tweets_boxplot <- renderPlot({
-    boxplot(twitters$num_tweets ~ twitters$isPolluter, ylim=c(0,summary(polluters_ps$num_tweets)[5]))
+    boxplot(twitters$num_tweets ~ twitters$isPolluter, 
+      ylim=c(0,summary(polluters_ps$num_tweets)[5]),
+      xlab="Legitmate Users Vs Polluters",
+      )
   })
   output$summary_tweets_model <- renderPrint({
     mod_tweets = glm(isPolluter ~ num_tweets, 
