@@ -47,14 +47,14 @@ ALTER TABLE public.twitter_id_seq OWNER TO postgres;
 DROP TABLE IF EXISTS twitters;
 CREATE TABLE twitters (
     id bigint DEFAULT nextval('twitter_id_seq'::regclass) NOT NULL,
-    index bigint,
+    index int,
     row_created timestamp without time zone DEFAULT now() NOT NULL,
-    user_id character varying(45) NOT NULL,
-    tweet_id character varying(45) NOT NULL,
-    tweet character varying(45) NOT NULL,
+    user_id text NOT NULL,
+    tweet_id text NOT NULL,
+    tweet text NOT NULL,
     num_words integer NOT NULL,
-    created_ts character varying(45) NOT NULL,
-    user_created_ts character varying(45) NOT NULL,
+    created_ts text NOT NULL,
+    user_created_ts text NOT NULL,
     tweet_created_ts text,
     screen_name text,
     name text,
@@ -68,7 +68,7 @@ CREATE TABLE twitters (
     num_hastags integer NOT NULL,
     user_profile_url text,
     tweeted_urls text,
-    isPolluter double precision NOT NULL
+    isPolluter decimal NOT NULL
 );
 
 

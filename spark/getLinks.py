@@ -41,8 +41,6 @@ import numpy as np
 # TODO: set paths as env vars os.environ["TRAINING_DATA"]
 
 # get the honeypot tweets data
-legitTweets = pd.read_csv("/data/w205Project/honeypot/sample_legit_tweets.csv")
-polluterTweets = pd.read_csv("/data/w205Project/honeypot/sample_polluter_tweets.csv")
 
 
 legit_data = pd.read_csv("/data/w205Project/honeypot/sample_legit_data.csv")
@@ -148,7 +146,7 @@ print predict_cols
 #        u'num_hastags', u'num_urls', u'num_mentions'],
 #       dtype='object')
 
-pdf[isPolluter] = model.predict(pdf[predict_cols])
+pdf['isPolluter'] = model.predict(pdf[predict_cols])
 
 '''
 print "Predictions: \n"
