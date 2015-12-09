@@ -135,8 +135,8 @@ function(input, output) {
   
   
 
-  polluters_ps = subset(twitters, isPolluter == 1)
-  legit_ps = subset(twitters, isPolluter == 0)
+  polluters_ps = subset(twitters, is_polluter == 1)
+  legit_ps = subset(twitters, is_polluter == 0)
 
   fitPolluters = lm(num_following ~ num_followers, data=polluters_ps) 
   fitLegit = lm(num_following ~ num_followers, data=legit_ps)
