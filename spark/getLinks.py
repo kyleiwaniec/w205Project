@@ -159,7 +159,7 @@ print predict_cols
 pdf['isPolluter'] = model.predict(pdf[predict_cols])
 #format(pdf['isPolluter'], '.2f')
 # format(float(pdf['isPolluter']), '.2f')
-pdf['isPolluter'] = pdf['isPolluter'].apply(lambda x: format(float(x), '.6f'))
+pdf['isPolluter'] = pdf['isPolluter'].apply(lambda x: float(x))
 
 
 '''
