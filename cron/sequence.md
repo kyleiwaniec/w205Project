@@ -38,6 +38,7 @@ pull the repo, then run:
 ```
 cd /data/w205Project
 git checkout testall # this will change to master when we're ready
+git pull origin testall
 . provision/bootstrap.sh
 ```
 
@@ -67,7 +68,7 @@ Also, Flume must be stopped before running transform
 then pyspark:
 ```
 /data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py
-sudo restart shiny-server
+sudo restart shiny-server # might not be necessary
 ```
 
 then crawler: (ENV27 is already running, all the modules have been installed, and S3 passwords were entered via bootstrap script)   

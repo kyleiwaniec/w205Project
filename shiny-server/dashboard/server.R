@@ -13,14 +13,11 @@ drv <- dbDriver("PostgreSQL")
 con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
 twitters <- dbReadTable(con, "twitters")
 dbDisconnect(con)
-
 twitters = na.omit(twitters)
 
-function(input, output) {
-  
-  loadData <- function() {
 
-  }
+
+function(input, output) {
   
   # twitters
   # [1] "index"            "user_id"          "tweet_id"         "tweet"           
@@ -30,7 +27,11 @@ function(input, output) {
   # [17] "num_mentions"     "num_hastags"      "user_profile_url" "tweeted_urls"    
   # [21] "isPolluter" 
     
-    
+  
+  #############################################################################################
+  # HONEYPOT
+  #############################################################################################
+
   legitimate_users = read.delim("legitimate_users.txt", header=FALSE)
   legitimate_users = na.omit(legitimate_users)
   
@@ -51,8 +52,31 @@ function(input, output) {
   
   fit_polluters = lm(NumberOfFollowers~NumerOfFollowings, data = content_polluters)
   fit_legit = lm(NumberOfFollowers~NumerOfFollowings, data = legitimate_users)
-  
 
+  output$plot <- renderPlot({
+      ggplot() +
+
+      geom_point(data = content_polluters, aes(log(NumberOfFollowers), log(NumerOfFollowings)), colour = "gold2", shape=1) +
+      geom_abline(slope=as.numeric(fit_polluters$coefficients[2]), colour='gold2') + 
+      geom_point(data = legitimate_users, aes(log(NumberOfFollowers), log(NumerOfFollowings)), colour = "darkolivegreen3", shape=1) +
+      geom_abline(slope=as.numeric(fit_legit$coefficients[2]), colour='darkolivegreen3') +      
+      #scale_x_continuous(limits = c(0, 200000)) +
+      theme(
+       # axis.text = element_text(size = 14),
+       # legend.key = element_rect(fill = "navy"),
+       # legend.background = element_rect(fill = "white"),
+       # legend.position = c(0.14, 0.80),
+       # panel.grid.major = element_line(colour = "grey40"),
+       # panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "white")
+      )    
+    
+  }, height=700)
+
+  #############################################################################################
+  # SHINY-TWEETS(TM)
+  #############################################################################################
+  
   fitPolluters = lm(num_following[isPolluter > 0.8] ~ num_followers[isPolluter > 0.8], data=twitters) 
   fitLegit = lm(num_following[isPolluter <= 0.8] ~ num_followers[isPolluter <= 0.8], data=twitters)
 
@@ -85,15 +109,15 @@ function(input, output) {
   # num_words
   ##############
 
-  maxx = max(max(polluters_ps$num_words), max(legit_ps$num_words))
+  max_words = max(max(polluters_ps$num_words), max(legit_ps$num_words))
   
   output$words_poll <- renderPlot({
-     hist(polluters_ps$num_words, col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,maxx))
+     hist(polluters_ps$num_words, col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,max_words))
          axis(1,col="gray100")
          axis(2,col="gray100")
   })
   output$words_leg <- renderPlot({
-    hist(legit_ps$num_words, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,maxx))
+    hist(legit_ps$num_words, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,max_words))
     axis(1,col="gray100")
     axis(2,col="gray100")
   })
@@ -112,15 +136,15 @@ function(input, output) {
   # num_tweets
   ##############
 
-  maxxt = max(max(log(polluters_ps$num_tweets)), max(log(legit_ps$num_tweets)))
+  max_tweets = max(max(log(polluters_ps$num_tweets)), max(log(legit_ps$num_tweets)))
 
   output$tweets_poll <- renderPlot({
-     hist(log(polluters_ps$num_tweets), col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,maxxt))
+     hist(log(polluters_ps$num_tweets), col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,max_tweets))
      axis(1,col="gray100")
      axis(2,col="gray100")
   })
   output$tweets_leg <- renderPlot({
-    hist(log(legit_ps$num_tweets), col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,maxxt))
+    hist(log(legit_ps$num_tweets), col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,max_tweets))
     axis(1,col="gray100")
     axis(2,col="gray100")
   })
@@ -131,28 +155,31 @@ function(input, output) {
     print( summary(legit_ps$num_tweets))
   })
 
+  ##############
+  # num_mentions
+  ##############
+
+  max_mentions = max(max(log(polluters_ps$num_mentions)), max(log(legit_ps$num_mentions)))
+
+  output$mentions_p <- renderPlot({
+     hist(log(polluters_ps$num_mentions), col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,max_mentions))
+     axis(1,col="gray100")
+     axis(2,col="gray100")
+  })
+  output$mentions_l <- renderPlot({
+    hist(log(legit_ps$num_mentions), col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,max_mentions))
+    axis(1,col="gray100")
+    axis(2,col="gray100")
+  })
+  output$summary_mentions_p <- renderPrint({
+    print(summary(polluters_ps$num_mentions))
+  })
+  output$summary_mentions_l <- renderPrint({
+    print( summary(legit_ps$num_mentions))
+  })
 
 
-
-  output$plot <- renderPlot({
-      ggplot() +
-
-      geom_point(data = content_polluters, aes(log(NumberOfFollowers), log(NumerOfFollowings)), colour = "gold2", shape=1) +
-      geom_abline(slope=as.numeric(fit_polluters$coefficients[2]), colour='gold2') + 
-      geom_point(data = legitimate_users, aes(log(NumberOfFollowers), log(NumerOfFollowings)), colour = "darkolivegreen3", shape=1) +
-      geom_abline(slope=as.numeric(fit_legit$coefficients[2]), colour='darkolivegreen3') +      
-      #scale_x_continuous(limits = c(0, 200000)) +
-      theme(
-       # axis.text = element_text(size = 14),
-       # legend.key = element_rect(fill = "navy"),
-       # legend.background = element_rect(fill = "white"),
-       # legend.position = c(0.14, 0.80),
-       # panel.grid.major = element_line(colour = "grey40"),
-       # panel.grid.minor = element_blank(),
-        panel.background = element_rect(fill = "white")
-      )    
-    
-  }, height=700)
+  
 
 
 

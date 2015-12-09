@@ -20,13 +20,18 @@ fluidPage(
         tags$div(class="col-sm-6",plotOutput('words_leg')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_poll')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_leg'))      
-     ),
-     tabPanel('Tweet counts',
+    ),
+    tabPanel('Tweet counts',
         tags$div(class="col-sm-6",plotOutput('tweets_poll')),
         tags$div(class="col-sm-6",plotOutput('tweets_leg')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_Tpoll')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_Tleg'))      
-    #tabPanel('My hat', plotOutput("aliens"))
+    ),
+    tabPanel('Mention counts',
+        tags$div(class="col-sm-6",plotOutput('mentions_p')),
+        tags$div(class="col-sm-6",plotOutput('mentions_l')),
+        tags$div(class="col-sm-6",verbatimTextOutput('summary_mentions_p')),
+        tags$div(class="col-sm-6",verbatimTextOutput('summary_mentions_l'))      
     )
   )
 
