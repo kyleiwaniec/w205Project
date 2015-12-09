@@ -137,7 +137,7 @@ function(input, output) {
   output$words_boxplot <- renderPlot({
     boxplot(twitters$num_words ~ twitters$isPolluter, ylim=c(0,max_words))
   })
-  output$summary_diff_model <- renderPrint({
+  output$summary_words_model <- renderPrint({
     mod_words = glm(isPolluter ~ num_words, 
           data=twitters,
           family="binomial"
@@ -172,7 +172,7 @@ function(input, output) {
   output$tweets_boxplot <- renderPlot({
     boxplot(twitters$num_tweets ~ twitters$isPolluter, ylim=c(0,summary(polluters_ps$num_tweets)[5]))
   })
-  output$summary_diff_model <- renderPrint({
+  output$summary_tweets_model <- renderPrint({
     mod_tweets = glm(isPolluter ~ num_tweets, 
           data=twitters,
           family="binomial"

@@ -19,7 +19,9 @@ fluidPage(
         tags$div(class="col-sm-6",plotOutput('words_poll')),
         tags$div(class="col-sm-6",plotOutput('words_leg')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_poll')),
-        tags$div(class="col-sm-6",verbatimTextOutput('summary_leg'))      
+        tags$div(class="col-sm-6",verbatimTextOutput('summary_leg')),
+        tags$div(class="col-sm-6",plotOutput('words_boxplot')),
+        tags$div(class="col-sm-6",verbatimTextOutput('summary_words_model'))         
     ),
     tabPanel('Tweet counts',
         tags$div(class="col-sm-6",plotOutput('tweets_poll')),
@@ -27,7 +29,7 @@ fluidPage(
         tags$div(class="col-sm-6",verbatimTextOutput('summary_Tpoll')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_Tleg')),
         tags$div(class="col-sm-6",plotOutput('tweets_boxplot')),
-        tags$div(class="col-sm-6",verbatimTextOutput('summary_diff_model'))       
+        tags$div(class="col-sm-6",verbatimTextOutput('summary_tweets_model'))       
     ),
     tabPanel('Mention counts',
         tags$div(class="col-sm-6",plotOutput('mentions_p')),
