@@ -90,7 +90,7 @@ function(input, output) {
   # [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"
   # [9] "screen_name"      "name"             "num_following"    "num_followers"   
   # [13] "num_tweets"      "retweeted"        "retweet_count"    "num_urls"        
-  # [17] "num_mentions"    "num_hastags"      "user_profile_url" "tweeted_urls"    
+  # [17] "num_mentions"    "num_hashtags"      "user_profile_url" "tweeted_urls"    
   # [21] "is_polluter" 
     
   
@@ -279,23 +279,23 @@ function(input, output) {
   # num_hashtags
   ##############
 
-  max_hashtags = max(max(polluters_ps$num_hastags), max(legit_ps$num_hastags))
+  max_hashtags = max(max(polluters_ps$num_hashtags), max(legit_ps$num_hashtags))
 
   output$hashtags_p <- renderPlot({
-     hist(polluters_ps$num_hastags, col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,max_hashtags))
+     hist(polluters_ps$num_hashtags, col="gold2", border="white",main = paste("Content Polluters"), breaks=30, xlim=c(0,max_hashtags))
      axis(1,col="gray100")
      axis(2,col="gray100")
   })
   output$hashtags_l <- renderPlot({
-    hist(legit_ps$num_hastags, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,max_hashtags))
+    hist(legit_ps$num_hashtags, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=30, xlim=c(0,max_hashtags))
     axis(1,col="gray100")
     axis(2,col="gray100")
   })
   output$summary_hashtags_p <- renderPrint({
-    print(summary(polluters_ps$num_hastags))
+    print(summary(polluters_ps$num_hashtags))
   })
   output$summary_hashtags_l <- renderPrint({
-    print( summary(legit_ps$num_hastags))
+    print( summary(legit_ps$num_hashtags))
   })
   
 
