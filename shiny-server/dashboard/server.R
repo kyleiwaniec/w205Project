@@ -242,7 +242,7 @@ function(input, output) {
 
   output$tweets_boxplot <- renderPlot({
     boxplot(twitters$num_tweets ~ twitters$is_polluter, 
-      ylim=c(0,(max(polluters_ps$num_tweets)),
+      ylim=c(0,(max(polluters_ps$num_tweets))),
       xlab="Legitmate Users Vs Polluters",
       )
   })
