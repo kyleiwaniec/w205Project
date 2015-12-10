@@ -99,3 +99,17 @@ body{
   background:url(img/honey.png) no-repeat;
 }
 
+.stargazer-table{
+  margin-top: 40px;
+  font-size: 85%;
+}
+.stargazer-table > table{
+  width:100%;
+}
+
+
+
+
+
+
+
