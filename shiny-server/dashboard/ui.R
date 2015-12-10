@@ -21,7 +21,7 @@ fluidPage(
         tags$div(class="col-sm-6",verbatimTextOutput('summary_poll')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_leg')),
         tags$div(class="col-sm-6",plotOutput('words_boxplot')),
-        tags$div(class="col-sm-6",verbatimTextOutput('summary_words_model'))         
+        tags$div(class="col-sm-6",textOutput('summary_words_model'))         
     ),
     tabPanel('Tweet counts',
         tags$div(class="col-sm-6",plotOutput('tweets_poll')),

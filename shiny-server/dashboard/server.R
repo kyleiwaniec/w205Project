@@ -251,7 +251,7 @@ function(input, output) {
           data=twitters,
           family="binomial"
           )
-    print(stargazer(mod_tweets, type = "html"))
+    stargazer(mod_tweets, type = "html")
   })
 
   ##############
