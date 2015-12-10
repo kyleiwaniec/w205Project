@@ -29,7 +29,7 @@ fluidPage(
         tags$div(class="col-sm-6",verbatimTextOutput('summary_Tpoll')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_Tleg')),
         tags$div(class="col-sm-6",plotOutput('tweets_boxplot')),
-        tags$div(class="col-sm-6",textOutput('summary_tweets_model'))       
+        tags$div(class="col-sm-6",verbatimTextOutput('summary_tweets_model'))       
     ),
     tabPanel('Mention counts',
         tags$div(class="col-sm-6",plotOutput('mentions_p')),

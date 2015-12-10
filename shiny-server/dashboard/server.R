@@ -8,9 +8,9 @@ library(stargazer)
 #install.packages("RAmazonS3", repos = "http://www.omegahat.org/R")
 #library(rmongodb)
 
-require("httr")
-require("RCurl")
-require("stringr")
+# require("httr")
+# require("RCurl")
+# require("stringr")
 
 
 load_data <- function(){
@@ -242,7 +242,7 @@ function(input, output) {
 
   output$tweets_boxplot <- renderPlot({
     boxplot(twitters$num_tweets ~ twitters$is_polluter, 
-      ylim=c(0,summary(polluters_ps$num_tweets)[5]),
+      ylim=c(0,(summary(polluters_ps$num_tweets)[5])*1.2),
       xlab="Legitmate Users Vs Polluters",
       )
   })
