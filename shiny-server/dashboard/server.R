@@ -86,6 +86,7 @@ function(input, output) {
   twitters <- load_data()
 
   df <- eventReactive(input$button, {
+      reactivePoll(100)
       twitters <- load_data()
       polluters_ps = subset(twitters, is_polluter == 1)
       print(summary(polluters_ps$num_words) )
