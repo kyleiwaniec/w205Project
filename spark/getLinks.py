@@ -96,35 +96,26 @@ allData['num_mentions'] = allData['tweet'].apply(lambda x: len(mentions.findall(
 
 #################################################################################################################
 #
-#   SO... I RAN OUTTA TIME. MERGING TWEETS AND USERS PRODUCED SOME FUNKY RESULTS
-#   AND I WAS NOT ABLE TO RUN THE REGRESSION PROPERLY.
-#
-#   USING ONLY THE allTweets DATA, DIDN'T PRODUCE ANY SPAMMERS - MAYBE THEY GOT SMART SINCE THAT PAPER WAS WRITTEN.
-#   USING THE allUsers DATA TO FIT A MODEL DOES INDEED PRODUCE RESULTS. IN THE INTEREST OF SEEING SOMETHING
-#   AT ALL, I'M JUST GONNA GO WITH IT.
-#
-#   THE BIG CAVEAT IS... THE MODEL IS NOT SO AWESOME. HENSE, FOR DEMONSTRATION PURPOSES ONLY. 
-#   HOWEVER, IT IS NOT THE FOCUS OF THE PROJECT, SO BE IT... THIS ML IS IS SUPER NAIVE ANYWAY (I HAVE NOT TAKEN 207 YET!)
-#
-#################################################################################################################
-
 # Index([u'user_id', 
-# 1		u'tweet_id', 
-# 2		u'tweet', 
-# 3		u'tweet_created_at',
-# 4		u'user_created_at', 
-# 5		u'collected_at', 
-# 6		u'num_following', 
-# 7		u'num_followers',
-# 8		u'num_tweets', 
-# 9		u'LengthOfScreenName',
+# 1			u'tweet_id', 
+# 2			u'tweet', 
+# 3			u'tweet_created_at',
+# 4			u'user_created_at', 
+# 5			u'collected_at', 
+# 6			u'num_following', 
+# 7			u'num_followers',
+# 8			u'num_tweets', 
+# 9			u'LengthOfScreenName',
 # 10		u'LengthOfDescriptionInUserProfile', 
 # 11		u'isPolluter', 
 # 12		u'num_words',
 # 13		u'num_hashtags', 
 # 14		u'num_urls', 
 # 15		u'num_mentions'],
-#       dtype='object')
+#       dtype='object')#
+#################################################################################################################
+
+
 
 print "fitting the model..."
 
@@ -158,6 +149,7 @@ print predict_cols
 #       dtype='object')
 
 pdf['is_polluter'] = model.predict(pdf[predict_cols])
+
 
 
 '''

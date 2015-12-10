@@ -3,6 +3,8 @@ library(shiny)
 library(ggplot2)
 library(RPostgreSQL)
 library(pryr)
+library(stargazer)
+
 #install.packages("RAmazonS3", repos = "http://www.omegahat.org/R")
 #library(rmongodb)
 
@@ -249,7 +251,7 @@ function(input, output) {
           data=twitters,
           family="binomial"
           )
-    print(summary(mod_tweets))
+    print(stargazer(mod_tweets))
   })
 
   ##############

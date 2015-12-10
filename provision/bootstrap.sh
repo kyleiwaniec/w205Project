@@ -32,6 +32,16 @@ echo "starting hadoop.."
 # if [[ "$answer" != "yes" ]]; then
 # 	. /data/w205Project/shiny-server/install-shiny.sh
 # fi
+
+sudo su - \
+  -c "R -e \"install.packages('pryr',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
+sudo su - \
+  -c "R -e \"install.packages('devtools',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
+
+sudo su - \
+  -c "R -e \"install.packages('stargazer',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
+
+
 cp -r /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
 
 #####################################

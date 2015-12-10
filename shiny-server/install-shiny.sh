@@ -18,6 +18,10 @@ sudo su - \
 sudo su - \
   -c "R -e \"install.packages('devtools',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
 
+sudo su - \
+  -c "R -e \"install.packages('stargazer',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
+
+
 # wget https://download3.rstudio.org/centos5.9/x86_64/shiny-server-1.4.1.759-rh5-x86_64.rpm
 sudo yum install --nogpgcheck /data/shiny-server/shiny-server-1.4.1.759-rh5-x86_64.rpm
 
