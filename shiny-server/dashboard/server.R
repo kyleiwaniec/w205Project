@@ -79,19 +79,21 @@ load_data <- function(){
   data$is_polluter = ifelse(data$is_polluter > 0.85, 1,  0)
   return(data)
 }
-twitters <- load_data()
 
 
 function(input, output) {
   
-  #twitters <- load_data()
+  twitters <- load_data()
 
-  twitters <- eventReactive(input$go, {
-    return(load_data())
+  df <- eventReactive(input$button, {
+      twitters <- load_data()
+      print( head(twitters$num_words) )
   })
-
-  # output$plot <- renderPlot({
-  #   hist(randomVals())
+  output$texts <- renderPrint({
+    df()
+  })
+  # output$texts <- renderPrint({
+  #   print( head(twitters$num_words) )
   # })
   # twitters
   # [1] "index"            "user_id"          "tweet_id"         "tweet"           
@@ -198,9 +200,9 @@ function(input, output) {
     axis(1,col="gray100")
     axis(2,col="gray100")
   })
-  output$texts <- renderPrint({
-    print( head(twitters$num_words) )
-  })
+  # output$texts <- renderPrint({
+  #   print( head(twitters$num_words) )
+  # })
   output$summary_poll <- renderPrint({
     print(summary(polluters_ps$num_words) )
   })
