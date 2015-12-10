@@ -65,7 +65,7 @@ CREATE TABLE twitters (
     retweet_count integer,
     num_urls integer,
     num_mentions integer,
-    num_hastags integer,
+    num_hashtags integer,
     user_profile_url text,
     tweeted_urls text,
     is_polluter double precision
