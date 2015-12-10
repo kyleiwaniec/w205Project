@@ -79,12 +79,12 @@ load_data <- function(){
   data$is_polluter = ifelse(data$is_polluter > 0.85, 1,  0)
   return(data)
 }
-
+twitters <- load_data()
 
 
 function(input, output) {
   
-  twitters <- load_data()
+  #twitters <- load_data()
 
   twitters <- eventReactive(input$go, {
     return(load_data())
