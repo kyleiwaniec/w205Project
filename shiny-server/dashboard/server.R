@@ -83,36 +83,10 @@ load_data <- function(){
 
 function(input, output) {
   
-  #twitters <- load_data()
-
-
-  
+  twitters <- load_data()
 
 
 
-twitters <- reactiveValues()
-updateData <- function() {
-  drv <- dbDriver("PostgreSQL")
-  con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
-  twitters <- dbGetQuery(con, "SELECT * FROM twitters
-                            WHERE index IN (
-                              SELECT round(random() * 21e6)::integer as index
-                              FROM generate_series(1, 110000)
-                              GROUP BY index 
-                            )
-                            LIMIT 100000" )
-  dbDisconnect(con)
-  twitters = na.omit(twitters)
-  twitters$is_polluter = ifelse(twitters$is_polluter > 0.85, 1,  0)
-}
-updateData()  # also call updateData() whenever you want to reload the data
-
-output$words_boxplot <- reactivePlot(function() {
-  boxplot(twitters$num_words ~ twitters$is_polluter, 
-      ylim=c(0,max_words),
-      xlab="Legitmate Users Vs Polluters",
-      )
-}
 
 
 
@@ -238,12 +212,12 @@ output$words_boxplot <- reactivePlot(function() {
     print( summary(legit_ps$num_words) )
   })
 
-  # output$words_boxplot <- renderPlot({
-  #   boxplot(twitters$num_words ~ twitters$is_polluter, 
-  #     ylim=c(0,max_words),
-  #     xlab="Legitmate Users Vs Polluters",
-  #     )
-  # })
+  output$words_boxplot <- renderPlot({
+    boxplot(twitters$num_words ~ twitters$is_polluter, 
+      ylim=c(0,max_words),
+      xlab="Legitmate Users Vs Polluters",
+      )
+  })
   output$summary_words_model <- renderPrint({
     mod_words = glm(is_polluter ~ num_words, 
           data=twitters,
