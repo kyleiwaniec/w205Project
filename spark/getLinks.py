@@ -182,7 +182,7 @@ engine = create_engine('postgresql://postgres:pass@localhost:5432/twitter')
 con = engine.connect()
 print pdf.shape
 print pdf.columns
-pdf.to_sql(con=con, name='twitters', if_exists='replace', flavor='postgresql')
+pdf.to_sql(con=con, name='twitters', if_exists='append', flavor='postgresql')
 
 '''
 if_exists: {'fail', 'replace', 'append'}, default 'fail'
