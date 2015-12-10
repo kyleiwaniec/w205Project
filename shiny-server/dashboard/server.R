@@ -87,19 +87,6 @@ function(input, output) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   # twitters
   # [1] "index"            "user_id"          "tweet_id"         "tweet"           
   # [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"

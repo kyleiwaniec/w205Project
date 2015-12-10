@@ -16,7 +16,7 @@ fluidPage(
       tabPanel('Recent Activity', ""),
       tabPanel('Following/Followers', plotOutput("postgresData")),
       tabPanel('Word counts',
-        tags$div(class="col-sm-12",actionButton("button", "Go!")),
+        #tags$div(class="col-sm-12",actionButton("button", "Go!")),
         tags$div(class="col-sm-6",plotOutput('words_poll')),
         tags$div(class="col-sm-6",plotOutput('words_leg')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_poll')),
