@@ -17,14 +17,14 @@ load_data <- function(){
   drv <- dbDriver("PostgreSQL")
   con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
   #data <- dbReadTable(con, "twitters")
-  data <- dbGetQuery(con, "SELECT * FROM twitters")
-  # data <- dbGetQuery(con, "SELECT * FROM twitters
-  #                           WHERE index IN (
-  #                             SELECT round(random() * 21e6)::integer as index
-  #                             FROM generate_series(1, 110000)
-  #                             GROUP BY index 
-  #                           )
-  #                           LIMIT 100000" )
+  #data <- dbGetQuery(con, "SELECT * FROM twitters")
+  data <- dbGetQuery(con, "SELECT * FROM twitters
+                            WHERE index IN (
+                              SELECT round(random() * 21e6)::integer as index
+                              FROM generate_series(1, 110000)
+                              GROUP BY index 
+                            )
+                            LIMIT 100000" )
 # ^^ GROUP BY index --> Discard duplicates
 
 # some fancy wierdness
@@ -86,7 +86,13 @@ function(input, output) {
   
   twitters <- load_data()
 
+  twitters <- eventReactive(input$go, {
+    return(load_data())
+  })
 
+  # output$plot <- renderPlot({
+  #   hist(randomVals())
+  # })
   # twitters
   # [1] "index"            "user_id"          "tweet_id"         "tweet"           
   # [5] "num_words"        "created_ts"       "user_created_ts"  "tweet_created_ts"
@@ -144,7 +150,7 @@ function(input, output) {
   #############################################################################################
   # SHINY-TWEETS(TM)
   #############################################################################################
-  
+
   
 
   polluters_ps = subset(twitters, is_polluter == 1)
