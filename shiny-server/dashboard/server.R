@@ -2,6 +2,7 @@
 library(shiny)
 library(ggplot2)
 library(RPostgreSQL)
+library(pryr)
 #install.packages("RAmazonS3", repos = "http://www.omegahat.org/R")
 #library(rmongodb)
 
@@ -15,16 +16,25 @@ load_data <- function(){
   con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
   #data <- dbReadTable(con, "twitters")
 
-  data <- dbGetQuery(con, "SELECT * FROM  
-      (SELECT DISTINCT 1 + trunc(random() * (
-              SELECT reltuples::bigint AS estimate
-              FROM   pg_class
-              WHERE  oid = 'public.twitters'::regclass
-            )
-        )::integer AS index 
-        FROM generate_series(1, 11000) g) r 
-        JOIN  twitters USING (index) LIMIT  10000;" )
+  data <- dbGetQuery(con, "SELECT * FROM twitters
+                            WHERE index IN (
+                              SELECT round(random() * 21e6)::integer as index
+                              FROM generate_series(1, 110000)
+                              GROUP BY index 
+                            )
+                            LIMIT 100000" )
+# ^^ GROUP BY index --> Discard duplicates
 
+# some fancy wierdness
+# SELECT * FROM  
+#       (SELECT DISTINCT 1 + trunc(random() * (
+#               SELECT reltuples::bigint AS estimate
+#               FROM   pg_class
+#               WHERE  oid = 'public.twitters'::regclass
+#             )
+#         )::integer AS index 
+#         FROM generate_series(1, 11000) g) r 
+#         JOIN  twitters USING (index) LIMIT  10000;
 
 # count(*) the number of rows: meh...
 
