@@ -213,7 +213,7 @@ function(input, output) {
           data=twitters,
           family="binomial"
           )
-    print(summary(mod_words))
+    stargazer(mod_words, type = "html")
   })
 
   ##############
