@@ -87,13 +87,13 @@ function(input, output) {
 
   df <- eventReactive(input$button, {
       twitters <- load_data()
-      print( head(twitters$num_words) )
+      print(summary(polluters_ps$num_words) )
   })
-  output$texts <- renderPrint({
+  output$summary_poll <- renderPrint({
     df()
   })
-  # output$texts <- renderPrint({
-  #   print( head(twitters$num_words) )
+  # output$summary_poll <- renderPrint({
+  #   print(summary(polluters_ps$num_words) )
   # })
   # twitters
   # [1] "index"            "user_id"          "tweet_id"         "tweet"           
@@ -200,12 +200,9 @@ function(input, output) {
     axis(1,col="gray100")
     axis(2,col="gray100")
   })
-  # output$texts <- renderPrint({
-  #   print( head(twitters$num_words) )
+  # output$summary_poll <- renderPrint({
+  #   print(summary(polluters_ps$num_words) )
   # })
-  output$summary_poll <- renderPrint({
-    print(summary(polluters_ps$num_words) )
-  })
   output$summary_leg <- renderPrint({
     print( summary(legit_ps$num_words) )
   })
