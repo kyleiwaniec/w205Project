@@ -192,9 +192,9 @@ function(input, output) {
     axis(1,col="gray100")
     axis(2,col="gray100")
   })
-  # output$summary_poll <- renderPrint({
-  #   print(summary(polluters_ps$num_words) )
-  # })
+  output$summary_poll <- renderPrint({
+    print(summary(polluters_ps$num_words) )
+  })
   output$summary_leg <- renderPrint({
     print( summary(legit_ps$num_words) )
   })
