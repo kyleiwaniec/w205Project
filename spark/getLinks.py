@@ -128,7 +128,7 @@ allData['num_mentions'] = allData['tweet'].apply(lambda x: len(mentions.findall(
 
 print "fitting the model..."
 
-train_cols = allData.columns[[4,6,7,8,12]]
+train_cols = allData.columns[[6,7,8,12]]
 print train_cols
 # Index([u'num_following', u'num_followers', u'num_tweets', u'num_words',
 #        u'num_hashtags', u'num_urls', u'num_mentions'],
@@ -151,7 +151,7 @@ newdata = sqlContext.sql("select * from USERS_TWEETS_ATTRIBUTES")
 
 pdf = newdata.toPandas()
 
-predict_cols = pdf.columns[[5,9,10,11,3]]
+predict_cols = pdf.columns[[9,10,11,3]]
 print predict_cols
 # Index([u'num_following', u'num_followers', u'num_tweets', u'num_words',
 #        u'num_hastags', u'num_urls', u'num_mentions'],
