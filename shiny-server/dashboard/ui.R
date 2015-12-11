@@ -17,8 +17,14 @@ fluidPage(
       tabPanel('Following/Followers', plotOutput("postgresData")),
       tabPanel('Word counts',
         #tags$div(class="col-sm-12",actionButton("button", "Go!")),
-        tags$div(class="col-sm-6",plotOutput('words_poll')),
-        tags$div(class="col-sm-6",plotOutput('words_leg')),
+        tags$div(class="col-sm-6",
+          tags$h4("N = ", verbatimTextOutput('N_leg')),
+          plotOutput('words_poll')
+          ),
+        tags$div(class="col-sm-6",
+          tags$h4("N = ", verbatimTextOutput('N_poll')),
+          plotOutput('words_leg')
+          ),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_poll')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_leg')),
         tags$div(class="col-sm-6",plotOutput('words_boxplot')),

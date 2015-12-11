@@ -174,7 +174,13 @@ function(input, output) {
     
   }, height=700)
 
+  output$N_leg <- renderPrint({
+    print(nrow(legit_ps))
+  })
 
+  output$N_poll <- renderPrint({
+    print(nrow(polluters_ps))
+  })
   
   ##############
   # num_words
