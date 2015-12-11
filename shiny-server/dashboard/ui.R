@@ -18,12 +18,10 @@ fluidPage(
       tabPanel('Word counts',
         #tags$div(class="col-sm-12",actionButton("button", "Go!")),
         tags$div(class="col-sm-6",
-          tags$h4(textOutput('N_poll')),
-          plotOutput('words_poll')
+          tags$h4(class="text-center", textOutput('N_poll'), plotOutput('words_poll'))
           ),
         tags$div(class="col-sm-6",
-          tags$h4(textOutput('N_leg'), plotOutput('words_leg'))
-          
+          tags$h4(class="text-center", textOutput('N_leg'), plotOutput('words_leg'))
           ),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_poll')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_leg')),
