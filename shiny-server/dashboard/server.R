@@ -175,11 +175,11 @@ function(input, output) {
   }, height=700)
 
   output$N_leg <- renderPrint({
-    print(nrow(legit_ps)[1])
+    cat("N = ", nrow(legit_ps)[1])
   })
 
   output$N_poll <- renderPrint({
-    print(nrow(polluters_ps)[1])
+    cat("N = ", nrow(polluters_ps)[1])
   })
   
   ##############
