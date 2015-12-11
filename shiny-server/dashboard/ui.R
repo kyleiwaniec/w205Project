@@ -22,8 +22,8 @@ fluidPage(
           plotOutput('words_poll')
           ),
         tags$div(class="col-sm-6",
-          tags$h4("N = ", textOutput('N_leg')),
-          plotOutput('words_leg')
+          tags$h4("N = ", textOutput('N_leg'), plotOutput('words_leg'))
+          
           ),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_poll')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_leg')),
