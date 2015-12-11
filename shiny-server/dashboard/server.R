@@ -18,7 +18,7 @@ load_data <- function(){
   con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
   #data <- dbReadTable(con, "twitters")
   #data <- dbGetQuery(con, "SELECT * FROM twitters")
-  data <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000" )
+  data <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 100000" )
 
 
 
@@ -30,7 +30,7 @@ load_data <- function(){
 #                             )
 #                             LIMIT 100000
 
-  
+
 # ^^ GROUP BY index --> Discard duplicates
 
 # some fancy wierdness
