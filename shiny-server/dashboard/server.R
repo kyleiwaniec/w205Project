@@ -81,7 +81,7 @@ load_data <- function(){
 
 
   dbDisconnect(con)
-  data = na.omit(data)
+  #data = na.omit(data)
   data$is_polluter = ifelse(data$is_polluter > 0.85, 1,  0)
   return(data)
 }
