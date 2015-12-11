@@ -18,7 +18,13 @@ load_data <- function(){
   con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
   #data <- dbReadTable(con, "twitters")
   #data <- dbGetQuery(con, "SELECT * FROM twitters")
-  data <- dbGetQuery(con, "SELECT * FROM twitters ORDER BY RANDOM() LIMIT 100000" )
+  data <- dbGetQuery(con, "SELECT * FROM twitters
+                            WHERE index IN (
+                              SELECT round(random() * 21e6)::integer as index
+                              FROM generate_series(1, 110000)
+                              GROUP BY index 
+                            )
+                            LIMIT 100000" )
 
 
 
