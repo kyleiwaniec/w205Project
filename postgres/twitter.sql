@@ -74,3 +74,31 @@ CREATE TABLE twitters (
 
 ALTER TABLE public.twitters OWNER TO postgres;
 
+
+CREATE OR REPLACE FUNCTION get_random_id() RETURNS INT4 as $BODY$
+
+declare
+    id_range record;
+    reply INT4;
+    try INT4 := 0;
+
+BEGIN
+
+    SELECT min(id), max(id) - min(id) + 1 as range INTO id_range FROM twitters;
+
+    WHILE ( try < 10 ) LOOP
+        try := try + 1;
+        reply := floor( random() * id_range.range) + id_range.min;
+        perform id FROM twitters WHERE id = reply;
+        IF found THEN
+            RETURN reply;
+        END IF;
+    END LOOP;
+
+    RAISE EXCEPTION 'something strange happened - no record found in % tries', try;
+
+END;
+
+$BODY$ language plpgsql STABLE;
+
+-- explain analyze select * from some_data where id = get_random_id();
