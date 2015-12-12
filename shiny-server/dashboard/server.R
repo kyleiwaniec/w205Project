@@ -194,7 +194,7 @@ function(input, output) {
 
 
   output$N_leg <- renderPrint({
-    cat("N = ", nrow(legit_ps)[1])
+    cat("N = ", names(twitters))
   })
 
   output$N_poll <- renderPrint({
