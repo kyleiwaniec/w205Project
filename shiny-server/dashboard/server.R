@@ -17,10 +17,9 @@ load_data <- function(){
   drv <- dbDriver("PostgreSQL")
   con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
   #data <- dbReadTable(con, "twitters")
-  data <- dbGetQuery(con, "SELECT * FROM  
-    ( SELECT DISTINCT 1 + trunc(random() * max(id))::integer AS id 
-      FROM generate_series(1, 110000) g) r 
-      JOIN  twitters USING (id) LIMIT  100000;")
+  data <- dbGetQuery(con, "SELECT * FROM 
+    ( SELECT DISTINCT 1 + trunc(random() * (select max(id) from twitters))::integer AS id  
+    FROM generate_series(1, 110000) g) r JOIN  twitters USING (id) LIMIT  100000;")
 
 
 
