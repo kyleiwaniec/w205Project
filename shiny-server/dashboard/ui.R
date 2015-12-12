@@ -16,23 +16,30 @@ fluidPage(
       tabPanel('Recent Activity', ""),
       tabPanel('Following/Followers', plotOutput("postgresData")),
       tabPanel('Word counts',
-        #tags$div(class="col-sm-12",actionButton("button", "Go!")),
-        tags$div(class="col-sm-6",
-          tags$h4(class="text-center", textOutput('N_poll'), plotOutput('words_poll'))
-          ),
+        tags$h4(class="col-sm-12 text-center","Word count"),
         tags$div(class="col-sm-6",
           tags$h4(class="text-center", textOutput('N_leg'), plotOutput('words_leg'))
           ),
-        tags$div(class="col-sm-6",verbatimTextOutput('summary_poll')),
+        tags$div(class="col-sm-6",
+          tags$h4(class="text-center", textOutput('N_poll'), plotOutput('words_poll'))
+          ),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_leg')),
+        tags$div(class="col-sm-6",verbatimTextOutput('summary_poll')),
+        
         tags$div(class="col-sm-6",plotOutput('words_boxplot')),
         tags$div(class="col-sm-6",htmlOutput('summary_words_model', class = "stargazer-table"))         
     ),
     tabPanel('Tweet counts',
-        tags$div(class="col-sm-6",plotOutput('tweets_poll')),
-        tags$div(class="col-sm-6",plotOutput('tweets_leg')),
-        tags$div(class="col-sm-6",verbatimTextOutput('summary_Tpoll')),
+        tags$h4(class="col-sm-12 text-center","Tweet count"),
+        tags$div(class="col-sm-6",
+          tags$h4(class="text-center", textOutput('N_leg'), plotOutput('tweets_leg'))
+          ),
+        tags$div(class="col-sm-6",
+          tags$h4(class="text-center", textOutput('N_poll'), plotOutput('tweets_poll'))
+          ),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_Tleg')),
+        tags$div(class="col-sm-6",verbatimTextOutput('summary_Tpoll')),
+        
         tags$div(class="col-sm-6",plotOutput('tweets_boxplot')),
         tags$div(class="col-sm-6",htmlOutput('summary_tweets_model', class = "stargazer-table"))       
     ),
