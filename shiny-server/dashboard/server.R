@@ -183,7 +183,7 @@ function(input, output) {
   }, height=700)
 
 
-  daily_tweets = aggregate(twitters, by=(user_id, num_tweets), 
+  daily_tweets = aggregate(twitters, by=list(user_id, num_tweets), 
                     FUN=mean, na.rm=TRUE)
 
   output$daily_tweets = renderPlot({
