@@ -189,7 +189,13 @@ function(input, output) {
   output$N_poll <- renderPrint({
     cat("N = ", nrow(polluters_ps)[1])
   })
-  
+  output$N_leg2 <- renderPrint({
+    cat("N = ", nrow(legit_ps)[1])
+  })
+
+  output$N_poll2 <- renderPrint({
+    cat("N = ", nrow(polluters_ps)[1])
+  })
   ##############
   # num_words
   ##############

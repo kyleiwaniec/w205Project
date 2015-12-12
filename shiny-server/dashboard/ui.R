@@ -32,10 +32,10 @@ fluidPage(
     tabPanel('Tweet counts',
         tags$h4(class="col-sm-12 text-center","Tweet count"),
         tags$div(class="col-sm-6",
-          tags$h4(class="text-center", textOutput('N_leg'), plotOutput('tweets_leg'))
+          tags$h4(class="text-center", textOutput('N_leg2'), plotOutput('tweets_leg'))
           ),
         tags$div(class="col-sm-6",
-          tags$h4(class="text-center", textOutput('N_poll'), plotOutput('tweets_poll'))
+          tags$h4(class="text-center", textOutput('N_poll2'), plotOutput('tweets_poll'))
           ),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_Tleg')),
         tags$div(class="col-sm-6",verbatimTextOutput('summary_Tpoll')),
