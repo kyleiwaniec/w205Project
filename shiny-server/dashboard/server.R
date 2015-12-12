@@ -184,7 +184,7 @@ function(input, output) {
 
   #id index row_created user_id tweet_id tweet num_words created_ts user_created_ts tweet_created_ts screen_name name num_following num_followers num_tweets retweeted retweet_count num_urls num_mentions num_hashtags user_profile_url tweeted_urls is_polluter
 
-  daily_tweets = aggregate(twitters, by=list(twitters$user_id, twitters$num_tweets), 
+  daily_tweets = aggregate(twitters, by=list(twitters$user_id), 
                     FUN=mean, na.rm=TRUE)
 
   output$daily_tweets = renderPlot({
@@ -195,7 +195,7 @@ function(input, output) {
 
 
   output$N_leg <- renderPrint({
-    cat("N = ", names(twitters))
+    cat("N = ", nrow(legit_ps)[1])
   })
 
   output$N_poll <- renderPrint({
