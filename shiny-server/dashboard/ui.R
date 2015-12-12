@@ -12,11 +12,11 @@ fluidPage(
 
       tabPanel('Honeypot', ""),
       tabPanel('Following/Followers',tags$div(class="divclass",tags$h4("Following to Followers Ratio"), plotOutput('plot'))),
-      tabPanel('Word counts',""),
       tabPanel('Recent Activity', ""),
       tabPanel('Following/Followers', plotOutput("postgresData")),
       tabPanel('Word counts',
         tags$h4(class="col-sm-12 text-center","Word count"),
+        tags$hr(),
         tags$div(class="col-sm-6",
           tags$h4(class="text-center", textOutput('N_leg'), plotOutput('words_leg'))
           ),
@@ -31,6 +31,7 @@ fluidPage(
     ),
     tabPanel('Tweet counts',
         tags$h4(class="col-sm-12 text-center","Tweet count"),
+        tags$hr(),
         tags$div(class="col-sm-6",
           tags$h4(class="text-center", textOutput('N_leg2'), plotOutput('tweets_leg'))
           ),
@@ -43,18 +44,16 @@ fluidPage(
         tags$div(class="col-sm-6",plotOutput('tweets_boxplot')),
         tags$div(class="col-sm-6",htmlOutput('summary_tweets_model', class = "stargazer-table"))       
     ),
-    tabPanel('Mention counts',
-        tags$div(class="col-sm-6",plotOutput('mentions_p')),
-        tags$div(class="col-sm-6",plotOutput('mentions_l')),
-        tags$div(class="col-sm-6",verbatimTextOutput('summary_mentions_p')),
-        tags$div(class="col-sm-6",verbatimTextOutput('summary_mentions_l'))      
-    ),
-    tabPanel('Hashtag counts',
-        tags$div(class="col-sm-6",plotOutput('hashtags_p')),
-        tags$div(class="col-sm-6",plotOutput('hashtags_l')),
-        tags$div(class="col-sm-6",verbatimTextOutput('summary_hashtags_p')),
-        tags$div(class="col-sm-6",verbatimTextOutput('summary_hashtags_l'))      
+    tabPanel('Daily Tweets',
+        tags$div(class="col-sm-12",plotOutput('daily_tweets'))
+          
     )
+    # tabPanel('Hashtag counts',
+    #     tags$div(class="col-sm-6",plotOutput('hashtags_p')),
+    #     tags$div(class="col-sm-6",plotOutput('hashtags_l')),
+    #     tags$div(class="col-sm-6",verbatimTextOutput('summary_hashtags_p')),
+    #     tags$div(class="col-sm-6",verbatimTextOutput('summary_hashtags_l'))      
+    # )
   )
 
 
