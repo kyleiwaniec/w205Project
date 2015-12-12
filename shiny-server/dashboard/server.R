@@ -17,18 +17,21 @@ load_data <- function(){
   drv <- dbDriver("PostgreSQL")
   con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
   #data <- dbReadTable(con, "twitters")
-  data <- dbGetQuery(con, "select * from twitters where index = get_random_id()")
+  data <- dbGetQuery(con, "SELECT * FROM  
+    ( SELECT DISTINCT 1 + trunc(random() * max(id))::integer AS id 
+      FROM generate_series(1, 110000) g) r 
+      JOIN  twitters USING (id) LIMIT  100000;")
 
 
 
 
 # SELECT * FROM twitters
-#                             WHERE index IN (
-#                               SELECT round(random() * 21e6)::integer as index
-#                               FROM generate_series(1, 110000)
-#                               GROUP BY index 
-#                             )
-#                             LIMIT 100000
+#         WHERE index IN (
+#                SELECT round(random() * 21e6)::integer as index
+#                FROM generate_series(1, 110000)
+#                GROUP BY index 
+#                )
+#         LIMIT 100000
 
 
 # ^^ GROUP BY index --> Discard duplicates
@@ -46,7 +49,7 @@ load_data <- function(){
 
 # count(*) the number of rows: meh...
 
-# "WITH params AS (
+# WITH params AS (
 #     SELECT count(*) AS ct             
 #      , min(index)  AS min_id
 #      , max(index)  AS max_id
@@ -61,21 +64,21 @@ load_data <- function(){
 #         GROUP  BY 1                       
 #         ) r
 #     JOIN   twitters USING (index)
-#     LIMIT  100000;"
+#     LIMIT  100000;
 
 
 
 # approximate the number of rows manually: meh...
 
 # SELECT * FROM  
-#     ( SELECT DISTINCT 1 + trunc(random() * 5100000)::integer AS index 
+#     ( SELECT DISTINCT 1 + trunc(random() * max(id))::integer AS id 
 #       FROM generate_series(1, 251000) g) r 
-#       JOIN  twitters USING (index) LIMIT  250000;
+#       JOIN  twitters USING (id) LIMIT  250000;
 
 
 # SELECT * FROM twitters TABLESAMPLE BERNOULLI (10); --Using BERNOULLI sampling method fails
 
-# SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000 --Booooring....
+# SELECT * FROM twitters ORDER BY RANDOM() LIMIT 10000 --slow....
 
 
 

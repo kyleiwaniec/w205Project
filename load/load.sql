@@ -40,4 +40,4 @@ PARTITIONED BY (today_date STRING)
 ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'
 LOCATION '/user/flume/tweets';
 
--- From here on, CRON will add partitions. We may ultimately take the below snippet out.
+-- From here on, CRON will add partitions.

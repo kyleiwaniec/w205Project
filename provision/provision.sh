@@ -149,6 +149,7 @@ cat > /data/make_twitter_postgres.sql <<EOF
 CREATE DATABASE TWITTER;
 \c twitter
 \i /data/w205Project/postgres/twitter.sql
+\d+ twitters
 \q
 EOF
 

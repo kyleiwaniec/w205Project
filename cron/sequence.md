@@ -23,7 +23,7 @@ ssh into your instance
 ssh -i "xxx.pem" root@ec2-xx-x-xxx-xx.compute-1.amazonaws.com
 fdisk –l
 wget https://s3-us-west-2.amazonaws.com/w205twitterproject/provision.sh
-. provision.sh <DEVICE PATH>
+. provision.sh <DEVICE PATH> # run once
 ```
 
 then run your personal git-keys script, or however you wan to to authorize git.   
@@ -46,7 +46,7 @@ then run we'll the scheduler...
 
 
 user is prompted to add twitter keys bootstrap script.
-keywords have been set to all alphanumeric to capture all tweets: a,b,c,...,8,9,0
+flume keywords have been set to top 100 words on twitter.
 
 
 ```
@@ -60,14 +60,14 @@ Also, Flume must be stopped before running transform
 
 
 ```
-. /data/w205Project/load/load-hive-table.sh
-. /data/w205Project/transform/transform.sh
+. /data/w205Project/load/load-hive-table.sh # loads external hive table
+. /data/w205Project/transform/transform.sh # adds partition based on today's date, overrides the transformed table for classification
 
 ```
 
 then pyspark:
 ```
-/data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py
+/data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py # classify and save to postgres, and json
 sudo restart shiny-server # might not be necessary
 ```
 

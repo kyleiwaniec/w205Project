@@ -33,15 +33,16 @@ echo "starting hadoop.."
 # 	. /data/w205Project/shiny-server/install-shiny.sh
 # fi
 
+# Extra libraries not on the AMI:
+
 sudo su - \
   -c "R -e \"install.packages('pryr',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
 sudo su - \
   -c "R -e \"install.packages('devtools',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
-
 sudo su - \
   -c "R -e \"install.packages('stargazer',repos='http://cran.cnr.berkeley.edu',dependencies = TRUE)\""
 
-
+# copy the dashboard files:
 cp -r /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
 
 #####################################

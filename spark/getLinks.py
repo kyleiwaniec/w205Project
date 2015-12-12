@@ -12,7 +12,7 @@ from pyspark.sql.window import Window
 
 sqlContext.sql("ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar");
 # sqlContext.sql("ADD JAR /usr/lib/hadoop/hadoop-aws.jar");
-#sqlContext.sql("ADD JAR /usr/lib/hadoop/lib/aws-java-sdk-1.7.14.jar");
+# sqlContext.sql("ADD JAR /usr/lib/hadoop/lib/aws-java-sdk-1.7.14.jar");
 
 ###############################################
 #    EXTRACT ALL THE LINKS INDISCRIMINATELY   #
@@ -182,6 +182,7 @@ engine = create_engine('postgresql://postgres:pass@localhost:5432/twitter')
 con = engine.connect()
 print pdf.shape
 print pdf.columns
+print "saving to postgres..."
 pdf.to_sql(con=con, name='twitters', if_exists='append', flavor='postgresql')
 
 '''
