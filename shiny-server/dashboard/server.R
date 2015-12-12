@@ -188,7 +188,7 @@ function(input, output) {
                     FUN=mean, na.rm=TRUE)
 
   output$daily_tweets = renderPlot({
-    ggplot(data=daily_tweets, aes(x=tweet_created_ts, y=num_tweets, fill=is_polluter)) +
+    ggplot(data=daily_tweets, aes(x=as.factor(tweet_created_ts), y=num_tweets, fill=is_polluter)) +
     geom_bar(stat="identity", position=position_dodge(), colour="black") +
     scale_fill_manual(values=c("#999999", "#E69F00"))
   })
