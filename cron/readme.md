@@ -12,4 +12,6 @@ Make sure to hit "return" so the file ends with a new line.
 
 To setup the cron Daemon that will schedule the project every day at noon UTC run:
 `crontab simple_sched_cron.txt`
-Make sure that 
+
+Make sure that simple_sched.sh is executable:
+`chmod +x simple_sched.sh`
