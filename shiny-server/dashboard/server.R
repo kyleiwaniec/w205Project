@@ -184,14 +184,14 @@ function(input, output) {
 
   #id index row_created user_id tweet_id tweet num_words created_ts user_created_ts tweet_created_ts screen_name name num_following num_followers num_tweets retweeted retweet_count num_urls num_mentions num_hashtags user_profile_url tweeted_urls is_polluter
 
-  daily_tweets = aggregate(twitters, by=list(twitters$user_id), 
-                    FUN=mean, na.rm=TRUE)
+  # daily_tweets = aggregate(twitters, by=list(twitters$user_id), 
+  #                   FUN=mean, na.rm=TRUE)
 
-  output$daily_tweets = renderPlot({
-    ggplot(data=daily_tweets, aes(x=as.factor(tweet_created_ts), y=num_tweets, fill=is_polluter)) +
-    geom_bar(stat="identity", position=position_dodge(), colour="black") +
-    scale_fill_manual(values=c("#999999", "#E69F00"))
-  })
+  # output$daily_tweets = renderPlot({
+  #   ggplot(data=daily_tweets, aes(x=as.factor(tweet_created_ts), y=num_tweets, fill=is_polluter)) +
+  #   geom_bar(stat="identity", position=position_dodge(), colour="black") +
+  #   scale_fill_manual(values=c("#999999", "#E69F00"))
+  # })
 
 
   output$N_leg <- renderPrint({
