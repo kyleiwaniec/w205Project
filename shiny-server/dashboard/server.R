@@ -17,11 +17,16 @@ load_data <- function(){
   drv <- dbDriver("PostgreSQL")
   con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
   #data <- dbReadTable(con, "twitters")
-  data <- dbGetQuery(con, "SELECT *, AVG(num_tweets) AS avg_num_tweets FROM twitters GROUP BY 
-      user_id,id,index,row_created,tweet_id,tweet,num_words,created_ts,user_created_ts,tweet_created_ts,
-      screen_name,name,num_following,num_followers,num_tweets,retweeted,retweet_count,num_urls,        
-      num_mentions,num_hashtags,user_profile_url,tweeted_urls,is_polluter")
+  data <- dbGetQuery(con, "SELECT * FROM 
+    ( SELECT DISTINCT 1 + trunc(random() * (select max(id) from twitters))::integer AS id  
+    FROM generate_series(1, 100000) g) r JOIN  twitters USING (id) LIMIT  100000;")
 
+
+
+# SELECT *, AVG(num_tweets) AS avg_num_tweets FROM twitters GROUP BY 
+#       user_id,id,index,row_created,tweet_id,tweet,num_words,created_ts,user_created_ts,tweet_created_ts,
+#       screen_name,name,num_following,num_followers,num_tweets,retweeted,retweet_count,num_urls,        
+#       num_mentions,num_hashtags,user_profile_url,tweeted_urls,is_polluter
 
 # SELECT * FROM 
 #     ( SELECT DISTINCT 1 + trunc(random() * (select max(id) from twitters))::integer AS id  
@@ -253,34 +258,34 @@ function(input, output) {
   # num_tweets
   ##############
   # max of the 3rd quartile
-  max_tweets = max(summary(polluters_ps$avg_num_tweets)[5], summary(legit_ps$avg_num_tweets)[5])
+  max_tweets = max(summary(polluters_ps$num_tweets)[5], summary(legit_ps$num_tweets)[5])
 
   output$tweets_poll <- renderPlot({
-     hist(polluters_ps$avg_num_tweets, col="gold2", border="white",main = paste("Content Polluters"), breaks=600, xlim=c(0,max_tweets))
+     hist(polluters_ps$num_tweets, col="gold2", border="white",main = paste("Content Polluters"), breaks=600, xlim=c(0,max_tweets))
      axis(1,col="gray100")
      axis(2,col="gray100")
   })
   output$tweets_leg <- renderPlot({
-    hist(legit_ps$avg_num_tweets, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=600, xlim=c(0,max_tweets))
+    hist(legit_ps$num_tweets, col="darkolivegreen3", border="white", main=paste("Legitimate Users"),breaks=600, xlim=c(0,max_tweets))
     axis(1,col="gray100")
     axis(2,col="gray100")
   })
   
   output$summary_Tpoll <- renderPrint({
-    print(summary(polluters_ps$avg_num_tweets))
+    print(summary(polluters_ps$num_tweets))
   })
   output$summary_Tleg <- renderPrint({
-    print( summary(legit_ps$avg_num_tweets))
+    print( summary(legit_ps$num_tweets))
   })
 
   output$tweets_boxplot <- renderPlot({
-    boxplot(twitters$avg_num_tweets ~ twitters$is_polluter, 
-      ylim=c(0,(summary(polluters_ps$avg_num_tweets)[5])*2),
+    boxplot(twitters$num_tweets ~ twitters$is_polluter, 
+      ylim=c(0,(summary(polluters_ps$num_tweets)[5])*2),
       xlab="Legitmate Users Vs Polluters",
       )
   })
   output$summary_tweets_model <- renderPrint({
-    mod_tweets = glm(is_polluter ~ avg_num_tweets, 
+    mod_tweets = glm(is_polluter ~ num_tweets, 
           data=twitters,
           family="binomial"
           )
