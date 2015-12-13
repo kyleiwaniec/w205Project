@@ -3,6 +3,7 @@ from snakebite.client import Client
 import os
 import tinys3
 import logging
+import json
 
 def s3_connect(key, secret_key,endpoint,default_bucket):
 	conn = tinys3.Connection(key,secret_key,tls=True,endpoint=endpoint,default_bucket=default_bucket)
@@ -29,8 +30,16 @@ def retrieve_start_urls(file):
         start_urls = []
         f=open(file,'r')
         for line in f:
-        	logging.debug("retrieving url: %s" % str(line))
-        	start_urls.append(str(line).rstrip("\n"))
+        	logging.debug("retrieving raw payload: %s" % str(line))
+		json_line = json.loads(line)
+		for obj in json_line:
+			logging.debug("starting to extract URL from %s" % str(obj))
+			if len(obj["expanded_url"]) == 0: continue
+			url = obj["expanded_url"][0].replace("\\","")
+			# expanded_url = obj["expanded"]
+			logging.debug("Appending URL: %s to start urls" % str(url))
+			start_urls.append(str(url).rstrip("\n"))
+        	# start_urls.append(str(line).rstrip("\n"))
         f.close()
         return start_urls
 

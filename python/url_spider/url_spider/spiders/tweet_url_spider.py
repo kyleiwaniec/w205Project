@@ -16,6 +16,7 @@ def get_urls(response):
 
 class TweetURLSpider(scrapy.Spider):
 	name = "TweetURLSpider"
+	logging.debug("Retrieving start URLs from logs/temp_urls.log")
 	start_urls = util.retrieve_start_urls('logs/temp_urls.log')
 	#start_urls = ["http://www.dmoz.org/Computers/Programming/Languages/Python/Books/", "http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/"]
 	logging.debug("The array of starting URLs is: %s" % start_urls)
@@ -25,6 +26,8 @@ class TweetURLSpider(scrapy.Spider):
 	def parse(self, response):
 		for href in get_urls(response):
 			url = response.urljoin(href)
+			url = url.replace("\\","")
+			logging.debug("About to crawl URL:%s" % url)
 			filename = "logs/spammy_urls.log" 
 			with open(filename, 'ab') as f:
 				f.write(url + "\n")
@@ -34,6 +37,8 @@ class TweetURLSpider(scrapy.Spider):
 	def parse_next_urls(self, response):
 		for href in get_urls(response):
 			url = response.urljoin(href)
+			url = url.replace("\\","")
+			logging.debug("About to crawl URL:%s" % url)
 			filename = "logs/spammy_urls.log"
 			with open(filename, 'ab') as f:
 				f.write(url + "\n")
