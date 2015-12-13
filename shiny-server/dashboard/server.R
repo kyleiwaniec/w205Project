@@ -19,7 +19,7 @@ load_data <- function(){
   #data <- dbReadTable(con, "twitters")
   data <- dbGetQuery(con, "SELECT *, AVG(num_tweets) as avg_num_tweets FROM 
     ( SELECT DISTINCT 1 + trunc(random() * (select max(id) from twitters))::integer AS id  
-    FROM generate_series(1, 100000) g) r JOIN  twitters USING (id) GROUP BY user_id LIMIT  100000;")
+    FROM generate_series(1, 100000) g) r JOIN  twitters USING (id) GROUP BY user_id, id LIMIT  100000;")
 
 
 
