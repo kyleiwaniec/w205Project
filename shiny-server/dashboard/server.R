@@ -18,7 +18,7 @@ load_data <- function(){
   con <- dbConnect(drv, dbname="twitter",host="localhost",port=5432,user="postgres",password="pass")
   #data <- dbReadTable(con, "twitters")
   data <- dbGetQuery(con, "SELECT *, AVG(num_tweets) AS avg_num_tweets FROM twitters GROUP BY 
-      id,index,row_created,user_id,tweet_id,tweet,num_words,created_ts,user_created_ts,tweet_created_ts,
+      user_id,id,index,row_created,tweet_id,tweet,num_words,created_ts,user_created_ts,tweet_created_ts,
       screen_name,name,num_following,num_followers,num_tweets,retweeted,retweet_count,num_urls,        
       num_mentions,num_hashtags,user_profile_url,tweeted_urls,is_polluter")
 
