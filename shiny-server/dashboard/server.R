@@ -19,9 +19,18 @@ load_data <- function(){
   #data <- dbReadTable(con, "twitters")
   data <- dbGetQuery(con, "SELECT * FROM 
     ( SELECT DISTINCT 1 + trunc(random() * (select max(id) from twitters))::integer AS id  
-    FROM generate_series(1, 110000) g) r JOIN  twitters USING (id) LIMIT  100000;")
+    FROM generate_series(1, 100000) g) r JOIN  twitters USING (id) LIMIT  100000;")
 
 
+
+# SELECT *, AVG(num_tweets) AS avg_num_tweets FROM twitters GROUP BY 
+#       user_id,id,index,row_created,tweet_id,tweet,num_words,created_ts,user_created_ts,tweet_created_ts,
+#       screen_name,name,num_following,num_followers,num_tweets,retweeted,retweet_count,num_urls,        
+#       num_mentions,num_hashtags,user_profile_url,tweeted_urls,is_polluter
+
+# SELECT * FROM 
+#     ( SELECT DISTINCT 1 + trunc(random() * (select max(id) from twitters))::integer AS id  
+#     FROM generate_series(1, 100000) g) r JOIN  twitters USING (id) LIMIT  100000;
 
 
 # SELECT * FROM twitters
@@ -182,6 +191,18 @@ function(input, output) {
     
   }, height=700)
 
+  #id index row_created user_id tweet_id tweet num_words created_ts user_created_ts tweet_created_ts screen_name name num_following num_followers num_tweets retweeted retweet_count num_urls num_mentions num_hashtags user_profile_url tweeted_urls is_polluter
+
+  # daily_tweets = aggregate(twitters, by=list(twitters$user_id), 
+  #                   FUN=mean, na.rm=TRUE)
+
+  # output$daily_tweets = renderPlot({
+  #   ggplot(data=daily_tweets, aes(x=as.factor(tweet_created_ts), y=num_tweets, fill=is_polluter)) +
+  #   geom_bar(stat="identity", position=position_dodge(), colour="black") +
+  #   scale_fill_manual(values=c("#999999", "#E69F00"))
+  # })
+
+
   output$N_leg <- renderPrint({
     cat("N = ", nrow(legit_ps)[1])
   })
@@ -189,7 +210,13 @@ function(input, output) {
   output$N_poll <- renderPrint({
     cat("N = ", nrow(polluters_ps)[1])
   })
-  
+  output$N_leg2 <- renderPrint({
+    cat("N = ", nrow(legit_ps)[1])
+  })
+
+  output$N_poll2 <- renderPrint({
+    cat("N = ", nrow(polluters_ps)[1])
+  })
   ##############
   # num_words
   ##############
