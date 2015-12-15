@@ -2,7 +2,7 @@
 follow these steps in order:   
 
 use this AMI:   
-w205Project_V2.0 <-- has the works!
+w205Project_V2.0 <-- has the works! (well.. until we added more stuff, and it ALMOST has the works)
 
 create a new m3.large instance with security group containing:
 
