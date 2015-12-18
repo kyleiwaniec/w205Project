@@ -1,17 +1,13 @@
 ##CRON is awesome
 
-To schedule some stuff, write a cron job in cron-file.txt   
+Remember to put everything on one line    
+Make sure to hit "return" so the file ends with a new line.   
 
-Then run:   
-`crontab cron-file.txt`   
-
-This will start the deamon. Everytime you run this command, the crontab will be replaced by the new data in the cron-file.txt
-   
-Put everything on one line   
-Make sure to hit "return" so the file ends with a new line. 
+Make sure that simple_sched.sh is executable:
+`chmod +x simple_sched.sh`
 
 To setup the cron Daemon that will schedule the project every day at noon UTC run:
 `crontab simple_sched_cron.txt`
 
-Make sure that simple_sched.sh is executable:
-`chmod +x simple_sched.sh`
+Everytime you run this command, the crontab will be replaced by the new data in the simple_sched_cron.txt
+
