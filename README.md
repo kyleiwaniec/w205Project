@@ -28,7 +28,7 @@ wget https://s3-us-west-2.amazonaws.com/w205twitterproject/provision.sh
 . provision.sh <DEVICE PATH> # run once
 ```
 
-then run your personal git-keys script, or however you wan to to authorize git.   
+then run your personal git-keys script, or however you want to authorize git.   
 here is a template, if you know what yer keys are: `git-keys-template.sh`
 ```
 vi git-keys.sh # copypasta from the template
@@ -39,8 +39,8 @@ git clone git@github.com:kyleiwaniec/w205Project.git
 pull the repo, then run:  
 ```
 cd /data/w205Project
-git checkout testall # this will change to master when we're ready
-git pull origin testall
+git checkout dev # this will change to master when we're ready
+git pull origin dev
 . provision/bootstrap.sh
 ```
 
