@@ -31,7 +31,8 @@ SET search_path = public;
 -- Name: twitter_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 DROP SEQUENCE IF EXISTS twitter_id_seq;
-CREATE SEQUENCE twitter_id_seq START 1;
+CREATE SEQUENCE twitter_id_seq 
+    START 1
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
