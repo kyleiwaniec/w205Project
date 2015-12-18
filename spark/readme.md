@@ -1,3 +1,5 @@
+# ALL OF THIS IS DEPRACATED. WE ARE NOT USING S3 FOR THIS. LEAVING IT HERE FOR FUTURE OPPORTUNITIES
+
 ###To use S3, make sure to add your keys to AWS, and enable s3 and s3native filesystem
 
 `vi /etc/hadoop/conf/core-site.xml`   
@@ -16,20 +18,20 @@
 
 <property>
 	<name>fs.s3n.awsAccessKeyId</name>
-	<value>aws_access_key_id</value>
+	<value>awsAccessKeyId</value>
 </property>
 <property>
 	<name>fs.s3.awsAccessKeyId</name>
-	<value>aws_access_key_id</value>
+	<value>awsAccessKeyId</value>
 </property>
 
 <property>
 	<name>fs.s3n.awsSecretAccessKey</name>
-	<value>aws_secret_access_key</value>
+	<value>awsSecretAccessKey</value>
 </property>
 <property>
 	<name>fs.s3.awsSecretAccessKey</name>
-	<value>aws_secret_access_key</value>
+	<value>awsSecretAccessKey</value>
 </property>
 ```
 
@@ -44,6 +46,19 @@ mkdir /data/spark15_h24
 mv spark-1.5.2-bin-hadoop2.4/* /data/spark15_h24/
 cp /data/spark15/conf/hive-site.xml /data/spark15_h24/conf
 ```
+
+
+
+run everything in python 2.7, and get all the python modules:
+```
+pip install pandas
+pip install statsmodels
+pip install numpy
+pip install sqlalchemy
+pip install psycopg2
+
+```
+
 
 to run run pyspark, do:   
 ```
