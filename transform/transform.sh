@@ -39,6 +39,6 @@ RETWEETED, RETWEET_COUNT, TEXT;
 # Snaity checks:
 # hive -e "ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;select * from tweets where today_date='$today' limit 1"
 # hive -e "ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;select num_words from USERS_TWEETS_ATTRIBUTES limit 10"
-# hive -e "ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;select * from USERS_TWEETS_ATTRIBUTES limit 1"
+# hive -e "ADD JAR /data/w205Project/load/hive-serdes-1.0-SNAPSHOT.jar;select * from USERS_TWEETS_ATTRIBUTES order by created_ts desc limit 1"
 # hive -e "ANALYZE TABLE USERS_TWEETS_ATTRIBUTES COMPUTE STATISTICS noscan;"
 
