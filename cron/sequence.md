@@ -2,7 +2,7 @@
 follow these steps in order:   
 
 use this AMI:   
-w205Project_V2.0 <-- has the works!
+w205Project_V2.0 <-- has the works! (well.. until we added more stuff, and it ALMOST has the works)
 
 create a new m3.large instance with security group containing:
 
@@ -21,7 +21,7 @@ ssh into your instance
 
 ```
 ssh -i "xxx.pem" root@ec2-xx-x-xxx-xx.compute-1.amazonaws.com
-fdisk –l
+fdisk -l
 wget https://s3-us-west-2.amazonaws.com/w205twitterproject/provision.sh
 . provision.sh <DEVICE PATH> # run once
 ```
@@ -60,19 +60,24 @@ Also, Flume must be stopped before running transform
 
 
 ```
-. /data/w205Project/load/load-hive-table.sh # loads external hive table
-. /data/w205Project/transform/transform.sh # adds partition based on today's date, overrides the transformed table for classification
+# loads external hive table
+. /data/w205Project/load/load-hive-table.sh 
+
+# adds partition based on today's date, overrides the transformed table for classification
+. /data/w205Project/transform/transform.sh 
 
 ```
 
 then pyspark:
 ```
-/data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py # classify and save to postgres, and json
-sudo restart shiny-server # might not be necessary
+# classify and save to postgres, and json
+/data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py 
+
+# sometimes caching things happen, and server should be restarted
+sudo restart shiny-server 
 ```
 
 then crawler: (ENV27 is already running, all the modules have been installed, and S3 passwords were entered via bootstrap script)   
-TODO: fix Kyle's shitty encoding
 ```
 cd /data/w205Project/python/url_spider/url_spider
 scrapy crawl TweetURLSpider
