@@ -1,6 +1,6 @@
 import sbt.Keys._
 
-name := "store_data"
+name := "classify_store_tweets"
 
 version := "1.0"
 
@@ -8,11 +8,14 @@ scalaVersion := "2.11.7"
 
 
 libraryDependencies ++= Seq(
-	"org.apache.spark" %% "spark-core" % "1.5.2" % "provided",
-	"org.apache.spark" %% "spark-sql" % "1.5.2" % "provided",
-	"org.apache.spark" %% "spark-hive" % "1.5.2" % "provided"
-	"com.github.seratch" %% "awscala" % "0.5.+"
+	"org.apache.spark" %% "spark-core" % "1.5.2",
+	"org.apache.spark" %% "spark-sql" % "1.5.2",
+	"org.apache.spark" %% "spark-hive" % "1.5.2"
 )
+
+assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false)
+
+mainClass in assembly := Some("w205.ClassifyStoreTweetsUrls")
 
 resolvers ++= Seq(
 	"bintray-spark-packages" at "https://dl.bintray.com/spark-packages/maven/",
