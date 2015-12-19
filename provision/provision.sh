@@ -145,16 +145,7 @@ cat > /data/hadoop/hive/conf/hive-site.xml <<EOF
 </configuration>
 EOF
 
-cat > /data/make_twitter_postgres.sql <<EOF
-CREATE DATABASE TWITTER;
-\c twitter
-\i /data/w205Project/postgres/twitter.sql
-\d+ twitters
-\q
-EOF
 
-#run the twitter creation sql
-sudo -u postgres psql -f /data/make_twitter_postgres.sql
 
 # make the start_metastore file
 cat > /data/start_metastore.sh <<EOF

@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS twitter;
+CREATE DATABASE twitter;
+\c twitter
+
 --
 -- PostgreSQL database dump
 --

@@ -50,8 +50,16 @@ cp -r /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
 #####################################
 
 # write setup script for twitter table
-# moved to provision script. 
+# cat > /data/make_twitter_postgres.sql <<EOF
+# CREATE DATABASE TWITTER;
+# \c twitter
+# \i /data/w205Project/postgres/twitter.sql
+# \d+ twitters
+# \q
+# EOF
 
+#run the twitter creation sql
+sudo -u postgres psql -f /data/w205Project/postgres/twitter.sql
 
 #####################################
 # HIVE
