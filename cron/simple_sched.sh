@@ -5,18 +5,18 @@ su --shell=/bin/bash --session-command=". /data/w205Project/flume/start-flume.sh
 
 sleep 3600 # lets flume gather data for 1 hour
 
-#pgrep -u hdfs | tail -n 1 | sudo xargs kill -SIGINT # kills flume process
-# this doesn't work either :(
-kill -SIGINT $(/usr/bin/pgrep -u hdfs | tail -n 1 | sudo xargs) 
+#kill -SIGINT $(pgrep -u hdfs | tail -n 1 | sudo xargs)
 
+#su --shell=/bin/bash --session-command="pgrep -u hdfs | tail -n 1 | sudo xargs kill -SIGINT" root
+
+/usr/bin/pgrep  -u hdfs | tail -n 1 | sudo xargs kill -SIGINT
 
 . /data/w205Project/transform/transform.sh
 
 /data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py
 
+#cd /data/w205Project/python/url_spider/url_spider
 
-cd /data/w205Project/python/url_spider/url_spider
+/root/ENV27/bin/scrapy crawl /data/w205Project/python/url_spider/url_spider/TweetURLSpider
 
-scrapy crawl TweetURLSpider
-
-python url_upload.py
+/root/ENV27/bin/python /data/w205Project/python/url_spider/url_spider/url_upload.py
