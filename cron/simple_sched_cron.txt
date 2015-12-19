@@ -1,1 +1,1 @@
-* 12 * * * . /data/w205Project/cron/simple_sched.sh
+* 12 * * * . /data/w205Project/cron/simple_sched.sh > /data/cronlog.log 2>&1

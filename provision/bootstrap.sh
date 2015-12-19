@@ -58,7 +58,7 @@ cp -r /data/w205Project/shiny-server/dashboard/* /srv/shiny-server/dashboard/
 #####################################
 # make sure the hive metastore is set
 cp /data/hadoop/hive/conf/hive-site.xml /etc/hive/conf.dist/hive-site.xml
-hive -f /data/w205Project/load/load.sql
+
 
 #####################################
 # SPARK
