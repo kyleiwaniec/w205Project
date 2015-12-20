@@ -81,6 +81,7 @@ sudo cp -r /data/w205Project/provision/hive-site.xml /data/spark15/conf/hive-sit
 
 source ~/ENV27/bin/activate
 # install any additonal python modules
+pip install 'requests[security]' #for urllib3
 pip install -r /data/w205Project/provision/requirements.txt
 
 

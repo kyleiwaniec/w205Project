@@ -8,8 +8,8 @@ su --shell=/bin/bash --session-command=". /data/w205Project/flume/start-flume.sh
 
 
 # /bin/kill -TERM $(/bin/cat /data/script.pid) && /bin/rm /data/script.pid
-# so after 10,000 desperate attemps to get the flume pid, and at the point of "I'm just about to blow my brains out",
-# what follows is a nasty hack to kill flume. enjoy thy schadenfreude. 
+# so after 10,000 desperate attemps to capture the flume pid, and at the point of "I'm just about to blow my brains out",
+# what follows is a nasty hack to kill flume. enjoy.
 
 /bin/kill -TERM $(/usr/bin/pgrep -u hdfs | /usr/bin/tail -n -1 | /usr/bin/xargs)
 # or more simply: kill -TERM $(pgrep -u hdfs | tail -1)

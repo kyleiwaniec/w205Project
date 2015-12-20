@@ -45,4 +45,4 @@ with open('logs/test_links.json', 'w') as outfile:
     json.dump(response, outfile)
 
 f = open('test_links.json','r')
-util.upload_json(conn,"logs/test.json",f)
+util.upload_json(conn,"links3.json",f)
