@@ -53,8 +53,9 @@ Run the scheduler:
 crontab simple_shed_cron.txt
 ```
 
-the scheduler will run all of the following... these are for reference only:
+Watch it here: `tail -f /data/cronlog.log`   
 
+The scheduler will run all of the following... these are for reference only:   
 
 ```
 sudo -u hdfs bash /data/w205Project/flume/start-flume.sh

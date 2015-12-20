@@ -174,6 +174,10 @@ wget http://mirror.nexcess.net/apache/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.
 tar -xvf spark-1.5.2-bin-hadoop2.6.tgz
 sudo mv spark-1.5.2-bin-hadoop2.6/* /data/spark15
 ln -s /data/spark15 $HOME/spark15
+mkdir /data/spark15/tmp
+cat > /data/spark15/conf/spark-defaults.conf <<EOF
+spark.local.dir   /data/spark15/tmp
+EOF
 
 #####################################
 # CONFIGURE HADOOP
