@@ -68,8 +68,8 @@ Also, Flume must be stopped before running transform
 
 
 ```
-# loads external hive table ADDED TO BOOTSTRAP SCRIPT. NEEDS ONLY TO RUN ONCE
-~~. /data/w205Project/load/load-hive-table.sh~~
+# loads external hive table
+. /data/w205Project/load/load-hive-table.sh
 
 # adds partition based on today's date, overrides the transformed table for classification
 . /data/w205Project/transform/transform.sh 
