@@ -177,15 +177,15 @@ object LearnSpamModel {
 		//TODO: What if some datatype changes in the tweet object? More flexibile type handling.
 
 		val tweetTable = sqlContext.read.format("json")
-			.load("/user/spark/tweets/2015/12/19/tweetstream*/part-*").cache()
+			.load("/user/spark/tweets/2015/12/19/tweetstream*/part-*")
 		val tweetData = tweetTable.selectExpr("user.followersCount", "user.friendsCount", "user.statusesCount",
 			"length(user.screenName)", "length(user.description)",
 			"size(split(text, ' ')) as numWords", "id as tweet_id")
 		val tweetsToClassify = tweetData.map(row => Vectors.dense(row.getLong(0).toDouble,
 			row.getLong(1).toDouble, row.getLong(2).toDouble, row.getInt(3).toDouble,
-			row.getInt(4).toDouble, row.getInt(5).toDouble)).cache()
+			row.getInt(4).toDouble, row.getInt(5).toDouble))
 
-		//Is this caching really beneficial? Due to lazy init prevalent in Scala & Spark,
+		//Would caching be beneficial here? Due to lazy init prevalent in Scala & Spark,
 		//this question has been hard to figure out empirically.
 
 		val predictedLabels = tweetsToClassify.map { features => (model.predict(features)) }

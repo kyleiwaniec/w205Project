@@ -6,32 +6,24 @@ version := "1.0"
 
 scalaVersion := "2.11.7"
 
-libraryDependencies += "com.amazonaws" % "aws-java-sdk-config" % "1.10.37"
-
-libraryDependencies += "com.amazonaws" % "aws-java-sdk-dynamodb" % "1.10.37"
-
-libraryDependencies += "com.google.code.gson" % "gson" % "2.3"
-
-libraryDependencies += "org.twitter4j" % "twitter4j-core" % "3.0.3"
-
-libraryDependencies += "org.twitter4j" % "twitter4j-stream" % "3.0.3"
-
 libraryDependencies ++= Seq(
 	"org.apache.spark" %% "spark-core" % "1.5.2" % "provided",
 	"org.apache.spark" %% "spark-sql" % "1.5.2" % "provided",
 	"org.apache.spark" %% "spark-hive" % "1.5.2" % "provided",
 	"org.apache.spark" %% "spark-mllib" % "1.5.2" % "provided",
 	"org.apache.spark" %% "spark-streaming" % "1.5.2",
-	"org.apache.spark" %% "spark-streaming-twitter" % "1.5.2"
+	"org.apache.spark" %% "spark-streaming-twitter" % "1.5.2",
+	"com.google.code.gson" % "gson" % "2.3",
+	"org.twitter4j" % "twitter4j-core" % "3.0.3",
+	"org.twitter4j" % "twitter4j-stream" % "3.0.3"
 )
 
-resolvers += "bintray-spark-packages" at "https://dl.bintray.com/spark-packages/maven/"
-
-resolvers += "AkkaRepository" at "http://repo.akka.io/releases/"
+resolvers ++= Seq("bintray-spark-packages" at "https://dl.bintray.com/spark-packages/maven/",
+				  "AkkaRepository" at "http://repo.akka.io/releases/")
 
 assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false)
 
-mainClass in assembly := Some("mids.w205.spark.CollectTweets")
+mainClass in assembly := Some("w205.CollectTweets")
 
 assemblyMergeStrategy in assembly := {
 	case PathList("javax", "servlet", xs @ _*) => MergeStrategy.last
