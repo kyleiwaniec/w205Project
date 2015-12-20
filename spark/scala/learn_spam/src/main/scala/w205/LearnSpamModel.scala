@@ -4,7 +4,7 @@ package w205
 	Spark Context & SQL Import
 *****************************************************************************/
 
-import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.types.{StructType, StructField, StringType, IntegerType, LongType};
 
@@ -47,6 +47,8 @@ object LearnSpamModel {
 		val conf = new SparkConf().setAppName(this.getClass.getSimpleName)
 		val sc = new SparkContext(conf)
 		val sqlContext = new SQLContext(sc)
+
+		import sqlContext.implicits._
 
 		/*****************************************************************************
 		 *  First get training data from the social honeypot to generate the model
@@ -197,11 +199,11 @@ object LearnSpamModel {
 		  ****************************************************************************/
 		//TODO: sqlContext.createDataFrame with schema definition is an easier way to do this.
 
-		val trdd = predictedLabels.zip(tweetData.rdd)
-		val tdf = trdd.map(r => ( r._1, r._2.getLong(6)))
+		val tRDD = predictedLabels.zip(tweetData.rdd)
+		val tDF: DataFrame = tRDD.map(r => ( r._1, r._2.getLong(6)))
 			.toDF.withColumnRenamed("_1", "IS_POLLUTER")
 			     .withColumnRenamed("_2", "TWEET_ID")
-		tdf.registerTempTable("TDF")
+		tDF.registerTempTable("TDF")
 		tweetTable.registerTempTable("TWEET_TABLE")
 
 
