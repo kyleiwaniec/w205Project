@@ -25,7 +25,7 @@ object  TrainOnTweets {
         tf.transform(s.sliding(2).toSeq)
     }
 
-    def main(args: Array[String]) {
+    def kmeansMain(args: Array[String]) {
         val conf = new SparkConf().setAppName(this.getClass.getSimpleName)
         val sc = new SparkContext(conf)
         val sqlContext = new SQLContext(sc)
