@@ -49,4 +49,5 @@ with open('logs/test_links.json', 'w') as outfile:
 
 # Loading extended JSON object into S3 bucket
 f = open('test_links.json','r')
-util.upload_json(conn,"logs/test.json",f)
+#util.upload_json(conn,"logs/test.json",f)
+util.upload_json(conn,S3_url_location,f)
