@@ -29,7 +29,7 @@ ssh into your instance
 ssh -i "xxx.pem" root@ec2-xx-x-xxx-xx.compute-1.amazonaws.com
 fdisk -l
 wget https://s3-us-west-2.amazonaws.com/w205twitterproject/provision.sh
-. provision.sh <DEVICE PATH> # run once
+. provision.sh <DEVICE PATH> # run once - this may take several mintes...
 ```
 
 then run your personal git-keys script, or however you want to authorize git.   
@@ -43,7 +43,7 @@ git clone git@github.com:kyleiwaniec/w205Project.git
 pull the repo, then run:  
 ```
 cd /data/w205Project
-. provision/bootstrap.sh
+. provision/bootstrap.sh # this may take several minutes...
 ```
 
 You will be prompted to add your Twitter keys and AWS keys in the bootstrap script.
