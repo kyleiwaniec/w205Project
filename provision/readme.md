@@ -3,3 +3,4 @@
 - [x] add twitter keys if needed
 - [x] add aws keys if needed
 - [x] add python modules to requirements.txt file as needed
+- [x] use the git-keys-template to quickly authorize github on your new instance
