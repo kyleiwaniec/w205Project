@@ -4,9 +4,9 @@
 follow these steps in order:   
 
 use this AMI:   
-w205Project_V2.0 <-- has the works! (well.. until we added more stuff, and it ALMOST has the works)
+__w205Project_V2.0__
 
-create a new m3.large instance with security group containing:
+create a new __m3.large__ instance with security group containing:
 
 ```
 Ports	Protocol	Source	tableau
@@ -18,7 +18,7 @@ Ports	Protocol	Source	tableau
 8020	tcp	0.0.0.0/0	✔
 8088	tcp	0.0.0.0/0	✔
 ```
-Attach a 100GB Volume in the same region   
+Attach a __100GB Volume__ in the same region   
 ssh into your instance   
 
 ```
