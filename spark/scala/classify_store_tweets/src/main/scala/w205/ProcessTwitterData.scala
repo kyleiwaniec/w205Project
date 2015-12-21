@@ -2,13 +2,12 @@ package w205
 
 //Spark Related Imports
 
-import org.apache.spark.sql._
-import org.apache.spark.sql.types._
+
+import java.util.Properties
+
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
-import org.apache.spark.sql.SQLContext;
-import org.apache.spark.sql.DataFrame;
-import org.apache.spark.sql.Row
+import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.streaming.twitter.TwitterUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
@@ -35,7 +34,20 @@ import com.google.gson.Gson
  */
 
 
-object ClassifyStoreTweetsUrls  {
+object ClassifyStoreTweetsUrls extends Serializable {
+
+    def start(ssc: StreamingContext) = {
+        ssc.start()
+        println("We just started the Spark StreamingContext and we are now downloading Twitter tweets as of: "
+            + new java.util.Date())
+    }
+
+    def stop() = {
+        StreamingContext.getActive.map { ssc =>
+            ssc.stop(stopSparkContext=false)
+            println("We just stopped the StreamingContext, as of: " + new java.util.Date())
+        }
+    }
 
     /****************************************************************************
       * Need to pick up these keys from CLI or by configuring Twitter4j Properties
@@ -69,16 +81,13 @@ object ClassifyStoreTweetsUrls  {
         val conf = new SparkConf().setAppName(this.getClass.getSimpleName)
         val sc = new SparkContext(conf)
         val ssc = new StreamingContext(sc, Seconds(intervalSecs))
-        val sqlContext = new SQLContext(sc)
-
-        import sqlContext.implicits._
 
 
         /****************************************************************************
          * Start streaming. Get twitter data and process as JSON.
          **************************************************************************/
 
-        val tweetStream = TwitterUtils.createStream(ssc, Some(new OAuthAuthorization(cb.build())))
+        val tweetStreamAsRDD = TwitterUtils.createStream(ssc, Some(new OAuthAuthorization(cb.build())))
             .map(gson.toJson(_))
 
         /****************************************************************************
@@ -87,80 +96,77 @@ object ClassifyStoreTweetsUrls  {
         val model = LogisticRegressionModel.load(sc, "/user/spark/honeypot/lr_sgd")
         println ("Loaded Logistic Regression Model.....")
 
-        /*******************************************************************************
-         * Load the JDBC Data Frame for Postgres.
-         * We can get the known spam users from here.
-         * We should still append the information, but there is not need to classify again.
-         *******************************************************************************/
-        val jdbcUrl = "jdbc:postgresql://localhost:5432/twitter?user=postgres"
-        val tableName = "twitters"
-        val twittersDF = sqlContext.read.format("jdbc").options(
-            Map("url" -> jdbcUrl, "dbtable" -> tableName)
-        ).load()
-        println (" Twitters DF loaded from Postgres: " + twittersDF.count())
-
-        /*******************************************************************************
-         * Twitter public stream data is the tweet object in which the user info is embedded
-         * We need to transform this so that the main object is the user and
-         * tweets are meaningful in the context of this user.
-         * The temp table registered should be named TWEETS
-         ********************************************************************************/
-
-        val sqlTwitterUser: StringBuilder =  new StringBuilder("SELECT ")
-            sqlTwitterUser.append("user.Id AS USER_ID, ")
-            sqlTwitterUser.append("id AS TWEET_ID, ")
-            sqlTwitterUser.append("text AS TWEET, ")
-            sqlTwitterUser.append("SIZE(SPLIT(text,' ')) AS NUM_WORDS, ")
-            sqlTwitterUser.append("CURRENT_TIMESTAMP as CREATED_TS, ")
-            sqlTwitterUser.append("user.createdAt AS USER_CREATED_TS, ")
-            sqlTwitterUser.append("createdAt AS TWEET_CREATED_TS, ")
-            sqlTwitterUser.append("user.screenName AS SCREEN_NAME, ")
-            sqlTwitterUser.append("user.name AS NAME, " )
-            sqlTwitterUser.append("user.followersCount AS NUM_FOLLOWING, " )
-            sqlTwitterUser.append("user.friendsCount AS NUM_FOLLOWERS, " )
-            sqlTwitterUser.append("user.statusesCount AS NUM_TWEETS,  ")
-            sqlTwitterUser.append("retweetedStatus is not null AS RETWEETED_STATUS, ")
-            sqlTwitterUser.append("retweetCount AS RETWEET_COUNT, ")
-            sqlTwitterUser.append("COUNT(urlEntities) AS NUM_URLS, ")
-            sqlTwitterUser.append("COUNT(userMentionEntities) AS NUM_MENTIONS, ")
-            sqlTwitterUser.append("COUNT(hashtagEntities) AS NUM_HASHTAGS, ")
-            sqlTwitterUser.append("user.url AS USER_PROFILE_URL, ")
-            sqlTwitterUser.append("urlEntities AS TWEETED_URLS ")
-            sqlTwitterUser.append("FROM TWEETS  ")
-            sqlTwitterUser.append("GROUP BY user, id, text, createdAt, retweetedStatus, retweetCount, ")
-            sqlTwitterUser.append("urlEntities, userMentionEntities, hashtagEntities")
-
-        //Schema for the DataFrame
-        println("SQL to generate dataframe for Twitters in Postgres: " + sqlTwitterUser.toString())
-
         /****************************************************************************
          * As the tweets stream in, classify as spam or ham
-         * Store the data in postgres
+         * Store the data in postgres & URLs in HDFS
+         * Case Class defines the schema of the tweet dataframe for storing
+         * Case Class defines the schema of the tweet features for classification
          **************************************************************************/
+        case class TweetFeatures (
+            numFollowers: Int, numFollowing: Int,
+            numTweets: Long, screenNameLength: Int,
+            profileDescLength: Int, numWords: Int
+        )
+        case class Tweets (
+             USER_ID: String, TWEET_ID: String,
+             TWEET: String, CREATED_TS: String,
+             USER_CREATED_TS: String,
+             TWEET_CREATED_TS: String,
+             SCREEN_NAME: String, NAME: String,
+             NUM_FOLLOWING: Int, NUM_FOLLOWERS: Int,
+             NUM_TWEETS: Long, RETWEET_COUNT: Int,
+             NUM_URLS: Int, NUM_HASHTAGS: Int,
+             IS_POLLUTER: Double
+        )
+        /*******************************************************************************
+          * Load the JDBC Data Frame for Postgres.
+          * We can get the known spam users from here.         *
+          *******************************************************************************/
+        //TODO: We should still append the information, but there is not need to classify again.
+        val jdbcUrl = "jdbc:postgresql://localhost:5432/twitter"
+        val connProps = new Properties()
+        connProps.setProperty("user", "postgres")
+        val tableName = "classified_tweets_simple"
+        /*val twittersDF = sqlContext.read.format("jdbc").options(
+            Map("url" -> jdbcUrl, "dbtable" -> tableName)
+        ).load()
+        println (" Twitters DF loaded from Postgres: " + twittersDF.count())*/
 
-        tweetStream.foreachRDD((rdd, time) => {
 
-            val sqlContext = new SQLContext(sc)
-            import sqlContext.implicits._
-
+        tweetStreamAsRDD.foreachRDD((rdd, time) => {
             if (rdd.toLocalIterator.nonEmpty) {
-                val outputRDD = rdd.repartition(partitionsEachInterval)
-                outputRDD.map(r => println(r))
-                // Now extract features from this RDD including tweet id
 
-                // Classify the tweets as spam or ham
-                // Extract twitter postgres schema for each tweet
-                // Combine the classification with all the other columns
+                val sqlContext = new SQLContext(sc)
+                import sqlContext.implicits._
 
-                // Write to postgres
-                /* classifiedTweetsDF.write.jdbc(jdbcUrl, tableName)*/
+                val tweetsRDD = rdd.repartition(partitionsEachInterval)
+                //Will this work since the data is already mapped to json?
+                val tweetsDF = sqlContext.read.json(tweetsRDD)
+                tweetsDF.registerTempTable("tweets")
+                tweetsDF.show()
 
-                // Whew done!
+                //Trying using Spark-SQL:
+                val tweetData = sqlContext.sql("select user.followersCount, user.friendsCount, user.statusesCount, " +
+                    "length(user.screenName), length(user.description), size(split(text, ' ')) as numWords, " +
+                    "id as tweet_id from tweets")
+                //TODO: Try case class for schema construction
+                //Extract features from the tweetData, we need Vectors here:
+                val tweetsToClassify = tweetData.map(row => Vectors.dense(row.getLong(0).toDouble,
+                    row.getLong(1).toDouble, row.getLong(2).toDouble, row.getInt(3).toDouble,
+                    row.getInt(4).toDouble, row.getInt(5).toDouble))
+                //Use the model to classify the tweets
+                val predictedLabels = tweetsToClassify.map { features => (model.predict(features)) }
+                //zip rdd and make df
+                val tRDD = predictedLabels.zip(tweetData.rdd)
+                val tDF = tRDD.map(r => ( r._1, r._2.getLong(6))).toDF().withColumnRenamed("_1", "IS_POLLUTER").withColumnRenamed("_2", "TWEET_ID")
+                //if we come up to here, then we can store to Postgres
+                tDF.write.jdbc(jdbcUrl, tableName, connProps)
 
             }
         })
 
-        ssc.start()
+
+        this.start(ssc)
         ssc.awaitTermination()
 
     }
