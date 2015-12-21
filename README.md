@@ -39,12 +39,10 @@ git clone git@github.com:kyleiwaniec/w205Project.git
 pull the repo, then run:  
 ```
 cd /data/w205Project
-git checkout dev # this will change to master when we're ready
-git pull origin dev
 . provision/bootstrap.sh
 ```
 
-user is prompted to add twitter keys bootstrap script.
+user is prompted to add twitter keys and aws keys in the bootstrap script.
 flume keywords have been set to top 100 words on twitter.
 
 
@@ -55,13 +53,15 @@ crontab simple_shed_cron.txt
 
 Watch it here: `tail -f /data/cronlog.log`   
 
+***
+
 The scheduler will run all of the following... these are for reference only:   
 
 ```
 sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
 ```
 
-After a coouple of hours, kill flume, and load the tables.   
+After a coouple of hours, kills flume, and loads the tables.   
 
 Executing from command line to be able to use variables. No easy way to do this directly in HIVE SQL.  
 Also, Flume must be stopped before running transform 
