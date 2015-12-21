@@ -1,0 +1,4 @@
+- [x] provsion a new volume
+- [x] bootstrap the application
+- [x] add twitter keys if needed
+- [x] add aws keys if needed
