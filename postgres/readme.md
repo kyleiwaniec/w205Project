@@ -1,4 +1,4 @@
-###Create DataBase and Table###
+###Creates Twitter Database & Twitters table###
 
 For use by the Dashboard.   
 
