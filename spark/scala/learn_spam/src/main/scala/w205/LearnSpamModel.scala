@@ -4,7 +4,8 @@ package w205
 	Spark Context & SQL Import
 *****************************************************************************/
 
-import org.apache.spark.sql.{DataFrame, SQLContext, HiveContext}
+import org.apache.spark.sql.{DataFrame, SQLContext}
+import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.types.{StructType, StructField, StringType, IntegerType, LongType};
 
@@ -46,7 +47,8 @@ object LearnSpamModel {
 
 		val conf = new SparkConf().setAppName(this.getClass.getSimpleName)
 		val sc = new SparkContext(conf)
-		val sqlContext = new HiveContext(sc)
+		val hiveContext = new HiveContext(sc)
+		val sqlContext = new SQLContext(sc)
 
 		import sqlContext.implicits._
 
@@ -69,7 +71,7 @@ object LearnSpamModel {
 			StructField("numFollowers", IntegerType, true),
 			StructField("numTweets", LongType, true),
 			StructField("screenNameLength", IntegerType, true),
-			StructField("userProfileDescLength", IntegerType)))
+			StructField("profileDescLength", IntegerType)))
 
 		/*****************************************************************************
 		 * Using the custom schema, load the legit CSV into a dataframe
@@ -111,7 +113,7 @@ object LearnSpamModel {
 		 *****************************************************************************/
 
 		val parsedData = trainData.selectExpr("isPolluter", "numFollowing", "numFollowers",
-			"numTweets", "screenNameLength", "screenNameLength", "size(split(tweet, ' ')) as numWords")
+			"numTweets", "screenNameLength", "profileDescLength", "size(split(tweet, ' ')) as numWords")
 
 		/*****************************************************************************
 		  * Prepare for creating LabeledPoints
@@ -155,18 +157,33 @@ object LearnSpamModel {
 
 		val metrics = new MulticlassMetrics(predictionAndLabels)
 		val precision = metrics.precision
+		println("*******************MODEL: PRECISION************************")
 		println("Precision = " + precision)
+		println("***********************************************************")
 
 		/*****************************************************************************
 		 * Save this model for everyday classification.
 		 *****************************************************************************/
 		//TODO: Try StreamingLogisticRegressionWithSGD to analyze classification performance.
-
+		println("*******************MODEL: SAVING DONE********************")
 		model.save(sc, "/user/spark/honeypot/lr_sgd")
+		println("*********************************************************")
+		println("Training Data in CSV had some issues; apache commons could not parse effectively.")
+		println("Some training data was likely not processed because of data cleaning issues.")
+		println("*********************************************************")
+		println()
+		println("*******************REPL vs Spark-Submit******************")
+		println("Tried loading some collected tweets to examine further, but this fails in spark-submit.")
+		println("The same lines of code work fine on spark-shell. Needs further research.")
+		println("*********************************************************")
 
 		//Later to load:
 		//val model = LogisticRegressionModel.load(sc, "/user/spark/honeypot/lr_sgd")
 
+
+//INFO: Somehow, the tweetData init is working in REPL, but not in spark-submit
+//INFO: Already tried compiling in 2.10.4, using selectExpr and using hive/sql Contexts
+//INFO: The model is saved, so some extra parts of the code that examine the tweets are commented out.
 		/*****************************************************************************
 		 * use the model on the tweets collected earlier.
 		 * prepare the data from tweets just as training data above.
@@ -176,21 +193,34 @@ object LearnSpamModel {
 		//TODO: Nuances that make DFs harder sometimes to construct.
 		//TODO: What if some datatype changes in the tweet object? More flexibile type handling.
 
-		val tweetTable = sqlContext.read.format("json")
-			.load("/user/spark/tweets/2015/12/19/tweetstream*/part-*")
-		val tweetData = tweetTable.selectExpr("user.followersCount", "user.friendsCount", "user.statusesCount",
-			"length(user.screenName)", "length(user.description)",
-			"size(split(text, ' ')) as numWords", "id as tweet_id")
+		//val tweetTable = hiveContext.read.format("json")
+		//	.load("/user/spark/tweets/2015/12/19/tweetstream*/part*")
+		//tweetTable.registerTempTable("tweetTable")
+
+/*
+		val tweetData = sqlContext.sql("select user.followersCount, user.friendsCount, user.statusesCount, " +
+			"length(user.screenName), length(user.description), size(split(text, ' ')) as numWords, " +
+			"id as tweet_id from tweetTable")
+
+		println("*******************TWEET DATA DONE**********************")
+		println(tweetData.count())
+		println("**********************************************************")
+
 		val tweetsToClassify = tweetData.map(row => Vectors.dense(row.getLong(0).toDouble,
 			row.getLong(1).toDouble, row.getLong(2).toDouble, row.getInt(3).toDouble,
 			row.getInt(4).toDouble, row.getInt(5).toDouble))
 
+		println("*******************TWEETS TO CLASSIFY DONE**************")
+		println(tweetsToClassify.take(3))
+		println("**********************************************************")
 		//Would caching be beneficial here? Due to lazy init prevalent in Scala & Spark,
 		//this question has been hard to figure out empirically.
 
 		val predictedLabels = tweetsToClassify.map { features => (model.predict(features)) }
-
-
+		println("*******************PREDICTED LABELS DONE******************")
+		println(predictedLabels.count())
+		println("**********************************************************")
+*/
 		 /*****************************************************************************
 		  * Jump through hoops to get back a dataframe.
 		  * RDDs can be zipped together; but not dataframes.
@@ -198,30 +228,32 @@ object LearnSpamModel {
 		  * Rename columns and tdf can be joined with tweetTable to get more information
 		  ****************************************************************************/
 		//TODO: sqlContext.createDataFrame with schema definition is an easier way to do this.
-
+/*
 		val tRDD = predictedLabels.zip(tweetData.rdd)
-		val tDF: DataFrame = tRDD.map(r => ( r._1, r._2.getLong(6)))
-			.toDF.withColumnRenamed("_1", "IS_POLLUTER")
-			     .withColumnRenamed("_2", "TWEET_ID")
+		val tDF = tRDD.map(r => ( r._1, r._2.getLong(6))).toDF().withColumnRenamed("_1", "IS_POLLUTER").withColumnRenamed("_2", "TWEET_ID")
 		tDF.registerTempTable("TDF")
 		tweetTable.registerTempTable("TWEET_TABLE")
+
+		println("*******************Joining two dataframes******************")
+		println(tDF.count())
+		println("**********************************************************")
 
 
 		//TODO: Join requires spark tweaking - almost always spills to disk and runs forever
 		val classifiedTweets = sqlContext.sql("Select IS_POLLUTER, ID, USER.ID, " +
 			"TEXT FROM TDF, TWEET_TABLE WHERE TWEET_ID = ID")
-
+*/
 		/*****************************************************************************
 		 * Examine a few of the good classified tweets and a few of the bad ones
 		 * The label of classification is stored in IS_POLLUTER which takes a Double
 		 *****************************************************************************/
-
+/*
 		println("The spam tweets:")
 		classifiedTweets.filter("IS_POLLUTER=1.0").show()
 
 		println("The ham tweets:")
 		classifiedTweets.filter("IS_POLLUTER=0.0").show()
-
+*/
 	}
 	
 }
