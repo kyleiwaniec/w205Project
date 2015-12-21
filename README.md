@@ -1,4 +1,6 @@
-##SETUP##
+#See the documentation and the wiki for project details
+
+##QUICK SETUP INSTRUCTIONS##
 
 ###With a brand new instance and volume: ###
 follow these steps in order:   
