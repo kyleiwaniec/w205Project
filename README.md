@@ -50,7 +50,7 @@ You will be prompted to add your Twitter keys and AWS keys in the bootstrap scri
 
 Run the scheduler:
 ```
-crontab cron/simple_shed_cron.txt
+crontab cron/simple_sched_cron.txt
 ```
 
 Watch it here: `tail -f /data/cronlog.log`   
