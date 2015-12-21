@@ -55,44 +55,6 @@ crontab simple_shed_cron.txt
 
 Watch it here: `tail -f /data/cronlog.log`   
 
-***
-
-The scheduler will run all of the following... these are for reference only:   
-
-```
-sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
-```
-
-After a coouple of hours, kills flume, and loads the tables.   
-
-Executing from command line to be able to use variables. No easy way to do this directly in HIVE SQL.  
-Also, Flume must be stopped before running transform 
-
-
-```
-# loads external hive table
-. /data/w205Project/load/load-hive-table.sh
-
-# adds partition based on today's date, overrides the transformed table for classification
-. /data/w205Project/transform/transform.sh 
-
-```
-
-then pyspark:
-```
-# classify and save to postgres, and json
-/data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py 
-
-# sometimes caching things happen, and server should be restarted
-sudo restart shiny-server 
-```
-
-then crawler: (ENV27 is already running, all the modules have been installed, and S3 passwords were entered via bootstrap script)   
-```
-cd /data/w205Project/python/url_spider/url_spider
-scrapy crawl TweetURLSpider
-python url_upload.py
-```
 
 ***
 
