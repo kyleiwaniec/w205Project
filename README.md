@@ -1,4 +1,4 @@
-#See the documentation and the wiki for project details
+#Please see the wiki for full project details and documentation
 
 ##QUICK SETUP INSTRUCTIONS##
 
