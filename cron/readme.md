@@ -1,4 +1,4 @@
-##CRON is awesome
+##CRON ~~is awesome~~ is the evil spawn of satan
 
 Remember to put everything on one line    
 Make sure to hit "return" so the file ends with a new line.   
