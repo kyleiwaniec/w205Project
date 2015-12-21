@@ -44,13 +44,11 @@ cd /data/w205Project
 . provision/bootstrap.sh
 ```
 
-user is prompted to add twitter keys and aws keys in the bootstrap script.
-flume keywords have been set to top 100 words on twitter.
-
+You will be prompted to add your Twitter keys and AWS keys in the bootstrap script.
 
 Run the scheduler:
 ```
-crontab simple_shed_cron.txt
+crontab cron/simple_shed_cron.txt
 ```
 
 Watch it here: `tail -f /data/cronlog.log`   
