@@ -20,6 +20,9 @@ DEPTH_LIMIT = 5
 # The maximum number of responses to crawl
 CLOSESPIDER_PAGECOUNT = 1000
 
+# The maximum number of seconds that the crawler will run for
+CLOSESPIDER_TIMEOUT = 1800
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'url_spider (+http://www.yourdomain.com)'
 
