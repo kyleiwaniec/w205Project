@@ -97,4 +97,8 @@ python url_upload.py
 ***
 
 GO TO YOUR INSTANCE's DASHBOARD:   
-http://ec2-xx-x-xxx-xx.compute-1.amazonaws.com:10000/dashboard/
+http://ec2-xx-x-xxx-xx.compute-1.amazonaws.com:10000/dashboard/   
+***
+
+INSTALL PLUGIN:   
+Drag and drop the chromeExtension.crx file into your chrome browser, and follow the prompts.
