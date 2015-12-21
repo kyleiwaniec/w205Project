@@ -15,7 +15,13 @@ SPIDER_MODULES = ['url_spider.spiders']
 NEWSPIDER_MODULE = 'url_spider.spiders'
 
 # The maximum depth that will be allowed to crawl for any site
-DEPTH_LIMIT = 1
+DEPTH_LIMIT = 5
+
+# The maximum number of responses to crawl
+CLOSESPIDER_PAGECOUNT = 1000
+
+# The maximum number of seconds that the crawler will run for
+CLOSESPIDER_TIMEOUT = 1800
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'url_spider (+http://www.yourdomain.com)'
@@ -85,4 +91,3 @@ DEPTH_LIMIT = 1
 #HTTPCACHE_DIR='httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES=[]
 #HTTPCACHE_STORAGE='scrapy.extensions.httpcache.FilesystemCacheStorage'
-CLOSESPIDER_PAGECOUNT = 1

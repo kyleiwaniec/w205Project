@@ -1,6 +1,9 @@
 ## Chrome extension  
 
+###To install the plugin###
+Drag and drop the chromeExtension.crx file in the root of this project into your chrmoe browser. Follow the prompts.
 
+###For developer mode###
 in Chrome browser, go to:   
 
 `chrome://extensions/`   

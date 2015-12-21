@@ -1,7 +1,4 @@
-#TODO:
-- Connect to Hive to obtain the tweet URLS -> SCRAPPED
-- Scrape pages from the URLs in the tweets URL Hive table -> DONE
-- Magnify the URL list through reverse DNS lookup -> N/D
+### Summary
 
 ###Installation prerequisites
 
