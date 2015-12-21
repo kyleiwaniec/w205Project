@@ -1,3 +1,5 @@
+##Shiny and R are already installed on the recommended AMI. If you wanted to install these yourself, you could follow these instructions:##
+
 ### Run install-shiny.sh, OR, follow these instructions: ###
 
 Install R
