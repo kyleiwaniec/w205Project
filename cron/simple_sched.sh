@@ -4,7 +4,7 @@ export PATH=/root/ENV27/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:
 
 su --shell=/bin/bash --session-command=". /data/w205Project/flume/start-flume.sh" hdfs &
 
-/bin/sleep 60 # lets flume gather data for 1 hour
+/bin/sleep 3600 # lets flume gather data for 1 hour
 
 
 # /bin/kill -TERM $(/bin/cat /data/script.pid) && /bin/rm /data/script.pid
