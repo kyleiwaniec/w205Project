@@ -1,5 +1,5 @@
 #! /bin/bash
-
+export SPARK_CLASSPATH=/data/w205Project/spark/scala/classify_store_tweets/postgresql-9.4-1201-jdbc41.jar
 /data/spark15/bin/spark-submit \
 --class "w205.ClassifyStoreTweetsUrls" \
 --master local[2] \
