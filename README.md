@@ -1,12 +1,14 @@
-##SETUP##
+#Please see the wiki for full project details and documentation
+
+##QUICK SETUP INSTRUCTIONS##
 
 ###With a brand new instance and volume: ###
 follow these steps in order:   
 
 use this AMI:   
-w205Project_V2.0 <-- has the works! (well.. until we added more stuff, and it ALMOST has the works)
+__w205Project_V2.0__
 
-create a new m3.large instance with security group containing:
+create a new __m3.large__ instance with security group containing:
 
 ```
 Ports	Protocol	Source	tableau
@@ -18,7 +20,7 @@ Ports	Protocol	Source	tableau
 8020	tcp	0.0.0.0/0	✔
 8088	tcp	0.0.0.0/0	✔
 ```
-Attach a 100GB Volume in the same region   
+Attach a __100GB Volume__ in the same region   
 ssh into your instance   
 
 ```
@@ -39,60 +41,24 @@ git clone git@github.com:kyleiwaniec/w205Project.git
 pull the repo, then run:  
 ```
 cd /data/w205Project
-git checkout dev # this will change to master when we're ready
-git pull origin dev
 . provision/bootstrap.sh
 ```
 
-user is prompted to add twitter keys bootstrap script.
-flume keywords have been set to top 100 words on twitter.
-
+You will be prompted to add your Twitter keys and AWS keys in the bootstrap script.
 
 Run the scheduler:
 ```
-crontab simple_shed_cron.txt
+crontab cron/simple_shed_cron.txt
 ```
 
 Watch it here: `tail -f /data/cronlog.log`   
 
-The scheduler will run all of the following... these are for reference only:   
-
-```
-sudo -u hdfs bash /data/w205Project/flume/start-flume.sh
-```
-
-After a coouple of hours, kill flume, and load the tables.   
-
-Executing from command line to be able to use variables. No easy way to do this directly in HIVE SQL.  
-Also, Flume must be stopped before running transform 
-
-
-```
-# loads external hive table
-. /data/w205Project/load/load-hive-table.sh
-
-# adds partition based on today's date, overrides the transformed table for classification
-. /data/w205Project/transform/transform.sh 
-
-```
-
-then pyspark:
-```
-# classify and save to postgres, and json
-/data/spark15/bin/spark-submit /data/w205Project/spark/getLinks.py 
-
-# sometimes caching things happen, and server should be restarted
-sudo restart shiny-server 
-```
-
-then crawler: (ENV27 is already running, all the modules have been installed, and S3 passwords were entered via bootstrap script)   
-```
-cd /data/w205Project/python/url_spider/url_spider
-scrapy crawl TweetURLSpider
-python url_upload.py
-```
 
 ***
 
 GO TO YOUR INSTANCE's DASHBOARD:   
-http://ec2-xx-x-xxx-xx.compute-1.amazonaws.com:10000/dashboard/
+http://ec2-xx-x-xxx-xx.compute-1.amazonaws.com:10000/dashboard/   
+***
+
+INSTALL PLUGIN:   
+Drag and drop the chromeExtension.crx file into your chrome browser, and follow the prompts.
