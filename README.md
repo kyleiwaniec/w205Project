@@ -1,6 +1,6 @@
 #Please see the wiki for full project details and documentation
 
-### A running instance: http://52.7.131.84:10000/dashboard/   
+### ~~A running instance: http://52.7.131.84:10000/dashboard/~~   
 
 ##QUICK SETUP INSTRUCTIONS##
 
