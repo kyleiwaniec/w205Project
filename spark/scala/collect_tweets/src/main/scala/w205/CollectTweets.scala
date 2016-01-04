@@ -29,10 +29,10 @@ object CollectTweets {
     /****************************************************************************
       * Need to pick up these keys from CLI or by configuring Twitter4j Properties
       **************************************************************************/
-    val CONSUMER_KEY = "j9X0NPb6xfqe4QBJ3Q6nUhTkI"
-    val CONSUMER_SECRET = "JscwpITQVRRzJQrcbZ3zOxjLLlzrfolIt3qPi1uPKOqolCUhYL"
-    val ACCESS_TOKEN = "4027615449-qDOnhw3kS8xedmoKIyxfqXcYIAQ0gO8JHFjNXfL"
-    val ACCESS_TOKEN_SECRET = "g1ipl9amLVL3hUP6cYgHd3l1fpG0sLDErGNXm7YCHLl3v"
+    val CONSUMER_KEY = "xxx"
+    val CONSUMER_SECRET = "xxx"
+    val ACCESS_TOKEN = "xxx-xxx"
+    val ACCESS_TOKEN_SECRET = "xxx"
 
     def main(args: Array[String]) {
 
